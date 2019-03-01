@@ -1,0 +1,44 @@
+IMC(64): 15.20-s043: (c) Copyright 1995-2018 Cadence Design Systems Inc - Coverage engine version: 15.20-s043
+Starting batch mode
+imc> merge -overwrite -out cov_merged_output test*
+imc: *I,MERGL1: Merging IUS Coverage ...
+----------------------------
+imc: *I,MERGL1: Preparing target model ...
+imc: *I,MERGL1: Reading model of primary run (cov_work/scope/test_sv1000) as initial model: cov_work/scope/icc_39330fa3_1e5c7f59.ucm
+imc: *I,MERGL1: Target model generated successfully.
+imc: *I,MERGL1: Projecting IUS ucd data into the target model ...
+imc: *I,MERGL2:   cov_work/scope/test_sv1000:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1001:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1002:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1003:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1004:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1005:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1006:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1007:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1008:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1009:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL2:   cov_work/scope/test_sv1010:
+imc: *I,MERGL3:       Data is projected in to the target model.
+imc: *I,MERGL1: Writing output database cov_work/scope/cov_merged_output:
+imc: *I,MERGL2:   Model: cov_work/scope/cov_merged_output/icc_39330fa3_1e5c7f59.ucm
+imc: *I,MERGL2:   Data : cov_work/scope/cov_merged_output/icc_39330fa3_1e5c7f59.ucd
+imc: *I,MERGL1: No Specman coverage databases found in the runs.
+Total conflicts during target model creation: 0
+Total items not merged                      : 0
+List of conflicts non-merged items during target model creation report only when merge is run with "-message 1" option.
+imc> load -run ./cov_work/scope/cov_merged_output
+imc: *I,RUNLD: Successfully loaded run /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output.
+imc> report -detail -all -text -out cov_report.txt
+imc> report -detail -text -out cov_uncovered_report.txt
+imc> report -detail -html -out ./cov_report_html
+imc: *E,OUTEXS: 0utput directory ./cov_report_html already exists, and will not be overwritten. Use the '-overwrite' option to overwrite the existing directory, or specify a different directory name with the -out option, and rerun the command.

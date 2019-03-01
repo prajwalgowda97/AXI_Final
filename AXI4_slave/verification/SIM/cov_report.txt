@@ -1,0 +1,2768 @@
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+<> User: vv2trainee39
+
+Host: compute-srv2.eda.atme.in
+
+Report date: Fri 01 Mar 2019 20:23:30 IST
+
+Report options: -detail -text -out cov_report.txt -all
+
+Coverage database path: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output
+
+Coverage model files: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output/icc_39330fa3_1e5c7f59.ucm
+
+Coverage data files: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output/icc_39330fa3_1e5c7f59.ucd
+
+CCF files:  /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_files/cov_cmd.cf
+    set_covergroup -new_instance_reporting
+    set_covergroup -per_instance_default_one
+    set_implicit_block_scoring -off
+    set_assign_scoring
+    set_expr_scoring -all
+    select_functional
+
+
+Coverage database date: Fri 01 Mar 2019 20:21:33 IST
+
+*** There were no refinement files applied ***
+
+ <>
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+Coverage Table Legend
+---------------------
+  EXCL   excluded using refinement rule
+  P-EXCL excluded from parent
+  U-EXCL excluded and unreachable by IEV
+  T-EXCL excluded from type
+  S-EXCL smart excluded using refinement rule
+  EXCL(S) smart indirect excluded
+  EMPTY  all children are excluded
+  CONST  marked constant during simulation
+  IGN    marked ignored during simulation
+  UNG    marked ungradeable during simulation
+  DES    marked deselected during simulation
+  UNR    marked unreachable by IEV
+
+
+Covered+Uncovered+Excluded+UNR Block Detail Report, Instance Based
+==================================================================
+
+Instance name: axi4_slave_top
+Type name: axi4_slave_top
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/axi4_Slave_top.sv
+Number of covered blocks: 7 of 8
+Number of uncovered blocks: 1 of 8
+Number of excluded blocks: 0
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+1      1     90    code block           90     initial begin                  
+0      2     91    true part of         91     if (MEM_ADDR_BITS > ADDR_WIDTH) begin 
+1      3     100   code block           100    always_ff @(posedge CLK) begin 
+1      4     101   true part of         101    if (mem_wr_en) begin           
+1      5     105   code block           105    for (int i = 0; i < DATA_WIDTH/8; i++) begin 
+1      6     105   code block           105    for (int i = 0; i < DATA_WIDTH/8; i++) begin 
+1      7     106   true part of         106    if (mem_wr_byte_en[i]) begin   
+1      8     113   code block           113    assign mem_rd_data_out = slave_memory[mem_rd_addr[MEM_ADDR_BITS-1:0]]; 
+
+Instance name: axi4_slave_top.write_addr
+Type name: axi4_slave_write_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/1.AXI4_Slave_Write_Address.sv
+Number of covered blocks: 18 of 18
+Number of uncovered blocks: 0 of 18
+Number of excluded blocks: 0
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+1      1     41    code block           40     begin                          
+1      2     43    true part of         42     present_state <= AW_IDLE;      
+1      3     45    false part of        42     present_state <= next_state;   
+1      4     50    code block           49     begin                          
+1      5     53    a case item of       52     AW_IDLE : begin                
+1      6     55    true part of         54     next_state = AW_ADDR;          
+1      7     57    false part of        54     next_state = AW_IDLE;          
+1      8     60    a case item of       52     AW_ADDR : begin                
+1      9     62    true part of         61     next_state = AW_IDLE;          
+1      10    64    false part of        61     next_state = AW_ADDR;          
+1      11    71    code block           70     begin                          
+1      12    73    true part of         72     begin                          
+1      13    85    false part of        72     begin                          
+1      14    88    a case item of       86     begin                          
+1      15    90    true part of         89     begin                          
+1      16    102   false part of        89     begin                          
+1      17    108   a case item of       86     begin                          
+1      18    114   code block           114    assign awready = SLV_AWREADY;  
+
+Instance name: axi4_slave_top.write_data
+Type name: axi4_slave_data_channel
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/2.AXI4_Slave_Write_Data.sv
+Number of covered blocks: 51 of 54
+Number of uncovered blocks: 3 of 54
+Number of excluded blocks: 0
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+1      1     63    code block           63     assign num_bytes = 1 << active_awsize; 
+1      2     64    code block           64     assign last_beat_transfer = (beats_remaining == 1) && burst_active; 
+1      3     65    code block           65     assign b_bid           = active_bid; 
+1      4     66    code block           66     assign b_bresp         = b_bresp_reg; 
+1      5     68    code block           68     assign mem_addr        = current_addr; 
+1      6     69    code block           69     assign mem_wr_data     = wdata; 
+1      7     72    code block           72     always_ff @(posedge clk or negedge rst) begin 
+1      8     74    true part of         73     present_state <= W_IDLE;       
+1      9     76    false part of        73     present_state <= next_state;   
+1      10    80    code block           80     always_comb begin              
+1      11    88    a case item of       87     W_IDLE: begin                  
+1      12    90    true part of         90     if (awvalid && awready) begin  
+1      13    92    false part of        90     end else begin                 
+1      14    97    a case item of       87     W_DATA: begin                  
+1      15    100   true part of         100    if (wvalid && wready_next) begin 
+1      16    103   true part of         103    if (last_beat_transfer) begin  
+1      17    107   false part of        103    end else begin                 
+1      18    110   false part of        100    end else begin                 
+1      19    115   a case item of       87     default: begin                 
+1      20    122   code block           122    always_ff @(posedge clk or negedge rst) begin 
+1      21    123   true part of         123    if (!rst) begin                
+1      22    125   false part of        123    end else begin                 
+1      23    127   true part of         126    active_bid      <= stored_awid; 
+1      24    132   code block           132    always_ff @(posedge clk or negedge rst) begin 
+1      25    133   true part of         133    if (!rst) begin                
+1      26    142   false part of        133    end else begin                 
+1      27    144   true part of         144    if (awvalid && awready) begin  
+1      28    152   true part of         152    if (stored_awburst == 2'b10) begin 
+1      29    157   true part of         157    if (burst_len_bytes > 0) begin 
+1      30    159   false part of        157    end else begin                 
+1      31    162   code block           162    upper_addr_limit = wrap_boundary + burst_len_bytes - size_in_bytes; 
+1      32    167   code block           167    if (present_state == W_DATA && wvalid && wready_reg) begin 
+1      33    167   true part of         167    if (present_state == W_DATA && wvalid && wready_reg) begin 
+1      34    168   true part of         168    if (last_beat_transfer && !wlast) begin 
+1      35    170   false part of        168    end else if (!last_beat_transfer && wlast) begin 
+0      36    170   true part of         170    end else if (!last_beat_transfer && wlast) begin 
+1      37    173   code block           173    if (beats_remaining > 0) begin 
+1      38    173   true part of         173    if (beats_remaining > 0) begin 
+1      39    176   code block           176    if (!last_beat_transfer) begin 
+1      40    176   true part of         176    if (!last_beat_transfer) begin 
+0      41    178   a case item of       177    2'b00: current_addr <= current_addr; 
+1      42    179   a case item of       177    2'b01: current_addr <= current_addr + num_bytes; 
+1      43    180   a case item of       177    2'b10: begin // WRAP           
+1      44    181   true part of         181    if (current_addr == upper_addr_limit) begin 
+1      45    183   false part of        181    end else begin                 
+0      46    187   a case item of       177    default: begin                 
+1      47    193   code block           193    if (burst_active && next_state == W_IDLE && present_state == W_DATA) begin 
+1      48    193   true part of         193    if (burst_active && next_state == W_IDLE && present_state == W_DATA) begin 
+1      49    198   code block           198    always_ff @(posedge clk or negedge rst) begin 
+1      50    199   true part of         199    if (!rst) begin                
+1      51    202   false part of        199    if (wvalid)                    
+1      52    203   true part of         202    wready_reg <= 1'b1;            
+1      53    204   false part of        202    else begin                     
+1      54    208   code block           208    assign wready = wready_reg;    
+
+Instance name: axi4_slave_top.write_response
+Type name: axi4_slave_write_response
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+Number of covered blocks: 23 of 24
+Number of uncovered blocks: 1 of 24
+Number of excluded blocks: 0
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+1      1     37    code block           36     begin                          
+1      2     39    true part of         38     begin                          
+1      3     43    false part of        38     begin                          
+1      4     49    code block           49     always_comb begin              
+1      5     52    a case item of       51     IDLE : begin                   
+1      6     54    true part of         53     begin                          
+1      7     59    a case item of       51     READ_RESPONSE : begin          
+1      8     61    true part of         60     begin                          
+1      9     65    a case item of       51     default: next_state = IDLE;    
+1      10    68    code block           68     assign bresp = stored_bresp;   
+1      11    69    code block           69     assign bid = wready_in ? b_bid_in : 1'b0; 
+1      12    71    code block           71     always_ff @(posedge clk or negedge rst) begin 
+1      13    72    true part of         72     if (!rst) begin                
+1      14    75    false part of        72     else if(wready_in)             
+1      15    76    true part of         75     stored_bid <= b_bid_in;        
+1      16    78    code block           78     always_ff @(posedge clk or negedge rst) begin 
+1      17    79    true part of         79     if (!rst) begin                
+1      18    82    false part of        79     end else begin                 
+1      19    83    true part of         83     if (b_transfer_done) begin     
+1      20    88    code block           88     if (wready_in) begin           
+1      21    88    true part of         88     if (wready_in) begin           
+1      22    90    false part of        88     end else if (next_state == IDLE && present_state == READ_RESPONSE) begin 
+0      23    90    true part of         90     end else if (next_state == IDLE && present_state == READ_RESPONSE) begin 
+1      24    96    code block           96     assign bvalid = bready? 1:0;   
+
+Instance name: axi4_slave_top.read_address
+Type name: axi4_slave_read_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/4.AXI4_Slave_Read_Address.sv
+Number of covered blocks: 16 of 16
+Number of uncovered blocks: 0 of 16
+Number of excluded blocks: 0
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+1      1     41    code block           41     always_comb begin              
+1      2     47    a case item of       46     IDLE: begin                    
+1      3     48    true part of         48     if (arvalid) begin             
+1      4     51    code block           51     if (arvalid && arready_next) begin 
+1      5     51    true part of         51     if (arvalid && arready_next) begin 
+1      6     54    false part of        51     end else begin                 
+1      7     59    a case item of       46     ADDR_STATE: begin              
+1      8     64    a case item of       46     default: begin                 
+1      9     72    code block           72     always_ff @(posedge clk or negedge rst) begin 
+1      10    73    true part of         73     if (!rst) begin                
+1      11    75    false part of        73     end else begin                 
+1      12    80    code block           80     always_ff @(posedge clk or negedge rst) begin 
+1      13    81    true part of         81     if (!rst) begin                
+1      14    89    false part of        81     end else begin                 
+1      15    92    true part of         92     if (ar_transfer_occurred_comb) begin 
+1      16    102   code block           102    assign ar_transfer_occurred = ar_transfer_occurred_ff; 
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+Number of covered blocks: 32 of 40
+Number of uncovered blocks: 8 of 40
+Number of excluded blocks: 0
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+1      1     57    code block           57     assign rresp = active_rresp;   
+1      2     58    code block           58     assign rlast = transaction_active && (beat_count == active_arlen); 
+1      3     61    code block           61     assign rid = rvalid ? stored_arid : '0; 
+1      4     64    code block           64     assign rdata = (state == R_IDLE) ? '0 : mem_rd_data; 
+1      5     67    code block           67     assign mem_rd_en = rready && rvalid; 
+1      6     70    code block           70     always_ff @(posedge clk or negedge rst) begin 
+1      7     71    true part of         71     if (!rst) begin                
+1      8     86    false part of        71     end else begin                 
+1      9     88    a case item of       87     R_IDLE: begin                  
+1      10    89    true part of         89     if (arvalid && arready) begin  
+1      11    102   true part of         102    if (latched_arburst == 2'b10) begin 
+1      12    106   true part of         106    if (burst_len_bytes > 0) begin 
+0      13    110   false part of        106    end else begin                 
+1      14    117   code block           117    mem_addr <= latched_araddr;    
+1      15    122   false part of        89     end else begin                 
+1      16    127   a case item of       87     R_ACTIVE: begin                
+1      17    128   true part of         128    if (rready && rvalid) begin    
+1      18    130   true part of         130    if (beat_count < active_arlen) begin 
+0      19    136   a case item of       135    2'b00: begin // FIXED burst    
+1      20    139   a case item of       135    2'b01: begin // INCR burst     
+1      21    142   a case item of       135    2'b10: begin // WRAP burst     
+1      22    143   true part of         143    if (current_addr == upper_wrap_limit) begin 
+1      23    145   false part of        143    end else begin                 
+1      24    149   a case item of       135    default: begin                 
+1      25    156   code block           156    mem_addr <= (active_arburst == 2'b00) ? current_addr : 
+1      26    162   false part of        130    end else begin                 
+1      27    168   false part of        128    end else if (!rready && rvalid) begin 
+1      28    168   true part of         168    end else if (!rready && rvalid) begin 
+1      29    174   a case item of       87     R_PAUSE: begin                 
+1      30    177   true part of         177    if (rready) begin              
+1      31    179   true part of         179    if (beat_count < active_arlen) begin 
+0      32    185   a case item of       184    2'b00: begin // FIXED burst    
+0      33    188   a case item of       184    2'b01: begin // INCR burst     
+0      34    191   a case item of       184    2'b10: begin // WRAP burst     
+0      35    192   true part of         192    if (current_addr == upper_wrap_limit) begin 
+0      36    194   false part of        192    end else begin                 
+1      37    198   a case item of       184    default: begin                 
+1      38    205   code block           205    mem_addr <= (active_arburst == 2'b00) ? current_addr : 
+0      39    210   false part of        179    end else begin                 
+1      40    220   a case item of       87     default: begin                 
+
+Covered+Uncovered+Excluded+UNR Expression Detail Report, Instance Based
+=======================================================================
+
+Expression coverage Table Legend
+---------------------
+  -      don't care
+  e      event for event-or expressions
+  O (odd), E (even), B (both), X (not scored),
+         I (marked ignore) for parity trees
+  Y (covered), N (not covered), C (constant), 
+  P (one or more inputs for this bit have been padded) for vector scoring, 
+  d=== , b=== shows which bit differs in vector scoring 
+  rval   Resulting value of the expression for coverage purposes given
+         the input values
+  <-n->  Shows the n-th term composition
+
+
+Instance name: axi4_slave_top
+Type name: axi4_slave_top
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/axi4_Slave_top.sv
+Number of covered expressions: 3 of 3
+Number of uncovered expressions: 0 of 3
+Number of excluded expressions: 1
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+1.1    | 100.00% (1/1/1) | 91     | MEM_ADDR_BITS > ADDR_WIDTH                         
+2.1    | 100.00% (2/2) | 105    | i < (DATA_WIDTH / 8)                               
+
+index: 1.1 grade: 100.00% (1/1/1) line: 91 source: if (MEM_ADDR_BITS > ADDR_WIDTH) begin
+
+MEM_ADDR_BITS > ADDR_WIDTH
+<-----1----->   <---2---->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '>'
+1.1.1     | CONST | lhs > rhs   
+1.1.2     | 1     | lhs <= rhs  
+
+index: 2.1 grade: 100.00% (2/2) line: 105 source: for (int i = 0; i < DATA_WIDTH/8; i++) begin
+
+i < (DATA_WIDTH / 8)
+<1> <------2------->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '<'
+2.1.1     | 1     | lhs < rhs   
+2.1.2     | 1     | lhs >= rhs  
+
+
+Instance name: axi4_slave_top.write_addr
+Type name: axi4_slave_write_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/1.AXI4_Slave_Write_Address.sv
+Number of covered expressions: 6 of 6
+Number of uncovered expressions: 0 of 6
+Number of excluded expressions: 0
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+1.1    | 100.00% (2/2) | 42     | ! rst                                              
+2.1    | 100.00% (2/2) | 61     | ! awvalid                                          
+3.1    | 100.00% (2/2) | 72     | ! rst                                              
+
+index: 1.1 grade: 100.00% (2/2) line: 42 source: if(!rst)
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+1.1.1     | 1     | 1   
+1.1.2     | 1     | 0   
+
+index: 2.1 grade: 100.00% (2/2) line: 61 source: if(!awvalid)
+
+! awvalid
+  <--1-->
+
+index     | hit   | <1> 
+------------------------ '!'
+2.1.1     | 1     | 1   
+2.1.2     | 1     | 0   
+
+index: 3.1 grade: 100.00% (2/2) line: 72 source: if(!rst)
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+3.1.1     | 1     | 1   
+3.1.2     | 1     | 0   
+
+
+Instance name: axi4_slave_top.write_data
+Type name: axi4_slave_data_channel
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/2.AXI4_Slave_Write_Data.sv
+Number of covered expressions: 49 of 52
+Number of uncovered expressions: 3 of 52
+Number of excluded expressions: 0
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+1.1    | 100.00% (3/3) | 64     | (beats_remaining == 1) && burst_active             
+1.2    | 100.00% (2/2) | 64     | (beats_remaining == 1)                             
+2.1    | 100.00% (2/2) | 73     | ! rst                                              
+3.1    | 100.00% (3/3) | 90     | awvalid && awready                                 
+4.1    | 66.67% (2/3)  | 100    | wvalid && wready_next                              
+5.1    | 100.00% (2/2) | 123    | ! rst                                              
+6.1    | 100.00% (2/2) | 133    | ! rst                                              
+7.1    | 100.00% (3/3) | 144    | awvalid && awready                                 
+8.1    | 100.00% (2/2) | 152    | stored_awburst == 2'b10                            
+9.1    | 100.00% (2/2) | 157    | burst_len_bytes > 0                                
+10.1   | 100.00% (4/4) | 167    | ((present_state == W_DATA) && wvalid) && wready_reg 
+10.2   | 100.00% (2/2) | 167    | (present_state == W_DATA)                          
+11.1   | 100.00% (3/3) | 168    | last_beat_transfer && (! wlast)                    
+12.1   | 66.67% (2/3)  | 170    | (! last_beat_transfer) && wlast                    
+13.1   | 50.00% (1/2)  | 173    | beats_remaining > 0                                
+14.1   | 100.00% (2/2) | 176    | ! last_beat_transfer                               
+15.1   | 100.00% (2/2) | 181    | current_addr == upper_addr_limit                   
+16.1   | 100.00% (4/4) | 193    | (burst_active && (next_state == W_IDLE)) && (present_state == W_DATA) 
+16.2   | 100.00% (2/2) | 193    | (next_state == W_IDLE)                             
+16.3   | 100.00% (2/2) | 193    | (present_state == W_DATA)                          
+17.1   | 100.00% (2/2) | 199    | ! rst                                              
+
+index: 1.1 grade: 100.00% (3/3) line: 64 source: assign last_beat_transfer = (beats_remaining == 1) && burst_active;
+
+(beats_remaining == 1) && burst_active
+<---------1---------->    <----2----->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+1.1.1     | 1     | 0   -   
+1.1.2     | 1     | -   0   
+1.1.3     | 1     | 1   1   
+
+index: 1.2 grade: 100.00% (2/2) line: 64 source: assign last_beat_transfer = (beats_remaining == 1) && burst_active;
+
+(beats_remaining == 1)
+ <------3------>    <4>
+
+index     | hit   | <3>   <4>   
+-------------------------------- '=='
+1.2.1     | 1     | lhs == rhs  
+1.2.2     | 1     | lhs != rhs  
+
+index: 2.1 grade: 100.00% (2/2) line: 73 source: if (!rst)
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+2.1.1     | 1     | 1   
+2.1.2     | 1     | 0   
+
+index: 3.1 grade: 100.00% (3/3) line: 90 source: if (awvalid && awready) begin
+
+awvalid && awready
+<--1-->    <--2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+3.1.1     | 1     | 0   -   
+3.1.2     | 1     | -   0   
+3.1.3     | 1     | 1   1   
+
+index: 4.1 grade: 66.67% (2/3) line: 100 source: if (wvalid && wready_next) begin
+
+wvalid && wready_next
+<-1-->    <----2---->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+4.1.1     | 1     | 0   -   
+4.1.2     | 0     | -   0   
+4.1.3     | 1     | 1   1   
+
+index: 5.1 grade: 100.00% (2/2) line: 123 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+5.1.1     | 1     | 1   
+5.1.2     | 1     | 0   
+
+index: 6.1 grade: 100.00% (2/2) line: 133 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+6.1.1     | 1     | 1   
+6.1.2     | 1     | 0   
+
+index: 7.1 grade: 100.00% (3/3) line: 144 source: if (awvalid && awready) begin
+
+awvalid && awready
+<--1-->    <--2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+7.1.1     | 1     | 0   -   
+7.1.2     | 1     | -   0   
+7.1.3     | 1     | 1   1   
+
+index: 8.1 grade: 100.00% (2/2) line: 152 source: if (stored_awburst == 2'b10) begin
+
+stored_awburst == 2'b10
+<-----1------>    <-2->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '=='
+8.1.1     | 1     | lhs == rhs  
+8.1.2     | 1     | lhs != rhs  
+
+index: 9.1 grade: 100.00% (2/2) line: 157 source: if (burst_len_bytes > 0) begin
+
+burst_len_bytes > 0
+<------1------>   <2>
+
+index     | hit   | <1>   <2>   
+-------------------------------- '>'
+9.1.1     | 1     | lhs > rhs   
+9.1.2     | 1     | lhs <= rhs  
+
+index: 10.1 grade: 100.00% (4/4) line: 167 source: if (present_state == W_DATA && wvalid && wready_reg) begin
+
+((present_state == W_DATA) && wvalid) && wready_reg
+ <-----------1----------->    <-2-->     <---3---->
+
+index     | hit   | <1> <2> <3> 
+-------------------------------- '&&'
+10.1.1    | 1     | 0   -   -   
+10.1.2    | 1     | -   0   -   
+10.1.3    | 1     | -   -   0   
+10.1.4    | 1     | 1   1   1   
+
+index: 10.2 grade: 100.00% (2/2) line: 167 source: if (present_state == W_DATA && wvalid && wready_reg) begin
+
+(present_state == W_DATA)
+ <-----4----->    <-5-->
+
+index     | hit   | <4>   <5>   
+-------------------------------- '=='
+10.2.1    | 1     | lhs == rhs  
+10.2.2    | 1     | lhs != rhs  
+
+index: 11.1 grade: 100.00% (3/3) line: 168 source: if (last_beat_transfer && !wlast) begin
+
+last_beat_transfer && (! wlast)
+<-------1-------->       <-2->
+
+index     | hit   | rval | <1> <2> 
+-----------------------------------
+11.1.1    | 1     | 1    | 1   0   
+11.1.2    | 1     | 0    | -   1   
+11.1.3    | 1     | 0    | 0   -   
+
+index: 12.1 grade: 66.67% (2/3) line: 170 source: end else if (!last_beat_transfer && wlast) begin
+
+(! last_beat_transfer) && wlast
+   <-------1-------->     <-2->
+
+index     | hit   | rval | <1> <2> 
+-----------------------------------
+12.1.1    | 0     | 1    | 0   1   
+12.1.2    | 1     | 0    | -   0   
+12.1.3    | 1     | 0    | 1   -   
+
+index: 13.1 grade: 50.00% (1/2) line: 173 source: if (beats_remaining > 0) begin
+
+beats_remaining > 0
+<------1------>   <2>
+
+index     | hit   | <1>   <2>   
+-------------------------------- '>'
+13.1.1    | 1     | lhs > rhs   
+13.1.2    | 0     | lhs <= rhs  
+
+index: 14.1 grade: 100.00% (2/2) line: 176 source: if (!last_beat_transfer) begin
+
+! last_beat_transfer
+  <-------1-------->
+
+index     | hit   | <1> 
+------------------------ '!'
+14.1.1    | 1     | 1   
+14.1.2    | 1     | 0   
+
+index: 15.1 grade: 100.00% (2/2) line: 181 source: if (current_addr == upper_addr_limit) begin
+
+current_addr == upper_addr_limit
+<----1----->    <------2------->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '=='
+15.1.1    | 1     | lhs == rhs  
+15.1.2    | 1     | lhs != rhs  
+
+index: 16.1 grade: 100.00% (4/4) line: 193 source: if (burst_active && next_state == W_IDLE && present_state == W_DATA) begin
+
+(burst_active && (next_state == W_IDLE)) && (present_state == W_DATA)
+ <----1----->    <---------2---------->     <-----------3----------->
+
+index     | hit   | <1> <2> <3> 
+-------------------------------- '&&'
+16.1.1    | 1     | 0   -   -   
+16.1.2    | 1     | -   0   -   
+16.1.3    | 1     | -   -   0   
+16.1.4    | 1     | 1   1   1   
+
+index: 16.2 grade: 100.00% (2/2) line: 193 source: if (burst_active && next_state == W_IDLE && present_state == W_DATA) begin
+
+(next_state == W_IDLE)
+ <---4---->    <-5-->
+
+index     | hit   | <4>   <5>   
+-------------------------------- '=='
+16.2.1    | 1     | lhs == rhs  
+16.2.2    | 1     | lhs != rhs  
+
+index: 16.3 grade: 100.00% (2/2) line: 193 source: if (burst_active && next_state == W_IDLE && present_state == W_DATA) begin
+
+(present_state == W_DATA)
+ <-----6----->    <-7-->
+
+index     | hit   | <6>   <7>   
+-------------------------------- '=='
+16.3.1    | 1     | lhs == rhs  
+16.3.2    | 1     | lhs != rhs  
+
+index: 17.1 grade: 100.00% (2/2) line: 199 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+17.1.1    | 1     | 1   
+17.1.2    | 1     | 0   
+
+
+Instance name: axi4_slave_top.write_response
+Type name: axi4_slave_write_response
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+Number of covered expressions: 15 of 21
+Number of uncovered expressions: 6 of 21
+Number of excluded expressions: 0
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+1.1    | 100.00% (2/2) | 38     | ! rst                                              
+2.1    | 33.33% (1/3)  | 60     | bvalid_reg && bready                               
+3.1    | 100.00% (3/3) | 69     | wready_in ? b_bid_in : 1'b0                        
+4.1    | 100.00% (2/2) | 72     | ! rst                                              
+5.1    | 100.00% (2/2) | 79     | ! rst                                              
+6.1    | 33.33% (1/3)  | 90     | (next_state == IDLE) && (present_state == READ_RESPONSE) 
+6.2    | 50.00% (1/2)  | 90     | (next_state == IDLE)                               
+6.3    | 50.00% (1/2)  | 90     | (present_state == READ_RESPONSE)                   
+7.1    | 100.00% (2/2) | 96     | bready ? 1 : 0                                     
+
+index: 1.1 grade: 100.00% (2/2) line: 38 source: if(!rst)
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+1.1.1     | 1     | 1   
+1.1.2     | 1     | 0   
+
+index: 2.1 grade: 33.33% (1/3) line: 60 source: if(bvalid_reg && bready)
+
+bvalid_reg && bready
+<---1---->    <-2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+2.1.1     | 0     | 0   -   
+2.1.2     | 0     | -   0   
+2.1.3     | 1     | 1   1   
+
+index: 3.1 grade: 100.00% (3/3) line: 69 source: assign bid = wready_in ? b_bid_in : 1'b0;
+
+wready_in ? b_bid_in : 1'b0
+<---1--->   <--2--->
+
+index     | hit   | rval | <1> <2> 
+-----------------------------------
+3.1.1     | 1     | 1    | 1   1   
+3.1.2     | 1     | 0    | -   0   
+3.1.3     | 1     | 0    | 0   -   
+
+index: 4.1 grade: 100.00% (2/2) line: 72 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+4.1.1     | 1     | 1   
+4.1.2     | 1     | 0   
+
+index: 5.1 grade: 100.00% (2/2) line: 79 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+5.1.1     | 1     | 1   
+5.1.2     | 1     | 0   
+
+index: 6.1 grade: 33.33% (1/3) line: 90 source: end else if (next_state == IDLE && present_state == READ_RESPONSE) begin
+
+(next_state == IDLE) && (present_state == READ_RESPONSE)
+<--------1--------->    <--------------2--------------->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+6.1.1     | 0     | 0   -   
+6.1.2     | 1     | -   0   
+6.1.3     | 0     | 1   1   
+
+index: 6.2 grade: 50.00% (1/2) line: 90 source: end else if (next_state == IDLE && present_state == READ_RESPONSE) begin
+
+(next_state == IDLE)
+ <---3---->    <4->
+
+index     | hit   | <3>   <4>   
+-------------------------------- '=='
+6.2.1     | 1     | lhs == rhs  
+6.2.2     | 0     | lhs != rhs  
+
+index: 6.3 grade: 50.00% (1/2) line: 90 source: end else if (next_state == IDLE && present_state == READ_RESPONSE) begin
+
+(present_state == READ_RESPONSE)
+ <-----5----->    <-----6----->
+
+index     | hit   | <5>   <6>   
+-------------------------------- '=='
+6.3.1     | 0     | lhs == rhs  
+6.3.2     | 1     | lhs != rhs  
+
+index: 7.1 grade: 100.00% (2/2) line: 96 source: assign bvalid = bready? 1:0;
+
+bready ? 1 : 0
+<-1-->
+
+index     | hit   | rval | <1> 
+-------------------------------
+7.1.1     | 1     | 1    | 1   
+7.1.2     | 1     | 0    | 0   
+
+
+Instance name: axi4_slave_top.read_address
+Type name: axi4_slave_read_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/4.AXI4_Slave_Read_Address.sv
+Number of covered expressions: 7 of 7
+Number of uncovered expressions: 0 of 7
+Number of excluded expressions: 0
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+1.1    | 100.00% (3/3) | 51     | arvalid && arready_next                            
+2.1    | 100.00% (2/2) | 73     | ! rst                                              
+3.1    | 100.00% (2/2) | 81     | ! rst                                              
+
+index: 1.1 grade: 100.00% (3/3) line: 51 source: if (arvalid && arready_next) begin
+
+arvalid && arready_next
+<--1-->    <----2----->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+1.1.1     | 1     | 0   -   
+1.1.2     | 1     | -   0   
+1.1.3     | 1     | 1   1   
+
+index: 2.1 grade: 100.00% (2/2) line: 73 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+2.1.1     | 1     | 1   
+2.1.2     | 1     | 0   
+
+index: 3.1 grade: 100.00% (2/2) line: 81 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+3.1.1     | 1     | 1   
+3.1.2     | 1     | 0   
+
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+Number of covered expressions: 42 of 63
+Number of uncovered expressions: 21 of 63
+Number of excluded expressions: 0
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+1.1    | 100.00% (3/3) | 58     | transaction_active && (beat_count == active_arlen) 
+1.2    | 100.00% (2/2) | 58     | (beat_count == active_arlen)                       
+2.1    | 100.00% (3/3) | 61     | rvalid ? stored_arid : 1'b0                        
+3.1    | 66.67% (2/3)  | 64     | (state == R_IDLE) ? 1'b0 : mem_rd_data             
+3.2    | 100.00% (2/2) | 64     | (state == R_IDLE)                                  
+4.1    | 100.00% (3/3) | 67     | rready && rvalid                                   
+5.1    | 100.00% (2/2) | 71     | ! rst                                              
+6.1    | 100.00% (3/3) | 89     | arvalid && arready                                 
+7.1    | 100.00% (2/2) | 102    | latched_arburst == 2'b10                           
+8.1    | 50.00% (1/2)  | 106    | burst_len_bytes > 0                                
+9.1    | 66.67% (2/3)  | 128    | rready && rvalid                                   
+10.1   | 100.00% (2/2) | 130    | beat_count < active_arlen                          
+11.1   | 100.00% (2/2) | 143    | current_addr == upper_wrap_limit                   
+12.1   | 37.50% (3/8)  | 156    | (active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes)) 
+12.2   | 100.00% (2/2) | 157    | (active_arburst == 2'b10)                          
+12.3   | 100.00% (2/2) | 157    | (current_addr == upper_wrap_limit)                 
+13.1   | 33.33% (1/3)  | 168    | (! rready) && rvalid                               
+14.1   | 50.00% (1/2)  | 179    | beat_count < active_arlen                          
+15.1   | 0.00% (0/2)   | 192    | current_addr == upper_wrap_limit                   
+16.1   | 25.00% (2/8)  | 205    | (active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes)) 
+16.2   | 50.00% (1/2)  | 206    | (active_arburst == 2'b10)                          
+16.3   | 50.00% (1/2)  | 206    | (current_addr == upper_wrap_limit)                 
+
+index: 1.1 grade: 100.00% (3/3) line: 58 source: assign rlast = transaction_active && (beat_count == active_arlen);
+
+transaction_active && (beat_count == active_arlen)
+<-------1-------->    <------------2------------->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+1.1.1     | 1     | 0   -   
+1.1.2     | 1     | -   0   
+1.1.3     | 1     | 1   1   
+
+index: 1.2 grade: 100.00% (2/2) line: 58 source: assign rlast = transaction_active && (beat_count == active_arlen);
+
+(beat_count == active_arlen)
+ <---3---->    <----4----->
+
+index     | hit   | <3>   <4>   
+-------------------------------- '=='
+1.2.1     | 1     | lhs == rhs  
+1.2.2     | 1     | lhs != rhs  
+
+index: 2.1 grade: 100.00% (3/3) line: 61 source: assign rid = rvalid ? stored_arid : '0;
+
+rvalid ? stored_arid : 1'b0
+<-1-->   <----2---->
+
+index     | hit   | rval | <1> <2> 
+-----------------------------------
+2.1.1     | 1     | 1    | 1   1   
+2.1.2     | 1     | 0    | -   0   
+2.1.3     | 1     | 0    | 0   -   
+
+index: 3.1 grade: 66.67% (2/3) line: 64 source: assign rdata = (state == R_IDLE) ? '0 : mem_rd_data;
+
+(state == R_IDLE) ? 1'b0 : mem_rd_data
+<-------1------->          <----3---->
+
+index     | hit   | rval | <1> <3> 
+-----------------------------------
+3.1.1     | 1     | 1    | 0   1   
+3.1.2     | 0     | 0    | -   0   
+3.1.3     | 1     | 0    | 1   -   
+
+index: 3.2 grade: 100.00% (2/2) line: 64 source: assign rdata = (state == R_IDLE) ? '0 : mem_rd_data;
+
+(state == R_IDLE)
+ <-4->    <-5-->
+
+index     | hit   | <4>   <5>   
+-------------------------------- '=='
+3.2.1     | 1     | lhs == rhs  
+3.2.2     | 1     | lhs != rhs  
+
+index: 4.1 grade: 100.00% (3/3) line: 67 source: assign mem_rd_en = rready && rvalid;
+
+rready && rvalid
+<-1-->    <-2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+4.1.1     | 1     | 0   -   
+4.1.2     | 1     | -   0   
+4.1.3     | 1     | 1   1   
+
+index: 5.1 grade: 100.00% (2/2) line: 71 source: if (!rst) begin
+
+! rst
+  <1>
+
+index     | hit   | <1> 
+------------------------ '!'
+5.1.1     | 1     | 1   
+5.1.2     | 1     | 0   
+
+index: 6.1 grade: 100.00% (3/3) line: 89 source: if (arvalid && arready) begin
+
+arvalid && arready
+<--1-->    <--2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+6.1.1     | 1     | 0   -   
+6.1.2     | 1     | -   0   
+6.1.3     | 1     | 1   1   
+
+index: 7.1 grade: 100.00% (2/2) line: 102 source: if (latched_arburst == 2'b10) begin
+
+latched_arburst == 2'b10
+<------1------>    <-2->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '=='
+7.1.1     | 1     | lhs == rhs  
+7.1.2     | 1     | lhs != rhs  
+
+index: 8.1 grade: 50.00% (1/2) line: 106 source: if (burst_len_bytes > 0) begin
+
+burst_len_bytes > 0
+<------1------>   <2>
+
+index     | hit   | <1>   <2>   
+-------------------------------- '>'
+8.1.1     | 1     | lhs > rhs   
+8.1.2     | 0     | lhs <= rhs  
+
+index: 9.1 grade: 66.67% (2/3) line: 128 source: if (rready && rvalid) begin
+
+rready && rvalid
+<-1-->    <-2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+9.1.1     | 1     | 0   -   
+9.1.2     | 0     | -   0   
+9.1.3     | 1     | 1   1   
+
+index: 10.1 grade: 100.00% (2/2) line: 130 source: if (beat_count < active_arlen) begin
+
+beat_count < active_arlen
+<---1---->   <----2----->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '<'
+10.1.1    | 1     | lhs < rhs   
+10.1.2    | 1     | lhs >= rhs  
+
+index: 11.1 grade: 100.00% (2/2) line: 143 source: if (current_addr == upper_wrap_limit) begin
+
+current_addr == upper_wrap_limit
+<----1----->    <------2------->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '=='
+11.1.1    | 1     | lhs == rhs  
+11.1.2    | 1     | lhs != rhs  
+
+index: 12.1 grade: 37.50% (3/8) line: 156 source: mem_addr <= (active_arburst == 2'b00) ? current_addr :
+
+(active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes))
+ <-----1------>             <----3----->     <-----------4----------->    <---------------5---------------->    <-----6----->   <----------------7----------------->
+
+index     | hit   | rval | <1> <3> <4> <5> <6> <7> 
+---------------------------------------------------
+12.1.1    | 1     | 1    | 1   -   1   1   1   -   
+12.1.2    | 1     | 1    | 1   -   -   0   -   1   
+12.1.3    | 1     | 1    | 1   -   0   -   -   1   
+12.1.4    | 0     | 1    | 0   1   -   -   -   -   
+12.1.5    | 0     | 0    | 1   -   1   1   0   -   
+12.1.6    | 0     | 0    | 1   -   -   0   -   0   
+12.1.7    | 0     | 0    | 1   -   0   -   -   0   
+12.1.8    | 0     | 0    | 0   0   -   -   -   -   
+
+index: 12.2 grade: 100.00% (2/2) line: 157 source: ((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?
+
+(active_arburst == 2'b10)
+ <-----8------>    <-9->
+
+index     | hit   | <8>   <9>   
+-------------------------------- '=='
+12.2.1    | 1     | lhs == rhs  
+12.2.2    | 1     | lhs != rhs  
+
+index: 12.3 grade: 100.00% (2/2) line: 157 source: ((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?
+
+(current_addr == upper_wrap_limit)
+ <----10---->    <------11------>
+
+index     | hit   | <10>  <11>  
+-------------------------------- '=='
+12.3.1    | 1     | lhs == rhs  
+12.3.2    | 1     | lhs != rhs  
+
+index: 13.1 grade: 33.33% (1/3) line: 168 source: end else if (!rready && rvalid) begin
+
+(! rready) && rvalid
+   <-1-->     <-2-->
+
+index     | hit   | rval | <1> <2> 
+-----------------------------------
+13.1.1    | 1     | 1    | 0   1   
+13.1.2    | 0     | 0    | -   0   
+13.1.3    | 0     | 0    | 1   -   
+
+index: 14.1 grade: 50.00% (1/2) line: 179 source: if (beat_count < active_arlen) begin
+
+beat_count < active_arlen
+<---1---->   <----2----->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '<'
+14.1.1    | 1     | lhs < rhs   
+14.1.2    | 0     | lhs >= rhs  
+
+index: 15.1 grade: 0.00% (0/2) line: 192 source: if (current_addr == upper_wrap_limit) begin
+
+current_addr == upper_wrap_limit
+<----1----->    <------2------->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '=='
+15.1.1    | 0     | lhs == rhs  
+15.1.2    | 0     | lhs != rhs  
+
+index: 16.1 grade: 25.00% (2/8) line: 205 source: mem_addr <= (active_arburst == 2'b00) ? current_addr :
+
+(active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes))
+ <-----1------>             <----3----->     <-----------4----------->    <---------------5---------------->    <-----6----->   <----------------7----------------->
+
+index     | hit   | rval | <1> <3> <4> <5> <6> <7> 
+---------------------------------------------------
+16.1.1    | 0     | 1    | 1   -   1   1   1   -   
+16.1.2    | 1     | 1    | 1   -   -   0   -   1   
+16.1.3    | 1     | 1    | 1   -   0   -   -   1   
+16.1.4    | 0     | 1    | 0   1   -   -   -   -   
+16.1.5    | 0     | 0    | 1   -   1   1   0   -   
+16.1.6    | 0     | 0    | 1   -   -   0   -   0   
+16.1.7    | 0     | 0    | 1   -   0   -   -   0   
+16.1.8    | 0     | 0    | 0   0   -   -   -   -   
+
+index: 16.2 grade: 50.00% (1/2) line: 206 source: ((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?
+
+(active_arburst == 2'b10)
+ <-----8------>    <-9->
+
+index     | hit   | <8>   <9>   
+-------------------------------- '=='
+16.2.1    | 0     | lhs == rhs  
+16.2.2    | 1     | lhs != rhs  
+
+index: 16.3 grade: 50.00% (1/2) line: 206 source: ((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?
+
+(current_addr == upper_wrap_limit)
+ <----10---->    <------11------>
+
+index     | hit   | <10>  <11>  
+-------------------------------- '=='
+16.3.1    | 0     | lhs == rhs  
+16.3.2    | 1     | lhs != rhs  
+
+
+Covered+Uncovered+Excluded+UNR Toggle Detail Report, Instance Based
+===================================================================
+
+Instance name: axi4_slave_top
+Type name: axi4_slave_top
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/axi4_Slave_top.sv
+Number of covered signal bits: 414 of 433
+Number of uncovered signal bits: 19 of 433
+Number of excluded signal bits: 0
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 3 of 433
+Number of signal bits partially toggled(fall): 0 of 433
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+1          1          1          CLK                       
+1          1          1          RST                       
+1          1          1          AWVALID                   
+1          1          1          AWADDR[31]                
+1          1          1          AWADDR[30]                
+1          1          1          AWADDR[29]                
+1          1          1          AWADDR[28]                
+1          1          1          AWADDR[27]                
+1          1          1          AWADDR[26]                
+1          1          1          AWADDR[25]                
+1          1          1          AWADDR[24]                
+1          1          1          AWADDR[23]                
+1          1          1          AWADDR[22]                
+1          1          1          AWADDR[21]                
+1          1          1          AWADDR[20]                
+1          1          1          AWADDR[19]                
+1          1          1          AWADDR[18]                
+1          1          1          AWADDR[17]                
+1          1          1          AWADDR[16]                
+1          1          1          AWADDR[15]                
+1          1          1          AWADDR[14]                
+1          1          1          AWADDR[13]                
+1          1          1          AWADDR[12]                
+1          1          1          AWADDR[11]                
+1          1          1          AWADDR[10]                
+1          1          1          AWADDR[9]                 
+1          1          1          AWADDR[8]                 
+1          1          1          AWADDR[7]                 
+1          1          1          AWADDR[6]                 
+1          1          1          AWADDR[5]                 
+1          1          1          AWADDR[4]                 
+1          1          1          AWADDR[3]                 
+1          1          1          AWADDR[2]                 
+1          1          1          AWADDR[1]                 
+1          1          1          AWADDR[0]                 
+1          1          1          AWID[3]                   
+1          1          1          AWID[2]                   
+1          1          1          AWID[1]                   
+1          1          1          AWID[0]                   
+0          1          0          AWLEN[7]                  
+0          1          0          AWLEN[6]                  
+0          1          0          AWLEN[5]                  
+0          0          0          AWLEN[4]                  
+0          0          0          AWLEN[3]                  
+1          1          1          AWLEN[2]                  
+1          1          1          AWLEN[1]                  
+1          1          1          AWLEN[0]                  
+1          1          1          AWSIZE[2]                 
+1          1          1          AWSIZE[1]                 
+1          1          1          AWSIZE[0]                 
+1          1          1          AWBURST[1]                
+1          1          1          AWBURST[0]                
+1          1          1          AWREADY                   
+1          1          1          WREADY                    
+1          1          1          WVALID                    
+1          1          1          WDATA[31]                 
+1          1          1          WDATA[30]                 
+1          1          1          WDATA[29]                 
+1          1          1          WDATA[28]                 
+1          1          1          WDATA[27]                 
+1          1          1          WDATA[26]                 
+1          1          1          WDATA[25]                 
+1          1          1          WDATA[24]                 
+1          1          1          WDATA[23]                 
+1          1          1          WDATA[22]                 
+1          1          1          WDATA[21]                 
+1          1          1          WDATA[20]                 
+1          1          1          WDATA[19]                 
+1          1          1          WDATA[18]                 
+1          1          1          WDATA[17]                 
+1          1          1          WDATA[16]                 
+1          1          1          WDATA[15]                 
+1          1          1          WDATA[14]                 
+1          1          1          WDATA[13]                 
+1          1          1          WDATA[12]                 
+1          1          1          WDATA[11]                 
+1          1          1          WDATA[10]                 
+1          1          1          WDATA[9]                  
+1          1          1          WDATA[8]                  
+1          1          1          WDATA[7]                  
+1          1          1          WDATA[6]                  
+1          1          1          WDATA[5]                  
+1          1          1          WDATA[4]                  
+1          1          1          WDATA[3]                  
+1          1          1          WDATA[2]                  
+1          1          1          WDATA[1]                  
+1          1          1          WDATA[0]                  
+1          1          1          WLAST                     
+1          1          1          WSTRB[3]                  
+1          1          1          WSTRB[2]                  
+1          1          1          WSTRB[1]                  
+1          1          1          WSTRB[0]                  
+1          1          1          BVALID                    
+1          1          1          BID[3]                    
+1          1          1          BID[2]                    
+1          1          1          BID[1]                    
+1          1          1          BID[0]                    
+0          0          0          BRESP[1]                  
+0          0          0          BRESP[0]                  
+1          1          1          BREADY                    
+1          1          1          ARREADY                   
+1          1          1          ARVALID                   
+1          1          1          ARADDR[31]                
+1          1          1          ARADDR[30]                
+1          1          1          ARADDR[29]                
+1          1          1          ARADDR[28]                
+1          1          1          ARADDR[27]                
+1          1          1          ARADDR[26]                
+1          1          1          ARADDR[25]                
+1          1          1          ARADDR[24]                
+1          1          1          ARADDR[23]                
+1          1          1          ARADDR[22]                
+1          1          1          ARADDR[21]                
+1          1          1          ARADDR[20]                
+1          1          1          ARADDR[19]                
+1          1          1          ARADDR[18]                
+1          1          1          ARADDR[17]                
+1          1          1          ARADDR[16]                
+1          1          1          ARADDR[15]                
+1          1          1          ARADDR[14]                
+1          1          1          ARADDR[13]                
+1          1          1          ARADDR[12]                
+1          1          1          ARADDR[11]                
+1          1          1          ARADDR[10]                
+1          1          1          ARADDR[9]                 
+1          1          1          ARADDR[8]                 
+1          1          1          ARADDR[7]                 
+1          1          1          ARADDR[6]                 
+1          1          1          ARADDR[5]                 
+1          1          1          ARADDR[4]                 
+1          1          1          ARADDR[3]                 
+1          1          1          ARADDR[2]                 
+1          1          1          ARADDR[1]                 
+1          1          1          ARADDR[0]                 
+1          1          1          ARID[3]                   
+1          1          1          ARID[2]                   
+1          1          1          ARID[1]                   
+1          1          1          ARID[0]                   
+0          0          0          ARLEN[7]                  
+1          1          1          ARLEN[6]                  
+0          0          0          ARLEN[5]                  
+1          1          1          ARLEN[4]                  
+1          1          1          ARLEN[3]                  
+1          1          1          ARLEN[2]                  
+1          1          1          ARLEN[1]                  
+1          1          1          ARLEN[0]                  
+1          1          1          ARSIZE[2]                 
+1          1          1          ARSIZE[1]                 
+1          1          1          ARSIZE[0]                 
+1          1          1          ARBURST[1]                
+1          1          1          ARBURST[0]                
+1          1          1          RVALID                    
+1          1          1          RDATA[31]                 
+1          1          1          RDATA[30]                 
+1          1          1          RDATA[29]                 
+1          1          1          RDATA[28]                 
+1          1          1          RDATA[27]                 
+1          1          1          RDATA[26]                 
+1          1          1          RDATA[25]                 
+1          1          1          RDATA[24]                 
+1          1          1          RDATA[23]                 
+1          1          1          RDATA[22]                 
+1          1          1          RDATA[21]                 
+1          1          1          RDATA[20]                 
+1          1          1          RDATA[19]                 
+1          1          1          RDATA[18]                 
+1          1          1          RDATA[17]                 
+1          1          1          RDATA[16]                 
+1          1          1          RDATA[15]                 
+1          1          1          RDATA[14]                 
+1          1          1          RDATA[13]                 
+1          1          1          RDATA[12]                 
+1          1          1          RDATA[11]                 
+1          1          1          RDATA[10]                 
+1          1          1          RDATA[9]                  
+1          1          1          RDATA[8]                  
+1          1          1          RDATA[7]                  
+1          1          1          RDATA[6]                  
+1          1          1          RDATA[5]                  
+1          1          1          RDATA[4]                  
+1          1          1          RDATA[3]                  
+1          1          1          RDATA[2]                  
+1          1          1          RDATA[1]                  
+1          1          1          RDATA[0]                  
+1          1          1          RID[3]                    
+1          1          1          RID[2]                    
+1          1          1          RID[1]                    
+1          1          1          RID[0]                    
+1          1          1          RLAST                     
+0          0          0          RRESP[1]                  
+0          0          0          RRESP[0]                  
+1          1          1          RREADY                    
+1          1          1          stored_awid[3]            
+1          1          1          stored_awid[2]            
+1          1          1          stored_awid[1]            
+1          1          1          stored_awid[0]            
+1          1          1          stored_awaddr[31]         
+1          1          1          stored_awaddr[30]         
+1          1          1          stored_awaddr[29]         
+1          1          1          stored_awaddr[28]         
+1          1          1          stored_awaddr[27]         
+1          1          1          stored_awaddr[26]         
+1          1          1          stored_awaddr[25]         
+1          1          1          stored_awaddr[24]         
+1          1          1          stored_awaddr[23]         
+1          1          1          stored_awaddr[22]         
+1          1          1          stored_awaddr[21]         
+1          1          1          stored_awaddr[20]         
+1          1          1          stored_awaddr[19]         
+1          1          1          stored_awaddr[18]         
+1          1          1          stored_awaddr[17]         
+1          1          1          stored_awaddr[16]         
+1          1          1          stored_awaddr[15]         
+1          1          1          stored_awaddr[14]         
+1          1          1          stored_awaddr[13]         
+1          1          1          stored_awaddr[12]         
+1          1          1          stored_awaddr[11]         
+1          1          1          stored_awaddr[10]         
+1          1          1          stored_awaddr[9]          
+1          1          1          stored_awaddr[8]          
+1          1          1          stored_awaddr[7]          
+1          1          1          stored_awaddr[6]          
+1          1          1          stored_awaddr[5]          
+1          1          1          stored_awaddr[4]          
+1          1          1          stored_awaddr[3]          
+1          1          1          stored_awaddr[2]          
+1          1          1          stored_awaddr[1]          
+1          1          1          stored_awaddr[0]          
+0          0          0          stored_awlen[7]           
+0          0          0          stored_awlen[6]           
+0          0          0          stored_awlen[5]           
+0          0          0          stored_awlen[4]           
+0          0          0          stored_awlen[3]           
+1          1          1          stored_awlen[2]           
+1          1          1          stored_awlen[1]           
+1          1          1          stored_awlen[0]           
+1          1          1          stored_awsize[2]          
+1          1          1          stored_awsize[1]          
+1          1          1          stored_awsize[0]          
+1          1          1          stored_awburst[1]         
+1          1          1          stored_awburst[0]         
+1          1          1          b_bid_out[3]              
+1          1          1          b_bid_out[2]              
+1          1          1          b_bid_out[1]              
+1          1          1          b_bid_out[0]              
+1          1          1          b_bresp_out[1]            
+1          1          1          b_bresp_out[0]            
+1          1          1          b_transfer_done           
+0          0          0          wready_in                 
+1          1          1          mem_wr_en                 
+1          1          1          mem_wr_addr[31]           
+1          1          1          mem_wr_addr[30]           
+1          1          1          mem_wr_addr[29]           
+1          1          1          mem_wr_addr[28]           
+1          1          1          mem_wr_addr[27]           
+1          1          1          mem_wr_addr[26]           
+1          1          1          mem_wr_addr[25]           
+1          1          1          mem_wr_addr[24]           
+1          1          1          mem_wr_addr[23]           
+1          1          1          mem_wr_addr[22]           
+1          1          1          mem_wr_addr[21]           
+1          1          1          mem_wr_addr[20]           
+1          1          1          mem_wr_addr[19]           
+1          1          1          mem_wr_addr[18]           
+1          1          1          mem_wr_addr[17]           
+1          1          1          mem_wr_addr[16]           
+1          1          1          mem_wr_addr[15]           
+1          1          1          mem_wr_addr[14]           
+1          1          1          mem_wr_addr[13]           
+1          1          1          mem_wr_addr[12]           
+1          1          1          mem_wr_addr[11]           
+1          1          1          mem_wr_addr[10]           
+1          1          1          mem_wr_addr[9]            
+1          1          1          mem_wr_addr[8]            
+1          1          1          mem_wr_addr[7]            
+1          1          1          mem_wr_addr[6]            
+1          1          1          mem_wr_addr[5]            
+1          1          1          mem_wr_addr[4]            
+1          1          1          mem_wr_addr[3]            
+1          1          1          mem_wr_addr[2]            
+1          1          1          mem_wr_addr[1]            
+1          1          1          mem_wr_addr[0]            
+1          1          1          mem_wr_data[31]           
+1          1          1          mem_wr_data[30]           
+1          1          1          mem_wr_data[29]           
+1          1          1          mem_wr_data[28]           
+1          1          1          mem_wr_data[27]           
+1          1          1          mem_wr_data[26]           
+1          1          1          mem_wr_data[25]           
+1          1          1          mem_wr_data[24]           
+1          1          1          mem_wr_data[23]           
+1          1          1          mem_wr_data[22]           
+1          1          1          mem_wr_data[21]           
+1          1          1          mem_wr_data[20]           
+1          1          1          mem_wr_data[19]           
+1          1          1          mem_wr_data[18]           
+1          1          1          mem_wr_data[17]           
+1          1          1          mem_wr_data[16]           
+1          1          1          mem_wr_data[15]           
+1          1          1          mem_wr_data[14]           
+1          1          1          mem_wr_data[13]           
+1          1          1          mem_wr_data[12]           
+1          1          1          mem_wr_data[11]           
+1          1          1          mem_wr_data[10]           
+1          1          1          mem_wr_data[9]            
+1          1          1          mem_wr_data[8]            
+1          1          1          mem_wr_data[7]            
+1          1          1          mem_wr_data[6]            
+1          1          1          mem_wr_data[5]            
+1          1          1          mem_wr_data[4]            
+1          1          1          mem_wr_data[3]            
+1          1          1          mem_wr_data[2]            
+1          1          1          mem_wr_data[1]            
+1          1          1          mem_wr_data[0]            
+1          1          1          mem_wr_byte_en[3]         
+1          1          1          mem_wr_byte_en[2]         
+1          1          1          mem_wr_byte_en[1]         
+1          1          1          mem_wr_byte_en[0]         
+1          1          1          r_ar_transfer_occurred    
+1          1          1          r_latched_araddr[31]      
+1          1          1          r_latched_araddr[30]      
+1          1          1          r_latched_araddr[29]      
+1          1          1          r_latched_araddr[28]      
+1          1          1          r_latched_araddr[27]      
+1          1          1          r_latched_araddr[26]      
+1          1          1          r_latched_araddr[25]      
+1          1          1          r_latched_araddr[24]      
+1          1          1          r_latched_araddr[23]      
+1          1          1          r_latched_araddr[22]      
+1          1          1          r_latched_araddr[21]      
+1          1          1          r_latched_araddr[20]      
+1          1          1          r_latched_araddr[19]      
+1          1          1          r_latched_araddr[18]      
+1          1          1          r_latched_araddr[17]      
+1          1          1          r_latched_araddr[16]      
+1          1          1          r_latched_araddr[15]      
+1          1          1          r_latched_araddr[14]      
+1          1          1          r_latched_araddr[13]      
+1          1          1          r_latched_araddr[12]      
+1          1          1          r_latched_araddr[11]      
+1          1          1          r_latched_araddr[10]      
+1          1          1          r_latched_araddr[9]       
+1          1          1          r_latched_araddr[8]       
+1          1          1          r_latched_araddr[7]       
+1          1          1          r_latched_araddr[6]       
+1          1          1          r_latched_araddr[5]       
+1          1          1          r_latched_araddr[4]       
+1          1          1          r_latched_araddr[3]       
+1          1          1          r_latched_araddr[2]       
+1          1          1          r_latched_araddr[1]       
+1          1          1          r_latched_araddr[0]       
+1          1          1          r_latched_arid[3]         
+1          1          1          r_latched_arid[2]         
+1          1          1          r_latched_arid[1]         
+1          1          1          r_latched_arid[0]         
+0          0          0          r_latched_arlen[7]        
+1          1          1          r_latched_arlen[6]        
+0          0          0          r_latched_arlen[5]        
+1          1          1          r_latched_arlen[4]        
+1          1          1          r_latched_arlen[3]        
+1          1          1          r_latched_arlen[2]        
+1          1          1          r_latched_arlen[1]        
+1          1          1          r_latched_arlen[0]        
+1          1          1          r_latched_arsize[2]       
+1          1          1          r_latched_arsize[1]       
+1          1          1          r_latched_arsize[0]       
+1          1          1          r_latched_arburst[1]      
+1          1          1          r_latched_arburst[0]      
+1          1          1          mem_rd_en                 
+1          1          1          mem_rd_addr[31]           
+1          1          1          mem_rd_addr[30]           
+1          1          1          mem_rd_addr[29]           
+1          1          1          mem_rd_addr[28]           
+1          1          1          mem_rd_addr[27]           
+1          1          1          mem_rd_addr[26]           
+1          1          1          mem_rd_addr[25]           
+1          1          1          mem_rd_addr[24]           
+1          1          1          mem_rd_addr[23]           
+1          1          1          mem_rd_addr[22]           
+1          1          1          mem_rd_addr[21]           
+1          1          1          mem_rd_addr[20]           
+1          1          1          mem_rd_addr[19]           
+1          1          1          mem_rd_addr[18]           
+1          1          1          mem_rd_addr[17]           
+1          1          1          mem_rd_addr[16]           
+1          1          1          mem_rd_addr[15]           
+1          1          1          mem_rd_addr[14]           
+1          1          1          mem_rd_addr[13]           
+1          1          1          mem_rd_addr[12]           
+1          1          1          mem_rd_addr[11]           
+1          1          1          mem_rd_addr[10]           
+1          1          1          mem_rd_addr[9]            
+1          1          1          mem_rd_addr[8]            
+1          1          1          mem_rd_addr[7]            
+1          1          1          mem_rd_addr[6]            
+1          1          1          mem_rd_addr[5]            
+1          1          1          mem_rd_addr[4]            
+1          1          1          mem_rd_addr[3]            
+1          1          1          mem_rd_addr[2]            
+1          1          1          mem_rd_addr[1]            
+1          1          1          mem_rd_addr[0]            
+1          1          1          mem_rd_data_out[31]       
+1          1          1          mem_rd_data_out[30]       
+1          1          1          mem_rd_data_out[29]       
+1          1          1          mem_rd_data_out[28]       
+1          1          1          mem_rd_data_out[27]       
+1          1          1          mem_rd_data_out[26]       
+1          1          1          mem_rd_data_out[25]       
+1          1          1          mem_rd_data_out[24]       
+1          1          1          mem_rd_data_out[23]       
+1          1          1          mem_rd_data_out[22]       
+1          1          1          mem_rd_data_out[21]       
+1          1          1          mem_rd_data_out[20]       
+1          1          1          mem_rd_data_out[19]       
+1          1          1          mem_rd_data_out[18]       
+1          1          1          mem_rd_data_out[17]       
+1          1          1          mem_rd_data_out[16]       
+1          1          1          mem_rd_data_out[15]       
+1          1          1          mem_rd_data_out[14]       
+1          1          1          mem_rd_data_out[13]       
+1          1          1          mem_rd_data_out[12]       
+1          1          1          mem_rd_data_out[11]       
+1          1          1          mem_rd_data_out[10]       
+1          1          1          mem_rd_data_out[9]        
+1          1          1          mem_rd_data_out[8]        
+1          1          1          mem_rd_data_out[7]        
+1          1          1          mem_rd_data_out[6]        
+1          1          1          mem_rd_data_out[5]        
+1          1          1          mem_rd_data_out[4]        
+1          1          1          mem_rd_data_out[3]        
+1          1          1          mem_rd_data_out[2]        
+1          1          1          mem_rd_data_out[1]        
+1          1          1          mem_rd_data_out[0]        
+
+Instance name: axi4_slave_top.write_addr
+Type name: axi4_slave_write_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/1.AXI4_Slave_Write_Address.sv
+Number of covered signal bits: 128 of 143
+Number of uncovered signal bits: 15 of 143
+Number of excluded signal bits: 0
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 3 of 143
+Number of signal bits partially toggled(fall): 0 of 143
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+1          1          1          clk                       
+1          1          1          rst                       
+1          1          1          awvalid                   
+1          1          1          awaddr[31]                
+1          1          1          awaddr[30]                
+1          1          1          awaddr[29]                
+1          1          1          awaddr[28]                
+1          1          1          awaddr[27]                
+1          1          1          awaddr[26]                
+1          1          1          awaddr[25]                
+1          1          1          awaddr[24]                
+1          1          1          awaddr[23]                
+1          1          1          awaddr[22]                
+1          1          1          awaddr[21]                
+1          1          1          awaddr[20]                
+1          1          1          awaddr[19]                
+1          1          1          awaddr[18]                
+1          1          1          awaddr[17]                
+1          1          1          awaddr[16]                
+1          1          1          awaddr[15]                
+1          1          1          awaddr[14]                
+1          1          1          awaddr[13]                
+1          1          1          awaddr[12]                
+1          1          1          awaddr[11]                
+1          1          1          awaddr[10]                
+1          1          1          awaddr[9]                 
+1          1          1          awaddr[8]                 
+1          1          1          awaddr[7]                 
+1          1          1          awaddr[6]                 
+1          1          1          awaddr[5]                 
+1          1          1          awaddr[4]                 
+1          1          1          awaddr[3]                 
+1          1          1          awaddr[2]                 
+1          1          1          awaddr[1]                 
+1          1          1          awaddr[0]                 
+1          1          1          awid[3]                   
+1          1          1          awid[2]                   
+1          1          1          awid[1]                   
+1          1          1          awid[0]                   
+0          1          0          awlen[7]                  
+0          1          0          awlen[6]                  
+0          1          0          awlen[5]                  
+0          0          0          awlen[4]                  
+0          0          0          awlen[3]                  
+1          1          1          awlen[2]                  
+1          1          1          awlen[1]                  
+1          1          1          awlen[0]                  
+1          1          1          awsize[2]                 
+1          1          1          awsize[1]                 
+1          1          1          awsize[0]                 
+1          1          1          awburst[1]                
+1          1          1          awburst[0]                
+1          1          1          awready                   
+1          1          1          stored_awaddr[31]         
+1          1          1          stored_awaddr[30]         
+1          1          1          stored_awaddr[29]         
+1          1          1          stored_awaddr[28]         
+1          1          1          stored_awaddr[27]         
+1          1          1          stored_awaddr[26]         
+1          1          1          stored_awaddr[25]         
+1          1          1          stored_awaddr[24]         
+1          1          1          stored_awaddr[23]         
+1          1          1          stored_awaddr[22]         
+1          1          1          stored_awaddr[21]         
+1          1          1          stored_awaddr[20]         
+1          1          1          stored_awaddr[19]         
+1          1          1          stored_awaddr[18]         
+1          1          1          stored_awaddr[17]         
+1          1          1          stored_awaddr[16]         
+1          1          1          stored_awaddr[15]         
+1          1          1          stored_awaddr[14]         
+1          1          1          stored_awaddr[13]         
+1          1          1          stored_awaddr[12]         
+1          1          1          stored_awaddr[11]         
+1          1          1          stored_awaddr[10]         
+1          1          1          stored_awaddr[9]          
+1          1          1          stored_awaddr[8]          
+1          1          1          stored_awaddr[7]          
+1          1          1          stored_awaddr[6]          
+1          1          1          stored_awaddr[5]          
+1          1          1          stored_awaddr[4]          
+1          1          1          stored_awaddr[3]          
+1          1          1          stored_awaddr[2]          
+1          1          1          stored_awaddr[1]          
+1          1          1          stored_awaddr[0]          
+1          1          1          stored_awid[3]            
+1          1          1          stored_awid[2]            
+1          1          1          stored_awid[1]            
+1          1          1          stored_awid[0]            
+0          0          0          stored_awlen[7]           
+0          0          0          stored_awlen[6]           
+0          0          0          stored_awlen[5]           
+0          0          0          stored_awlen[4]           
+0          0          0          stored_awlen[3]           
+1          1          1          stored_awlen[2]           
+1          1          1          stored_awlen[1]           
+1          1          1          stored_awlen[0]           
+1          1          1          stored_awsize[2]          
+1          1          1          stored_awsize[1]          
+1          1          1          stored_awsize[0]          
+1          1          1          stored_awburst[1]         
+1          1          1          stored_awburst[0]         
+1          1          1          SLV_AWREADY               
+1          1          1          SLV_BURST_ADDR[31]        
+1          1          1          SLV_BURST_ADDR[30]        
+1          1          1          SLV_BURST_ADDR[29]        
+1          1          1          SLV_BURST_ADDR[28]        
+1          1          1          SLV_BURST_ADDR[27]        
+1          1          1          SLV_BURST_ADDR[26]        
+1          1          1          SLV_BURST_ADDR[25]        
+1          1          1          SLV_BURST_ADDR[24]        
+1          1          1          SLV_BURST_ADDR[23]        
+1          1          1          SLV_BURST_ADDR[22]        
+1          1          1          SLV_BURST_ADDR[21]        
+1          1          1          SLV_BURST_ADDR[20]        
+1          1          1          SLV_BURST_ADDR[19]        
+1          1          1          SLV_BURST_ADDR[18]        
+1          1          1          SLV_BURST_ADDR[17]        
+1          1          1          SLV_BURST_ADDR[16]        
+1          1          1          SLV_BURST_ADDR[15]        
+1          1          1          SLV_BURST_ADDR[14]        
+1          1          1          SLV_BURST_ADDR[13]        
+1          1          1          SLV_BURST_ADDR[12]        
+1          1          1          SLV_BURST_ADDR[11]        
+1          1          1          SLV_BURST_ADDR[10]        
+1          1          1          SLV_BURST_ADDR[9]         
+1          1          1          SLV_BURST_ADDR[8]         
+1          1          1          SLV_BURST_ADDR[7]         
+1          1          1          SLV_BURST_ADDR[6]         
+1          1          1          SLV_BURST_ADDR[5]         
+1          1          1          SLV_BURST_ADDR[4]         
+1          1          1          SLV_BURST_ADDR[3]         
+1          1          1          SLV_BURST_ADDR[2]         
+1          1          1          SLV_BURST_ADDR[1]         
+1          1          1          SLV_BURST_ADDR[0]         
+0          0          0          SLV_BURST_COUNTER[7]      
+0          0          0          SLV_BURST_COUNTER[6]      
+0          0          0          SLV_BURST_COUNTER[5]      
+0          0          0          SLV_BURST_COUNTER[4]      
+0          0          0          SLV_BURST_COUNTER[3]      
+1          1          1          SLV_BURST_COUNTER[2]      
+1          1          1          SLV_BURST_COUNTER[1]      
+1          1          1          SLV_BURST_COUNTER[0]      
+
+Instance name: axi4_slave_top.write_data
+Type name: axi4_slave_data_channel
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/2.AXI4_Slave_Write_Data.sv
+Number of covered signal bits: 283 of 298
+Number of uncovered signal bits: 15 of 298
+Number of excluded signal bits: 0
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 3 of 298
+Number of signal bits partially toggled(fall): 0 of 298
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+1          1          1          clk                       
+1          1          1          rst                       
+1          1          1          stored_awaddr[31]         
+1          1          1          stored_awaddr[30]         
+1          1          1          stored_awaddr[29]         
+1          1          1          stored_awaddr[28]         
+1          1          1          stored_awaddr[27]         
+1          1          1          stored_awaddr[26]         
+1          1          1          stored_awaddr[25]         
+1          1          1          stored_awaddr[24]         
+1          1          1          stored_awaddr[23]         
+1          1          1          stored_awaddr[22]         
+1          1          1          stored_awaddr[21]         
+1          1          1          stored_awaddr[20]         
+1          1          1          stored_awaddr[19]         
+1          1          1          stored_awaddr[18]         
+1          1          1          stored_awaddr[17]         
+1          1          1          stored_awaddr[16]         
+1          1          1          stored_awaddr[15]         
+1          1          1          stored_awaddr[14]         
+1          1          1          stored_awaddr[13]         
+1          1          1          stored_awaddr[12]         
+1          1          1          stored_awaddr[11]         
+1          1          1          stored_awaddr[10]         
+1          1          1          stored_awaddr[9]          
+1          1          1          stored_awaddr[8]          
+1          1          1          stored_awaddr[7]          
+1          1          1          stored_awaddr[6]          
+1          1          1          stored_awaddr[5]          
+1          1          1          stored_awaddr[4]          
+1          1          1          stored_awaddr[3]          
+1          1          1          stored_awaddr[2]          
+1          1          1          stored_awaddr[1]          
+1          1          1          stored_awaddr[0]          
+1          1          1          stored_awid[3]            
+1          1          1          stored_awid[2]            
+1          1          1          stored_awid[1]            
+1          1          1          stored_awid[0]            
+0          0          0          stored_awlen[7]           
+0          0          0          stored_awlen[6]           
+0          0          0          stored_awlen[5]           
+0          0          0          stored_awlen[4]           
+0          0          0          stored_awlen[3]           
+1          1          1          stored_awlen[2]           
+1          1          1          stored_awlen[1]           
+1          1          1          stored_awlen[0]           
+1          1          1          stored_awsize[2]          
+1          1          1          stored_awsize[1]          
+1          1          1          stored_awsize[0]          
+1          1          1          stored_awburst[1]         
+1          1          1          stored_awburst[0]         
+1          1          1          awvalid                   
+1          1          1          awready                   
+0          1          0          burst_length[7]           
+0          1          0          burst_length[6]           
+0          1          0          burst_length[5]           
+0          0          0          burst_length[4]           
+0          0          0          burst_length[3]           
+1          1          1          burst_length[2]           
+1          1          1          burst_length[1]           
+1          1          1          burst_length[0]           
+1          1          1          wvalid                    
+1          1          1          wdata[31]                 
+1          1          1          wdata[30]                 
+1          1          1          wdata[29]                 
+1          1          1          wdata[28]                 
+1          1          1          wdata[27]                 
+1          1          1          wdata[26]                 
+1          1          1          wdata[25]                 
+1          1          1          wdata[24]                 
+1          1          1          wdata[23]                 
+1          1          1          wdata[22]                 
+1          1          1          wdata[21]                 
+1          1          1          wdata[20]                 
+1          1          1          wdata[19]                 
+1          1          1          wdata[18]                 
+1          1          1          wdata[17]                 
+1          1          1          wdata[16]                 
+1          1          1          wdata[15]                 
+1          1          1          wdata[14]                 
+1          1          1          wdata[13]                 
+1          1          1          wdata[12]                 
+1          1          1          wdata[11]                 
+1          1          1          wdata[10]                 
+1          1          1          wdata[9]                  
+1          1          1          wdata[8]                  
+1          1          1          wdata[7]                  
+1          1          1          wdata[6]                  
+1          1          1          wdata[5]                  
+1          1          1          wdata[4]                  
+1          1          1          wdata[3]                  
+1          1          1          wdata[2]                  
+1          1          1          wdata[1]                  
+1          1          1          wdata[0]                  
+1          1          1          wlast                     
+1          1          1          wstrb[3]                  
+1          1          1          wstrb[2]                  
+1          1          1          wstrb[1]                  
+1          1          1          wstrb[0]                  
+1          1          1          mem_wr_en                 
+1          1          1          mem_addr[31]              
+1          1          1          mem_addr[30]              
+1          1          1          mem_addr[29]              
+1          1          1          mem_addr[28]              
+1          1          1          mem_addr[27]              
+1          1          1          mem_addr[26]              
+1          1          1          mem_addr[25]              
+1          1          1          mem_addr[24]              
+1          1          1          mem_addr[23]              
+1          1          1          mem_addr[22]              
+1          1          1          mem_addr[21]              
+1          1          1          mem_addr[20]              
+1          1          1          mem_addr[19]              
+1          1          1          mem_addr[18]              
+1          1          1          mem_addr[17]              
+1          1          1          mem_addr[16]              
+1          1          1          mem_addr[15]              
+1          1          1          mem_addr[14]              
+1          1          1          mem_addr[13]              
+1          1          1          mem_addr[12]              
+1          1          1          mem_addr[11]              
+1          1          1          mem_addr[10]              
+1          1          1          mem_addr[9]               
+1          1          1          mem_addr[8]               
+1          1          1          mem_addr[7]               
+1          1          1          mem_addr[6]               
+1          1          1          mem_addr[5]               
+1          1          1          mem_addr[4]               
+1          1          1          mem_addr[3]               
+1          1          1          mem_addr[2]               
+1          1          1          mem_addr[1]               
+1          1          1          mem_addr[0]               
+1          1          1          mem_wr_data[31]           
+1          1          1          mem_wr_data[30]           
+1          1          1          mem_wr_data[29]           
+1          1          1          mem_wr_data[28]           
+1          1          1          mem_wr_data[27]           
+1          1          1          mem_wr_data[26]           
+1          1          1          mem_wr_data[25]           
+1          1          1          mem_wr_data[24]           
+1          1          1          mem_wr_data[23]           
+1          1          1          mem_wr_data[22]           
+1          1          1          mem_wr_data[21]           
+1          1          1          mem_wr_data[20]           
+1          1          1          mem_wr_data[19]           
+1          1          1          mem_wr_data[18]           
+1          1          1          mem_wr_data[17]           
+1          1          1          mem_wr_data[16]           
+1          1          1          mem_wr_data[15]           
+1          1          1          mem_wr_data[14]           
+1          1          1          mem_wr_data[13]           
+1          1          1          mem_wr_data[12]           
+1          1          1          mem_wr_data[11]           
+1          1          1          mem_wr_data[10]           
+1          1          1          mem_wr_data[9]            
+1          1          1          mem_wr_data[8]            
+1          1          1          mem_wr_data[7]            
+1          1          1          mem_wr_data[6]            
+1          1          1          mem_wr_data[5]            
+1          1          1          mem_wr_data[4]            
+1          1          1          mem_wr_data[3]            
+1          1          1          mem_wr_data[2]            
+1          1          1          mem_wr_data[1]            
+1          1          1          mem_wr_data[0]            
+1          1          1          mem_byte_en[3]            
+1          1          1          mem_byte_en[2]            
+1          1          1          mem_byte_en[1]            
+1          1          1          mem_byte_en[0]            
+1          1          1          wready                    
+1          1          1          b_transfer_done           
+1          1          1          b_bid[3]                  
+1          1          1          b_bid[2]                  
+1          1          1          b_bid[1]                  
+1          1          1          b_bid[0]                  
+1          1          1          b_bresp[1]                
+1          1          1          b_bresp[0]                
+0          0          0          beats_remaining[7]        
+0          0          0          beats_remaining[6]        
+0          0          0          beats_remaining[5]        
+0          0          0          beats_remaining[4]        
+0          0          0          beats_remaining[3]        
+1          1          1          beats_remaining[2]        
+1          1          1          beats_remaining[1]        
+1          1          1          beats_remaining[0]        
+1          1          1          current_addr[31]          
+1          1          1          current_addr[30]          
+1          1          1          current_addr[29]          
+1          1          1          current_addr[28]          
+1          1          1          current_addr[27]          
+1          1          1          current_addr[26]          
+1          1          1          current_addr[25]          
+1          1          1          current_addr[24]          
+1          1          1          current_addr[23]          
+1          1          1          current_addr[22]          
+1          1          1          current_addr[21]          
+1          1          1          current_addr[20]          
+1          1          1          current_addr[19]          
+1          1          1          current_addr[18]          
+1          1          1          current_addr[17]          
+1          1          1          current_addr[16]          
+1          1          1          current_addr[15]          
+1          1          1          current_addr[14]          
+1          1          1          current_addr[13]          
+1          1          1          current_addr[12]          
+1          1          1          current_addr[11]          
+1          1          1          current_addr[10]          
+1          1          1          current_addr[9]           
+1          1          1          current_addr[8]           
+1          1          1          current_addr[7]           
+1          1          1          current_addr[6]           
+1          1          1          current_addr[5]           
+1          1          1          current_addr[4]           
+1          1          1          current_addr[3]           
+1          1          1          current_addr[2]           
+1          1          1          current_addr[1]           
+1          1          1          current_addr[0]           
+1          1          1          active_bid[3]             
+1          1          1          active_bid[2]             
+1          1          1          active_bid[1]             
+1          1          1          active_bid[0]             
+1          1          1          active_awsize[2]          
+1          1          1          active_awsize[1]          
+1          1          1          active_awsize[0]          
+1          1          1          active_awburst[1]         
+1          1          1          active_awburst[0]         
+1          1          1          wready_reg                
+1          1          1          wready_next               
+1          1          1          burst_active              
+1          1          1          b_bresp_reg[1]            
+1          1          1          b_bresp_reg[0]            
+1          1          1          last_beat_transfer        
+1          1          1          wrap_boundary[31]         
+1          1          1          wrap_boundary[30]         
+1          1          1          wrap_boundary[29]         
+1          1          1          wrap_boundary[28]         
+1          1          1          wrap_boundary[27]         
+1          1          1          wrap_boundary[26]         
+1          1          1          wrap_boundary[25]         
+1          1          1          wrap_boundary[24]         
+1          1          1          wrap_boundary[23]         
+1          1          1          wrap_boundary[22]         
+1          1          1          wrap_boundary[21]         
+1          1          1          wrap_boundary[20]         
+1          1          1          wrap_boundary[19]         
+1          1          1          wrap_boundary[18]         
+1          1          1          wrap_boundary[17]         
+1          1          1          wrap_boundary[16]         
+1          1          1          wrap_boundary[15]         
+1          1          1          wrap_boundary[14]         
+1          1          1          wrap_boundary[13]         
+1          1          1          wrap_boundary[12]         
+1          1          1          wrap_boundary[11]         
+1          1          1          wrap_boundary[10]         
+1          1          1          wrap_boundary[9]          
+1          1          1          wrap_boundary[8]          
+1          1          1          wrap_boundary[7]          
+1          1          1          wrap_boundary[6]          
+1          1          1          wrap_boundary[5]          
+1          1          1          wrap_boundary[4]          
+1          1          1          wrap_boundary[3]          
+1          1          1          wrap_boundary[2]          
+1          1          1          wrap_boundary[1]          
+1          1          1          wrap_boundary[0]          
+1          1          1          upper_addr_limit[31]      
+1          1          1          upper_addr_limit[30]      
+1          1          1          upper_addr_limit[29]      
+1          1          1          upper_addr_limit[28]      
+1          1          1          upper_addr_limit[27]      
+1          1          1          upper_addr_limit[26]      
+1          1          1          upper_addr_limit[25]      
+1          1          1          upper_addr_limit[24]      
+1          1          1          upper_addr_limit[23]      
+1          1          1          upper_addr_limit[22]      
+1          1          1          upper_addr_limit[21]      
+1          1          1          upper_addr_limit[20]      
+1          1          1          upper_addr_limit[19]      
+1          1          1          upper_addr_limit[18]      
+1          1          1          upper_addr_limit[17]      
+1          1          1          upper_addr_limit[16]      
+1          1          1          upper_addr_limit[15]      
+1          1          1          upper_addr_limit[14]      
+1          1          1          upper_addr_limit[13]      
+1          1          1          upper_addr_limit[12]      
+1          1          1          upper_addr_limit[11]      
+1          1          1          upper_addr_limit[10]      
+1          1          1          upper_addr_limit[9]       
+1          1          1          upper_addr_limit[8]       
+1          1          1          upper_addr_limit[7]       
+1          1          1          upper_addr_limit[6]       
+1          1          1          upper_addr_limit[5]       
+1          1          1          upper_addr_limit[4]       
+1          1          1          upper_addr_limit[3]       
+1          1          1          upper_addr_limit[2]       
+1          1          1          upper_addr_limit[1]       
+1          1          1          upper_addr_limit[0]       
+1          1          1          num_bytes[2]              
+1          1          1          num_bytes[1]              
+1          1          1          num_bytes[0]              
+
+Instance name: axi4_slave_top.write_response
+Type name: axi4_slave_write_response
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+Number of covered signal bits: 21 of 25
+Number of uncovered signal bits: 4 of 25
+Number of excluded signal bits: 0
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 0 of 25
+Number of signal bits partially toggled(fall): 0 of 25
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+1          1          1          clk                       
+1          1          1          rst                       
+1          1          1          bready                    
+1          1          1          wready_in                 
+1          1          1          bid[3]                    
+1          1          1          bid[2]                    
+1          1          1          bid[1]                    
+1          1          1          bid[0]                    
+0          0          0          bresp[1]                  
+0          0          0          bresp[0]                  
+1          1          1          bvalid                    
+1          1          1          b_transfer_done           
+1          1          1          b_bid_in[3]               
+1          1          1          b_bid_in[2]               
+1          1          1          b_bid_in[1]               
+1          1          1          b_bid_in[0]               
+1          1          1          b_status_in[1]            
+1          1          1          b_status_in[0]            
+1          1          1          stored_bid[3]             
+1          1          1          stored_bid[2]             
+1          1          1          stored_bid[1]             
+1          1          1          stored_bid[0]             
+0          0          0          stored_bresp[1]           
+0          0          0          stored_bresp[0]           
+1          1          1          bvalid_reg                
+
+Instance name: axi4_slave_top.read_address
+Type name: axi4_slave_read_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/4.AXI4_Slave_Read_Address.sv
+Number of covered signal bits: 102 of 106
+Number of uncovered signal bits: 4 of 106
+Number of excluded signal bits: 0
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 0 of 106
+Number of signal bits partially toggled(fall): 0 of 106
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+1          1          1          clk                       
+1          1          1          rst                       
+1          1          1          arvalid                   
+1          1          1          araddr[31]                
+1          1          1          araddr[30]                
+1          1          1          araddr[29]                
+1          1          1          araddr[28]                
+1          1          1          araddr[27]                
+1          1          1          araddr[26]                
+1          1          1          araddr[25]                
+1          1          1          araddr[24]                
+1          1          1          araddr[23]                
+1          1          1          araddr[22]                
+1          1          1          araddr[21]                
+1          1          1          araddr[20]                
+1          1          1          araddr[19]                
+1          1          1          araddr[18]                
+1          1          1          araddr[17]                
+1          1          1          araddr[16]                
+1          1          1          araddr[15]                
+1          1          1          araddr[14]                
+1          1          1          araddr[13]                
+1          1          1          araddr[12]                
+1          1          1          araddr[11]                
+1          1          1          araddr[10]                
+1          1          1          araddr[9]                 
+1          1          1          araddr[8]                 
+1          1          1          araddr[7]                 
+1          1          1          araddr[6]                 
+1          1          1          araddr[5]                 
+1          1          1          araddr[4]                 
+1          1          1          araddr[3]                 
+1          1          1          araddr[2]                 
+1          1          1          araddr[1]                 
+1          1          1          araddr[0]                 
+1          1          1          arid[3]                   
+1          1          1          arid[2]                   
+1          1          1          arid[1]                   
+1          1          1          arid[0]                   
+0          0          0          arlen[7]                  
+1          1          1          arlen[6]                  
+0          0          0          arlen[5]                  
+1          1          1          arlen[4]                  
+1          1          1          arlen[3]                  
+1          1          1          arlen[2]                  
+1          1          1          arlen[1]                  
+1          1          1          arlen[0]                  
+1          1          1          arsize[2]                 
+1          1          1          arsize[1]                 
+1          1          1          arsize[0]                 
+1          1          1          arburst[1]                
+1          1          1          arburst[0]                
+1          1          1          arready                   
+1          1          1          ar_transfer_occurred      
+1          1          1          latched_araddr[31]        
+1          1          1          latched_araddr[30]        
+1          1          1          latched_araddr[29]        
+1          1          1          latched_araddr[28]        
+1          1          1          latched_araddr[27]        
+1          1          1          latched_araddr[26]        
+1          1          1          latched_araddr[25]        
+1          1          1          latched_araddr[24]        
+1          1          1          latched_araddr[23]        
+1          1          1          latched_araddr[22]        
+1          1          1          latched_araddr[21]        
+1          1          1          latched_araddr[20]        
+1          1          1          latched_araddr[19]        
+1          1          1          latched_araddr[18]        
+1          1          1          latched_araddr[17]        
+1          1          1          latched_araddr[16]        
+1          1          1          latched_araddr[15]        
+1          1          1          latched_araddr[14]        
+1          1          1          latched_araddr[13]        
+1          1          1          latched_araddr[12]        
+1          1          1          latched_araddr[11]        
+1          1          1          latched_araddr[10]        
+1          1          1          latched_araddr[9]         
+1          1          1          latched_araddr[8]         
+1          1          1          latched_araddr[7]         
+1          1          1          latched_araddr[6]         
+1          1          1          latched_araddr[5]         
+1          1          1          latched_araddr[4]         
+1          1          1          latched_araddr[3]         
+1          1          1          latched_araddr[2]         
+1          1          1          latched_araddr[1]         
+1          1          1          latched_araddr[0]         
+1          1          1          latched_arid[3]           
+1          1          1          latched_arid[2]           
+1          1          1          latched_arid[1]           
+1          1          1          latched_arid[0]           
+0          0          0          latched_arlen[7]          
+1          1          1          latched_arlen[6]          
+0          0          0          latched_arlen[5]          
+1          1          1          latched_arlen[4]          
+1          1          1          latched_arlen[3]          
+1          1          1          latched_arlen[2]          
+1          1          1          latched_arlen[1]          
+1          1          1          latched_arlen[0]          
+1          1          1          latched_arsize[2]         
+1          1          1          latched_arsize[1]         
+1          1          1          latched_arsize[0]         
+1          1          1          latched_arburst[1]        
+1          1          1          latched_arburst[0]        
+1          1          1          arready_next              
+1          1          1          ar_transfer_occurred_comb 
+1          1          1          ar_transfer_occurred_ff   
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+Number of covered signal bits: 277 of 286
+Number of uncovered signal bits: 9 of 286
+Number of excluded signal bits: 0
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 0 of 286
+Number of signal bits partially toggled(fall): 0 of 286
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+1          1          1          clk                       
+1          1          1          rst                       
+1          1          1          latched_araddr[31]        
+1          1          1          latched_araddr[30]        
+1          1          1          latched_araddr[29]        
+1          1          1          latched_araddr[28]        
+1          1          1          latched_araddr[27]        
+1          1          1          latched_araddr[26]        
+1          1          1          latched_araddr[25]        
+1          1          1          latched_araddr[24]        
+1          1          1          latched_araddr[23]        
+1          1          1          latched_araddr[22]        
+1          1          1          latched_araddr[21]        
+1          1          1          latched_araddr[20]        
+1          1          1          latched_araddr[19]        
+1          1          1          latched_araddr[18]        
+1          1          1          latched_araddr[17]        
+1          1          1          latched_araddr[16]        
+1          1          1          latched_araddr[15]        
+1          1          1          latched_araddr[14]        
+1          1          1          latched_araddr[13]        
+1          1          1          latched_araddr[12]        
+1          1          1          latched_araddr[11]        
+1          1          1          latched_araddr[10]        
+1          1          1          latched_araddr[9]         
+1          1          1          latched_araddr[8]         
+1          1          1          latched_araddr[7]         
+1          1          1          latched_araddr[6]         
+1          1          1          latched_araddr[5]         
+1          1          1          latched_araddr[4]         
+1          1          1          latched_araddr[3]         
+1          1          1          latched_araddr[2]         
+1          1          1          latched_araddr[1]         
+1          1          1          latched_araddr[0]         
+1          1          1          latched_arid[3]           
+1          1          1          latched_arid[2]           
+1          1          1          latched_arid[1]           
+1          1          1          latched_arid[0]           
+0          0          0          latched_arlen[7]          
+1          1          1          latched_arlen[6]          
+0          0          0          latched_arlen[5]          
+1          1          1          latched_arlen[4]          
+1          1          1          latched_arlen[3]          
+1          1          1          latched_arlen[2]          
+1          1          1          latched_arlen[1]          
+1          1          1          latched_arlen[0]          
+1          1          1          latched_arsize[2]         
+1          1          1          latched_arsize[1]         
+1          1          1          latched_arsize[0]         
+1          1          1          latched_arburst[1]        
+1          1          1          latched_arburst[0]        
+1          1          1          arvalid                   
+1          1          1          arready                   
+1          1          1          rvalid                    
+1          1          1          rdata[31]                 
+1          1          1          rdata[30]                 
+1          1          1          rdata[29]                 
+1          1          1          rdata[28]                 
+1          1          1          rdata[27]                 
+1          1          1          rdata[26]                 
+1          1          1          rdata[25]                 
+1          1          1          rdata[24]                 
+1          1          1          rdata[23]                 
+1          1          1          rdata[22]                 
+1          1          1          rdata[21]                 
+1          1          1          rdata[20]                 
+1          1          1          rdata[19]                 
+1          1          1          rdata[18]                 
+1          1          1          rdata[17]                 
+1          1          1          rdata[16]                 
+1          1          1          rdata[15]                 
+1          1          1          rdata[14]                 
+1          1          1          rdata[13]                 
+1          1          1          rdata[12]                 
+1          1          1          rdata[11]                 
+1          1          1          rdata[10]                 
+1          1          1          rdata[9]                  
+1          1          1          rdata[8]                  
+1          1          1          rdata[7]                  
+1          1          1          rdata[6]                  
+1          1          1          rdata[5]                  
+1          1          1          rdata[4]                  
+1          1          1          rdata[3]                  
+1          1          1          rdata[2]                  
+1          1          1          rdata[1]                  
+1          1          1          rdata[0]                  
+1          1          1          rid[3]                    
+1          1          1          rid[2]                    
+1          1          1          rid[1]                    
+1          1          1          rid[0]                    
+1          1          1          rlast                     
+0          0          0          rresp[1]                  
+0          0          0          rresp[0]                  
+1          1          1          rready                    
+1          1          1          mem_rd_en                 
+1          1          1          mem_addr[31]              
+1          1          1          mem_addr[30]              
+1          1          1          mem_addr[29]              
+1          1          1          mem_addr[28]              
+1          1          1          mem_addr[27]              
+1          1          1          mem_addr[26]              
+1          1          1          mem_addr[25]              
+1          1          1          mem_addr[24]              
+1          1          1          mem_addr[23]              
+1          1          1          mem_addr[22]              
+1          1          1          mem_addr[21]              
+1          1          1          mem_addr[20]              
+1          1          1          mem_addr[19]              
+1          1          1          mem_addr[18]              
+1          1          1          mem_addr[17]              
+1          1          1          mem_addr[16]              
+1          1          1          mem_addr[15]              
+1          1          1          mem_addr[14]              
+1          1          1          mem_addr[13]              
+1          1          1          mem_addr[12]              
+1          1          1          mem_addr[11]              
+1          1          1          mem_addr[10]              
+1          1          1          mem_addr[9]               
+1          1          1          mem_addr[8]               
+1          1          1          mem_addr[7]               
+1          1          1          mem_addr[6]               
+1          1          1          mem_addr[5]               
+1          1          1          mem_addr[4]               
+1          1          1          mem_addr[3]               
+1          1          1          mem_addr[2]               
+1          1          1          mem_addr[1]               
+1          1          1          mem_addr[0]               
+1          1          1          mem_rd_data[31]           
+1          1          1          mem_rd_data[30]           
+1          1          1          mem_rd_data[29]           
+1          1          1          mem_rd_data[28]           
+1          1          1          mem_rd_data[27]           
+1          1          1          mem_rd_data[26]           
+1          1          1          mem_rd_data[25]           
+1          1          1          mem_rd_data[24]           
+1          1          1          mem_rd_data[23]           
+1          1          1          mem_rd_data[22]           
+1          1          1          mem_rd_data[21]           
+1          1          1          mem_rd_data[20]           
+1          1          1          mem_rd_data[19]           
+1          1          1          mem_rd_data[18]           
+1          1          1          mem_rd_data[17]           
+1          1          1          mem_rd_data[16]           
+1          1          1          mem_rd_data[15]           
+1          1          1          mem_rd_data[14]           
+1          1          1          mem_rd_data[13]           
+1          1          1          mem_rd_data[12]           
+1          1          1          mem_rd_data[11]           
+1          1          1          mem_rd_data[10]           
+1          1          1          mem_rd_data[9]            
+1          1          1          mem_rd_data[8]            
+1          1          1          mem_rd_data[7]            
+1          1          1          mem_rd_data[6]            
+1          1          1          mem_rd_data[5]            
+1          1          1          mem_rd_data[4]            
+1          1          1          mem_rd_data[3]            
+1          1          1          mem_rd_data[2]            
+1          1          1          mem_rd_data[1]            
+1          1          1          mem_rd_data[0]            
+0          0          0          beat_count[7]             
+1          1          1          beat_count[6]             
+1          1          1          beat_count[5]             
+1          1          1          beat_count[4]             
+1          1          1          beat_count[3]             
+1          1          1          beat_count[2]             
+1          1          1          beat_count[1]             
+1          1          1          beat_count[0]             
+1          1          1          current_addr[31]          
+1          1          1          current_addr[30]          
+1          1          1          current_addr[29]          
+1          1          1          current_addr[28]          
+1          1          1          current_addr[27]          
+1          1          1          current_addr[26]          
+1          1          1          current_addr[25]          
+1          1          1          current_addr[24]          
+1          1          1          current_addr[23]          
+1          1          1          current_addr[22]          
+1          1          1          current_addr[21]          
+1          1          1          current_addr[20]          
+1          1          1          current_addr[19]          
+1          1          1          current_addr[18]          
+1          1          1          current_addr[17]          
+1          1          1          current_addr[16]          
+1          1          1          current_addr[15]          
+1          1          1          current_addr[14]          
+1          1          1          current_addr[13]          
+1          1          1          current_addr[12]          
+1          1          1          current_addr[11]          
+1          1          1          current_addr[10]          
+1          1          1          current_addr[9]           
+1          1          1          current_addr[8]           
+1          1          1          current_addr[7]           
+1          1          1          current_addr[6]           
+1          1          1          current_addr[5]           
+1          1          1          current_addr[4]           
+1          1          1          current_addr[3]           
+1          1          1          current_addr[2]           
+1          1          1          current_addr[1]           
+1          1          1          current_addr[0]           
+1          1          1          stored_arid[3]            
+1          1          1          stored_arid[2]            
+1          1          1          stored_arid[1]            
+1          1          1          stored_arid[0]            
+1          1          1          active_arsize[2]          
+1          1          1          active_arsize[1]          
+1          1          1          active_arsize[0]          
+1          1          1          active_arburst[1]         
+1          1          1          active_arburst[0]         
+0          0          0          active_arlen[7]           
+1          1          1          active_arlen[6]           
+0          0          0          active_arlen[5]           
+1          1          1          active_arlen[4]           
+1          1          1          active_arlen[3]           
+1          1          1          active_arlen[2]           
+1          1          1          active_arlen[1]           
+1          1          1          active_arlen[0]           
+1          1          1          transaction_active        
+0          0          0          active_rresp[1]           
+0          0          0          active_rresp[0]           
+1          1          1          wrap_boundary[31]         
+1          1          1          wrap_boundary[30]         
+1          1          1          wrap_boundary[29]         
+1          1          1          wrap_boundary[28]         
+1          1          1          wrap_boundary[27]         
+1          1          1          wrap_boundary[26]         
+1          1          1          wrap_boundary[25]         
+1          1          1          wrap_boundary[24]         
+1          1          1          wrap_boundary[23]         
+1          1          1          wrap_boundary[22]         
+1          1          1          wrap_boundary[21]         
+1          1          1          wrap_boundary[20]         
+1          1          1          wrap_boundary[19]         
+1          1          1          wrap_boundary[18]         
+1          1          1          wrap_boundary[17]         
+1          1          1          wrap_boundary[16]         
+1          1          1          wrap_boundary[15]         
+1          1          1          wrap_boundary[14]         
+1          1          1          wrap_boundary[13]         
+1          1          1          wrap_boundary[12]         
+1          1          1          wrap_boundary[11]         
+1          1          1          wrap_boundary[10]         
+1          1          1          wrap_boundary[9]          
+1          1          1          wrap_boundary[8]          
+1          1          1          wrap_boundary[7]          
+1          1          1          wrap_boundary[6]          
+1          1          1          wrap_boundary[5]          
+1          1          1          wrap_boundary[4]          
+1          1          1          wrap_boundary[3]          
+1          1          1          wrap_boundary[2]          
+1          1          1          wrap_boundary[1]          
+1          1          1          wrap_boundary[0]          
+1          1          1          upper_wrap_limit[31]      
+1          1          1          upper_wrap_limit[30]      
+1          1          1          upper_wrap_limit[29]      
+1          1          1          upper_wrap_limit[28]      
+1          1          1          upper_wrap_limit[27]      
+1          1          1          upper_wrap_limit[26]      
+1          1          1          upper_wrap_limit[25]      
+1          1          1          upper_wrap_limit[24]      
+1          1          1          upper_wrap_limit[23]      
+1          1          1          upper_wrap_limit[22]      
+1          1          1          upper_wrap_limit[21]      
+1          1          1          upper_wrap_limit[20]      
+1          1          1          upper_wrap_limit[19]      
+1          1          1          upper_wrap_limit[18]      
+1          1          1          upper_wrap_limit[17]      
+1          1          1          upper_wrap_limit[16]      
+1          1          1          upper_wrap_limit[15]      
+1          1          1          upper_wrap_limit[14]      
+1          1          1          upper_wrap_limit[13]      
+1          1          1          upper_wrap_limit[12]      
+1          1          1          upper_wrap_limit[11]      
+1          1          1          upper_wrap_limit[10]      
+1          1          1          upper_wrap_limit[9]       
+1          1          1          upper_wrap_limit[8]       
+1          1          1          upper_wrap_limit[7]       
+1          1          1          upper_wrap_limit[6]       
+1          1          1          upper_wrap_limit[5]       
+1          1          1          upper_wrap_limit[4]       
+1          1          1          upper_wrap_limit[3]       
+1          1          1          upper_wrap_limit[2]       
+1          1          1          upper_wrap_limit[1]       
+1          1          1          upper_wrap_limit[0]       
+1          1          1          transfer_size_bytes[2]    
+1          1          1          transfer_size_bytes[1]    
+1          1          1          transfer_size_bytes[0]    
+
+Covered+Uncovered+Excluded+UNR Fsm Detail Report, Instance Based
+================================================================
+
+Instance name: axi4_slave_top.write_addr
+Type name: axi4_slave_write_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/1.AXI4_Slave_Write_Address.sv
+State register: present_state
+Number of covered states: 2 of 2
+Number of uncovered states: 0 of 2
+Number of excluded states: 0
+Number of covered transitions: 2 of 2
+Number of uncovered transitions: 0 of 2
+Number of excluded transitions: 0
+
+State Coverage:
+===============
+State                Encoding             Visits 
+-------------------------------------------------
+AW_IDLE              00                   1041   
+AW_ADDR              01                   516    
+
+Reset States:
+=============
+Reset State          Visits 
+----------------------------
+AW_IDLE              525    
+
+Transition Coverage:
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+AW_IDLE              AW_ADDR              516    
+AW_ADDR              AW_IDLE              516    
+
+Arc Coverage:
+=============
+[ Arc coverage not enabled ]
+
+
+Instance name: axi4_slave_top.write_data
+Type name: axi4_slave_data_channel
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/2.AXI4_Slave_Write_Data.sv
+State register: present_state
+Number of covered states: 2 of 2
+Number of uncovered states: 0 of 2
+Number of excluded states: 0
+Number of covered transitions: 2 of 2
+Number of uncovered transitions: 0 of 2
+Number of excluded transitions: 0
+
+State Coverage:
+===============
+State                Encoding             Visits 
+-------------------------------------------------
+W_IDLE               00                   1041   
+W_DATA               01                   516    
+
+Reset States:
+=============
+Reset State          Visits 
+----------------------------
+W_IDLE               525    
+
+Transition Coverage:
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+W_IDLE               W_DATA               516    
+W_DATA               W_IDLE               516    
+
+Arc Coverage:
+=============
+[ Arc coverage not enabled ]
+
+
+Instance name: axi4_slave_top.write_response
+Type name: axi4_slave_write_response
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+State register: present_state
+Number of covered states: 2 of 2
+Number of uncovered states: 0 of 2
+Number of excluded states: 0
+Number of covered transitions: 2 of 2
+Number of uncovered transitions: 0 of 2
+Number of excluded transitions: 0
+
+State Coverage:
+===============
+State                Encoding             Visits 
+-------------------------------------------------
+IDLE                 00                   1041   
+READ_RESPONSE        01                   516    
+
+Reset States:
+=============
+Reset State          Visits 
+----------------------------
+IDLE                 525    
+
+Transition Coverage:
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+IDLE                 READ_RESPONSE        516    
+READ_RESPONSE        IDLE                 516    
+
+Arc Coverage:
+=============
+[ Arc coverage not enabled ]
+
+
+Instance name: axi4_slave_top.read_address
+Type name: axi4_slave_read_address
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/4.AXI4_Slave_Read_Address.sv
+State register: present_state
+Number of covered states: 2 of 2
+Number of uncovered states: 0 of 2
+Number of excluded states: 0
+Number of covered transitions: 2 of 2
+Number of uncovered transitions: 0 of 2
+Number of excluded transitions: 0
+
+State Coverage:
+===============
+State                Encoding             Visits 
+-------------------------------------------------
+IDLE                 00                   1043   
+ADDR_STATE           01                   518    
+
+Reset States:
+=============
+Reset State          Visits 
+----------------------------
+IDLE                 525    
+
+Transition Coverage:
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+IDLE                 ADDR_STATE           518    
+ADDR_STATE           IDLE                 518    
+
+Arc Coverage:
+=============
+[ Arc coverage not enabled ]
+
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+State register: state
+Number of covered states: 3 of 3
+Number of uncovered states: 0 of 3
+Number of excluded states: 0
+Number of covered transitions: 3 of 5
+Number of uncovered transitions: 2 of 5
+Number of excluded transitions: 0
+
+State Coverage:
+===============
+State                Encoding             Visits 
+-------------------------------------------------
+R_IDLE               00                   525    
+R_ACTIVE             01                   516    
+R_PAUSE              10                   1      
+
+Reset States:
+=============
+Reset State          Visits 
+----------------------------
+R_IDLE               525    
+
+Transition Coverage:
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+R_IDLE               R_ACTIVE             515    
+R_ACTIVE             R_IDLE               0      
+                     R_PAUSE              1      
+R_PAUSE              R_ACTIVE             1      
+                     R_IDLE               0      
+
+Arc Coverage:
+=============
+[ Arc coverage not enabled ]
+
+
+Covered+Uncovered+Excluded+UNR Assertion Detail Report, Instance Based
+======================================================================
+
+Covered+Uncovered+Excluded+UNR CoverGroup Detail Report, Instance Based
+=======================================================================
+
+Instance name: uvm_pkg.uvm_test_top.env_inst.cov_model
+Type name: uvm_pkg
+File name: /tools/cadence/INCISIVE152/tools/methodology/UVM/CDNS-1.1d/sv/src/uvm_pkg.sv
+Include Files:
+    /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/UVME/test/axi_reset_test.sv
+Number of covered cover bins: 100 of 100
+Number of uncovered cover bins: 0 of 100
+Number of excluded cover bins: 0
+
+Name                           Average, Covered Grade         Line  Source Code                    
+---------------------------------------------------------------------------------------------------
+axi_read_cg                    100.00%, 100.00% (43/43)       116   covergroup axi_read_cg;        
+|--ARREADY                     100.00% (2/2)                  119   ARREADY: coverpoint item.ARREADY { 
+| |--deasserted                100.00% (2016/1)               120   bins deasserted = {0};         
+| |--asserted                  100.00% (83/1)                 121   bins asserted   = {1};         
+|--ARVALID                     100.00% (2/2)                  124   ARVALID: coverpoint item.ARVALID { 
+| |--deasserted                100.00% (1839/1)               125   bins deasserted = {0};         
+| |--asserted                  100.00% (260/1)                126   bins asserted   = {1};         
+|--ARID                        100.00% (4/4)                  129   ARID: coverpoint item.ARID {   
+| |--id[0]                     100.00% (1690/1)               130   bins id[] = {[0:3]};           
+| |--id[1]                     100.00% (33/1)                 130   bins id[] = {[0:3]};           
+| |--id[2]                     100.00% (26/1)                 130   bins id[] = {[0:3]};           
+| |--id[3]                     100.00% (16/1)                 130   bins id[] = {[0:3]};           
+|--ARADDR                      100.00% (1/1)                  134   ARADDR: coverpoint araddr {    
+| |--word_aligned              100.00% (2099/1)               138   bins word_aligned = {[0:32'hFFFFFFFF]}; 
+|--ARLEN                       100.00% (2/2)                  141   ARLEN: coverpoint item.ARLEN { 
+| |--single_beat               100.00% (1892/1)               142   bins single_beat  = {0};       
+| |--short_burst               100.00% (206/1)                143   bins short_burst  = {[1:7]};   
+|--ARSIZE                      100.00% (3/3)                  150   ARSIZE: coverpoint item.ARSIZE { 
+| |--arsize_0_1                100.00% (1769/1)               151   bins arsize_0_1 = {[0:1]};     
+| |--arsize_2_3                100.00% (117/1)                152   bins arsize_2_3 = {[2:3]};     
+| |--arsize_4_7                100.00% (153/1)                153   bins arsize_4_7 = {[4:7]};     
+|--ARBURST                     100.00% (3/3)                  159   ARBURST: coverpoint item.ARBURST { 
+| |--fixed                     100.00% (1742/1)               160   bins fixed  = {0};             
+| |--incr                      100.00% (178/1)                161   bins incr   = {1};             
+| |--wrap                      100.00% (104/1)                162   bins wrap   = {2};             
+|--RREADY                      100.00% (2/2)                  166   RREADY: coverpoint item.RREADY { 
+| |--deasserted                100.00% (1593/1)               167   bins deasserted = {0};         
+| |--asserted                  100.00% (506/1)                168   bins asserted   = {1};         
+|--RVALID                      100.00% (2/2)                  171   RVALID: coverpoint item.RVALID { 
+| |--deasserted                100.00% (1592/1)               172   bins deasserted = {0};         
+| |--asserted                  100.00% (507/1)                173   bins asserted   = {1};         
+|--RRESP                       100.00% (1/1)                  176   RRESP: coverpoint item.RRESP { 
+| |--okay                      100.00% (2099/1)               177   bins okay = {0};               
+|--RDATA                       100.00% (16/16)                184   RDATA: coverpoint rdata {      
+| |--auto[0:268435455]         100.00% (1786/1)               184   RDATA: coverpoint rdata {      
+| |--auto[268435456:536870911] 100.00% (20/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[536870912:805306367] 100.00% (19/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[805306368:1073741823] 100.00% (23/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[1073741824:1342177279] 100.00% (20/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[1342177280:1610612735] 100.00% (24/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[1610612736:1879048191] 100.00% (22/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[1879048192:2147483647] 100.00% (20/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[2147483648:2415919103] 100.00% (18/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[2415919104:2684354559] 100.00% (21/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[2684354560:2952790015] 100.00% (23/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[2952790016:3221225471] 100.00% (19/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[3221225472:3489660927] 100.00% (29/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[3489660928:3758096383] 100.00% (27/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[3758096384:4026531839] 100.00% (11/1)                 184   RDATA: coverpoint rdata {      
+| |--auto[4026531840:4294967295] 100.00% (17/1)                 184   RDATA: coverpoint rdata {      
+|--RLAST                       100.00% (2/2)                  188   RLAST: coverpoint item.RLAST { 
+| |--asserted                  100.00% (177/1)                189   bins asserted = {1};           
+| |--not_asserted              100.00% (1922/1)               190   bins not_asserted = {0};       
+|--ADDR_BURST_CROSS            100.00% (3/3)                  194   ADDR_BURST_CROSS: cross ARBURST, ARADDR { 
+| |--fixed,word_aligned        100.00% (1742/1)               194   ADDR_BURST_CROSS: cross ARBURST, ARADDR { 
+| |--incr,word_aligned         100.00% (178/1)                194   ADDR_BURST_CROSS: cross ARBURST, ARADDR { 
+| |--wrap,word_aligned         100.00% (104/1)                194   ADDR_BURST_CROSS: cross ARBURST, ARADDR { 
+axi_write_cg                   100.00%, 100.00% (57/57)       10    covergroup axi_write_cg;       
+|--RST                         100.00% (2/2)                  12    RST: coverpoint item.RST {     
+| |--deasserted                100.00% (1720/1)               13    bins deasserted = {1};         
+| |--asserted                  100.00% (371/1)                14    bins asserted   = {0};         
+|--AWREADY                     100.00% (2/2)                  17    AWREADY: coverpoint item.AWREADY { 
+| |--deasserted                100.00% (1915/1)               18    bins deasserted = {0};         
+| |--asserted                  100.00% (176/1)                19    bins asserted   = {1};         
+|--AWVALID                     100.00% (2/2)                  22    AWVALID: coverpoint item.AWVALID { 
+| |--deasserted                100.00% (1831/1)               23    bins deasserted = {0};         
+| |--asserted                  100.00% (260/1)                24    bins asserted   = {1};         
+|--AWID                        100.00% (4/4)                  27    AWID: coverpoint item.AWID {   
+| |--id[0]                     100.00% (1777/1)               28    bins id[] = {[0:3]};           
+| |--id[1]                     100.00% (31/1)                 28    bins id[] = {[0:3]};           
+| |--id[2]                     100.00% (29/1)                 28    bins id[] = {[0:3]};           
+| |--id[3]                     100.00% (20/1)                 28    bins id[] = {[0:3]};           
+|--AWADDR                      100.00% (1/1)                  32    AWADDR: coverpoint awaddr {    
+| |--addr_range                100.00% (2101/1)               36    bins addr_range = {[0:32'hFFFFFFFF]}; 
+|--AWLEN                       100.00% (2/2)                  39    AWLEN: coverpoint item.AWLEN { 
+| |--single_beat               100.00% (1984/1)               40    bins single_beat  = {0};       
+| |--short_burst               100.00% (107/1)                41    bins short_burst  = {[1:7]};   
+|--AWSIZE                      100.00% (3/3)                  48    AWSIZE: coverpoint item.AWSIZE { 
+| |--awsize_0_1                100.00% (1838/1)               49    bins awsize_0_1 = {[0:1]};     
+| |--awsize_2_3                100.00% (92/1)                 50    bins awsize_2_3 = {[2:3]};     
+| |--awsize_4_7                100.00% (114/1)                51    bins awsize_4_7 = {[4:7]};     
+|--AWBURST                     100.00% (3/3)                  56    AWBURST: coverpoint item.AWBURST { 
+| |--fixed                     100.00% (1834/1)               57    bins fixed  = {0};             
+| |--incr                      100.00% (178/1)                58    bins incr   = {1};             
+| |--wrap                      100.00% (4/1)                  59    bins wrap   = {2};             
+|--WVALID                      100.00% (2/2)                  63    WVALID: coverpoint item.WVALID { 
+| |--deasserted                100.00% (1808/1)               64    bins deasserted = {0};         
+| |--asserted                  100.00% (283/1)                65    bins asserted   = {1};         
+|--WREADY                      100.00% (2/2)                  68    WREADY: coverpoint item.WREADY { 
+| |--deasserted                100.00% (1733/1)               69    bins deasserted = {0};         
+| |--asserted                  100.00% (358/1)                70    bins asserted   = {1};         
+|--WDATA                       100.00% (16/16)                74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[0:268435455]         100.00% (1367/1)               74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[268435456:536870911] 100.00% (64/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[536870912:805306367] 100.00% (42/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[805306368:1073741823] 100.00% (58/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[1073741824:1342177279] 100.00% (55/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[1342177280:1610612735] 100.00% (37/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[1610612736:1879048191] 100.00% (53/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[1879048192:2147483647] 100.00% (39/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[2147483648:2415919103] 100.00% (43/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[2415919104:2684354559] 100.00% (58/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[2684354560:2952790015] 100.00% (39/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[2952790016:3221225471] 100.00% (51/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[3221225472:3489660927] 100.00% (61/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[3489660928:3758096383] 100.00% (38/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[3758096384:4026531839] 100.00% (49/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+| |--auto[4026531840:4294967295] 100.00% (47/1)                 74    WDATA: coverpoint (wdata.size() > 0 ? wdata[0] : 0) { 
+|--WSTRB                       100.00% (4/4)                  78    WSTRB: coverpoint item.WSTRB { 
+| |--auto[0:3]                 100.00% (1343/1)               78    WSTRB: coverpoint item.WSTRB { 
+| |--auto[4:7]                 100.00% (300/1)                78    WSTRB: coverpoint item.WSTRB { 
+| |--auto[8:11]                100.00% (375/1)                78    WSTRB: coverpoint item.WSTRB { 
+| |--auto[12:15]               100.00% (73/1)                 78    WSTRB: coverpoint item.WSTRB { 
+|--WLAST                       100.00% (2/2)                  82    WLAST: coverpoint item.WLAST { 
+| |--asserted                  100.00% (83/1)                 83    bins asserted = {1};           
+| |--not_asserted              100.00% (2008/1)               84    bins not_asserted = {0};       
+|--BID                         100.00% (4/4)                  87    BID: coverpoint item.BID {     
+| |--id_range[0]               100.00% (1571/1)               88    bins id_range[] = {[0:3]};     
+| |--id_range[1]               100.00% (33/1)                 88    bins id_range[] = {[0:3]};     
+| |--id_range[2]               100.00% (24/1)                 88    bins id_range[] = {[0:3]};     
+| |--id_range[3]               100.00% (13/1)                 88    bins id_range[] = {[0:3]};     
+|--BVALID                      100.00% (2/2)                  91    BVALID: coverpoint item.BVALID { 
+| |--deasserted                100.00% (1535/1)               92    bins deasserted = {0};         
+| |--asserted                  100.00% (566/1)                93    bins asserted   = {1};         
+|--BREADY                      100.00% (2/2)                  96    BREADY: coverpoint item.BREADY { 
+| |--deasserted                100.00% (1535/1)               97    bins deasserted = {0};         
+| |--asserted                  100.00% (566/1)                98    bins asserted   = {1};         
+|--BRESP                       100.00% (1/1)                  102   BRESP: coverpoint item.BRESP { 
+| |--okay                      100.00% (2101/1)               103   bins okay = {0};               
+|--ADDR_BURST_CROSS            100.00% (3/3)                  109   ADDR_BURST_CROSS: cross AWBURST, AWADDR { 
+| |--fixed,addr_range          100.00% (1834/1)               109   ADDR_BURST_CROSS: cross AWBURST, AWADDR { 
+| |--incr,addr_range           100.00% (178/1)                109   ADDR_BURST_CROSS: cross AWBURST, AWADDR { 
+| |--wrap,addr_range           100.00% (4/1)                  109   ADDR_BURST_CROSS: cross AWBURST, AWADDR { 
+

@@ -1,0 +1,322 @@
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+<> User: vv2trainee39
+
+Host: compute-srv2.eda.atme.in
+
+Report date: Fri 01 Mar 2019 20:20:50 IST
+
+Report options: -detail -text -out cov_uncovered_report.txt
+
+Coverage database path: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output
+
+Coverage model files: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output/icc_39330fa3_1e5c7f59.ucm
+
+Coverage data files: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output/icc_39330fa3_1e5c7f59.ucd
+
+CCF files:  /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_files/cov_cmd.cf
+    set_covergroup -new_instance_reporting
+    set_covergroup -per_instance_default_one
+    set_implicit_block_scoring -off
+    set_assign_scoring
+    set_expr_scoring -all
+    select_functional
+
+
+Coverage database date: Fri 01 Mar 2019 19:59:01 IST
+
+*** There were no refinement files applied ***
+
+ <>
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+Coverage Table Legend
+---------------------
+  EXCL   excluded using refinement rule
+  P-EXCL excluded from parent
+  U-EXCL excluded and unreachable by IEV
+  T-EXCL excluded from type
+  S-EXCL smart excluded using refinement rule
+  EXCL(S) smart indirect excluded
+  EMPTY  all children are excluded
+  CONST  marked constant during simulation
+  IGN    marked ignored during simulation
+  UNG    marked ungradeable during simulation
+  DES    marked deselected during simulation
+  UNR    marked unreachable by IEV
+
+
+Uncovered Block Detail Report, Instance Based
+=============================================
+
+Instance name: axi4_slave_top
+Type name: axi4_slave_top
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/axi4_Slave_top.sv
+Number of uncovered blocks: 1 of 8
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+0      2     91    true part of         91     if (MEM_ADDR_BITS > ADDR_WIDTH) begin 
+
+Instance name: axi4_slave_top.write_response
+Type name: axi4_slave_write_response
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+Number of uncovered blocks: 1 of 24
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+0      23    90    true part of         90     end else if (next_state == IDLE && present_state == READ_RESPONSE) begin 
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+Number of uncovered blocks: 2 of 40
+Number of unreachable blocks: 0
+
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+0      13    110   false part of        106    end else begin                 
+0      35    192   true part of         192    if (current_addr == upper_wrap_limit) begin 
+
+Uncovered Expression Detail Report, Instance Based
+==================================================
+
+Expression coverage Table Legend
+---------------------
+  -      don't care
+  e      event for event-or expressions
+  O (odd), E (even), B (both), X (not scored),
+         I (marked ignore) for parity trees
+  Y (covered), N (not covered), C (constant), 
+  P (one or more inputs for this bit have been padded) for vector scoring, 
+  d=== , b=== shows which bit differs in vector scoring 
+  rval   Resulting value of the expression for coverage purposes given
+         the input values
+  <-n->  Shows the n-th term composition
+
+
+Instance name: axi4_slave_top.write_data
+Type name: axi4_slave_data_channel
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/2.AXI4_Slave_Write_Data.sv
+Number of uncovered expressions: 1 of 52
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+4.1    | 66.67% (2/3)  | 100    | wvalid && wready_next                              
+
+index: 4.1 grade: 66.67% (2/3) line: 100 source: if (wvalid && wready_next) begin
+
+wvalid && wready_next
+<-1-->    <----2---->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+4.1.2     | 0     | -   0   
+
+
+Instance name: axi4_slave_top.write_response
+Type name: axi4_slave_write_response
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+Number of uncovered expressions: 5 of 21
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+2.1    | 66.67% (2/3)  | 60     | bvalid_reg && bready                               
+6.1    | 33.33% (1/3)  | 90     | (next_state == IDLE) && (present_state == READ_RESPONSE) 
+6.2    | 50.00% (1/2)  | 90     | (next_state == IDLE)                               
+6.3    | 50.00% (1/2)  | 90     | (present_state == READ_RESPONSE)                   
+
+index: 2.1 grade: 66.67% (2/3) line: 60 source: if(bvalid_reg && bready)
+
+bvalid_reg && bready
+<---1---->    <-2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+2.1.1     | 0     | 0   -   
+
+index: 6.1 grade: 33.33% (1/3) line: 90 source: end else if (next_state == IDLE && present_state == READ_RESPONSE) begin
+
+(next_state == IDLE) && (present_state == READ_RESPONSE)
+<--------1--------->    <--------------2--------------->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+6.1.1     | 0     | 0   -   
+6.1.3     | 0     | 1   1   
+
+index: 6.2 grade: 50.00% (1/2) line: 90 source: end else if (next_state == IDLE && present_state == READ_RESPONSE) begin
+
+(next_state == IDLE)
+ <---3---->    <4->
+
+index     | hit   | <3>   <4>   
+-------------------------------- '=='
+6.2.2     | 0     | lhs != rhs  
+
+index: 6.3 grade: 50.00% (1/2) line: 90 source: end else if (next_state == IDLE && present_state == READ_RESPONSE) begin
+
+(present_state == READ_RESPONSE)
+ <-----5----->    <-----6----->
+
+index     | hit   | <5>   <6>   
+-------------------------------- '=='
+6.3.1     | 0     | lhs == rhs  
+
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+Number of uncovered expressions: 16 of 63
+Number of unreachable expressions: 0
+
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+3.1    | 66.67% (2/3)  | 64     | (state == R_IDLE) ? 1'b0 : mem_rd_data             
+8.1    | 50.00% (1/2)  | 106    | burst_len_bytes > 0                                
+9.1    | 66.67% (2/3)  | 128    | rready && rvalid                                   
+12.1   | 50.00% (4/8)  | 156    | (active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes)) 
+13.1   | 33.33% (1/3)  | 168    | (! rready) && rvalid                               
+15.1   | 50.00% (1/2)  | 192    | current_addr == upper_wrap_limit                   
+16.1   | 37.50% (3/8)  | 205    | (active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes)) 
+16.3   | 50.00% (1/2)  | 206    | (current_addr == upper_wrap_limit)                 
+
+index: 3.1 grade: 66.67% (2/3) line: 64 source: assign rdata = (state == R_IDLE) ? '0 : mem_rd_data;
+
+(state == R_IDLE) ? 1'b0 : mem_rd_data
+<-------1------->          <----3---->
+
+index     | hit   | rval | <1> <3> 
+-----------------------------------
+3.1.2     | 0     | 0    | -   0   
+
+index: 8.1 grade: 50.00% (1/2) line: 106 source: if (burst_len_bytes > 0) begin
+
+burst_len_bytes > 0
+<------1------>   <2>
+
+index     | hit   | <1>   <2>   
+-------------------------------- '>'
+8.1.2     | 0     | lhs <= rhs  
+
+index: 9.1 grade: 66.67% (2/3) line: 128 source: if (rready && rvalid) begin
+
+rready && rvalid
+<-1-->    <-2-->
+
+index     | hit   | <1> <2> 
+---------------------------- '&&'
+9.1.2     | 0     | -   0   
+
+index: 12.1 grade: 50.00% (4/8) line: 156 source: mem_addr <= (active_arburst == 2'b00) ? current_addr :
+
+(active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes))
+ <-----1------>             <----3----->     <-----------4----------->    <---------------5---------------->    <-----6----->   <----------------7----------------->
+
+index     | hit   | rval | <1> <3> <4> <5> <6> <7> 
+---------------------------------------------------
+12.1.5    | 0     | 0    | 1   -   1   1   0   -   
+12.1.6    | 0     | 0    | 1   -   -   0   -   0   
+12.1.7    | 0     | 0    | 1   -   0   -   -   0   
+12.1.8    | 0     | 0    | 0   0   -   -   -   -   
+
+index: 13.1 grade: 33.33% (1/3) line: 168 source: end else if (!rready && rvalid) begin
+
+(! rready) && rvalid
+   <-1-->     <-2-->
+
+index     | hit   | rval | <1> <2> 
+-----------------------------------
+13.1.2    | 0     | 0    | -   0   
+13.1.3    | 0     | 0    | 1   -   
+
+index: 15.1 grade: 50.00% (1/2) line: 192 source: if (current_addr == upper_wrap_limit) begin
+
+current_addr == upper_wrap_limit
+<----1----->    <------2------->
+
+index     | hit   | <1>   <2>   
+-------------------------------- '=='
+15.1.1    | 0     | lhs == rhs  
+
+index: 16.1 grade: 37.50% (3/8) line: 205 source: mem_addr <= (active_arburst == 2'b00) ? current_addr :
+
+(active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes))
+ <-----1------>             <----3----->     <-----------4----------->    <---------------5---------------->    <-----6----->   <----------------7----------------->
+
+index     | hit   | rval | <1> <3> <4> <5> <6> <7> 
+---------------------------------------------------
+16.1.1    | 0     | 1    | 1   -   1   1   1   -   
+16.1.5    | 0     | 0    | 1   -   1   1   0   -   
+16.1.6    | 0     | 0    | 1   -   -   0   -   0   
+16.1.7    | 0     | 0    | 1   -   0   -   -   0   
+16.1.8    | 0     | 0    | 0   0   -   -   -   -   
+
+index: 16.3 grade: 50.00% (1/2) line: 206 source: ((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?
+
+(current_addr == upper_wrap_limit)
+ <----10---->    <------11------>
+
+index     | hit   | <10>  <11>  
+-------------------------------- '=='
+16.3.1    | 0     | lhs == rhs  
+
+
+Uncovered Toggle Detail Report, Instance Based
+==============================================
+
+Instance name: axi4_slave_top
+Type name: axi4_slave_top
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/axi4_Slave_top.sv
+Number of uncovered signal bits: 3 of 433
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 0 of 433
+Number of signal bits partially toggled(fall): 0 of 433
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+0          0          0          RRESP[1]                  
+0          0          0          RRESP[0]                  
+0          0          0          wready_in                 
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+Number of uncovered signal bits: 4 of 286
+Number of unreachable signal bits: 0
+Number of signal bits partially toggled(rise): 0 of 286
+Number of signal bits partially toggled(fall): 0 of 286
+
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+0          0          0          rresp[1]                  
+0          0          0          rresp[0]                  
+0          0          0          active_rresp[1]           
+0          0          0          active_rresp[0]           
+
+Uncovered Fsm Detail Report, Instance Based
+===========================================
+
+Instance name: axi4_slave_top.read_data
+Type name: axi4_slave_read_data
+File name: /home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+State register: state
+Number of uncovered states: 0 of 3
+Number of uncovered transitions: 1 of 5
+
+Transition Coverage:
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+R_PAUSE              R_IDLE               0      
+
+
+Uncovered Assertion Detail Report, Instance Based
+=================================================
+
+Uncovered CoverGroup Detail Report, Instance Based
+==================================================
+

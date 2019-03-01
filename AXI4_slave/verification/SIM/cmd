@@ -1,0 +1,16 @@
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1001 +UVM_TESTNAME=axi_reset_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1002 +UVM_TESTNAME=axi_handshake_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1003 +UVM_TESTNAME=axi_write_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1004 +UVM_TESTNAME=axi_read_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1005 +UVM_TESTNAME=axi_random_wr_rd_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1006 +UVM_TESTNAME=axi_concurrent_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1007 +UVM_TESTNAME=axi_fixed_burst_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1008 +UVM_TESTNAME=axi_increment_burst_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1009 +UVM_TESTNAME=axi_wrapped_burst_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1010 +UVM_TESTNAME=axi_multiple_outstanding_address_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1008 +UVM_TESTNAME=axi_axi_random_wr_rd_16wstrb_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1008 +UVM_TESTNAME=axi_axi_random_wr_rd_wstrb16_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1008 +UVM_TESTNAME=axi_axi_random_wstrb_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1000 +UVM_TESTNAME=axi_all_3_burst_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1008 +UVM_TESTNAME=axi_increment_burst_test
+irun -access +rwc -f compile_list.f -coverage all -covdut axi4_slave_top -covworkdir ./cov_work -covoverwrite -covfile ./cov_files/cov_cmd.cf -uvmhome CDNS-1.1d -seed 1008 +UVM_TESTNAME=axi_boundary_cross_test

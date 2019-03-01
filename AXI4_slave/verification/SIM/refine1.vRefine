@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<refinement-file-root>
+<information creation-time="Thu 28 Feb 2019 20:57:36 IST" creator="vv2trainee39" csCheck="true" modified-by="vv2trainee39" modify-time="Fri 01 Mar 2019 02:54:17 IST" rules-signature-c="8c8467ca0b870cf3627b3bb5183f360" tool-version="Incisive vManager15.2">
+<ucm-files>
+<ucm-file domain="icc" modelCheckSum="959647651" path="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_work/scope/cov_merged_output/icc_39330fa3_0a12db73.ucm"/>
+</ucm-files>
+<ccf-files>
+<ccf-file content="set_covergroup -new_instance_reporting;set_covergroup -per_instance_default_one;set_implicit_block_scoring -off;set_assign_scoring;set_expr_scoring -all;select_functional;" path="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/verification/SIM/cov_files/cov_cmd.cf"/>
+</ccf-files>
+</information>
+<rules>
+<rule ccType="inst" domain="icc" entityName="axi4_slave_top/write_response/bresp" entityType="toggle" excTime="1551389019" name="exclude" reviewer="unknown" user="0" vscope="default"/>
+<rule ccType="inst" domain="icc" entityName="axi4_slave_top/write_response/stored_bresp" entityType="toggle" excTime="1551389022" name="exclude" reviewer="unknown" user="0" vscope="default"/>
+<rule ccType="inst" ccfFlagsMask="2816-39" domain="icc" entityName="axi4_slave_top/write_response/6" entityType="top-expr" excTime="1551389037" file="1" im-checksum="281987611" line="90" name="exclude" reviewer="unknown" text="(next_state == IDLE) &amp;&amp; (present_state == READ_RESPONSE)" user="0" vscope="default"/>
+<rule ccType="inst" ccfFlagsMask="2816-39" domain="icc" entityName="axi4_slave_top/write_response/2" entityType="top-expr" excTime="1551389039" file="1" im-checksum="281987611" line="60" name="exclude" reviewer="unknown" text="bvalid_reg &amp;&amp; bready" user="0" vscope="default"/>
+<rule ccType="inst" ccfFlagsMask="2816-39" domain="icc" entityName="axi4_slave_top/write_response/23" entityType="block" excTime="1551389047" file="1" im-checksum="1900761991" line="90" name="exclude" reviewer="unknown" text="end else if (next_state == IDLE &amp;&amp; present_state == READ_RESPONSE) begin" user="0" vscope="default"/>
+</rules>
+<cache-map>
+<cache-entry key="0" value="vv2trainee39"/>
+<cache-entry key="1" value="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv"/>
+</cache-map>
+</refinement-file-root>

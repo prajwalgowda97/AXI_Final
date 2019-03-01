@@ -1,0 +1,1065 @@
+irun(64): 15.20-s051: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+TOOL:	irun(64)	15.20-s051: Started on Mar 01, 2019 at 19:57:28 IST
+irun
+	-access +rwc
+	-f compile_list.f
+		./../../axi_top_rtl/AXI4_SLAVE_WITH_TOP/1.AXI4_Slave_Write_Address.sv
+		./../../axi_top_rtl/AXI4_SLAVE_WITH_TOP/2.AXI4_Slave_Write_Data.sv
+		./../../axi_top_rtl/AXI4_SLAVE_WITH_TOP/3.AXI4_Slave_Write_Response.sv
+		./../../axi_top_rtl/AXI4_SLAVE_WITH_TOP/4.AXI4_Slave_Read_Address.sv
+		./../../axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv
+		./../../axi_top_rtl/AXI4_SLAVE_WITH_TOP/axi4_Slave_top.sv
+		./../UVME/uvm_pkg/test_pkg.sv
+		./../UVME/top/axi_top.sv
+		./../UVME/top/axi_interface.sv
+	-svseed 78090
+	+UVM_TESTNAME=axi_random_wr_rd_test
+	+define+UVM_REPORT_DISABLE_FILE_LINE
+	-coverage all
+	-covdut axi4_slave_top
+	-covworkdir /cov_work
+	-covoverwrite
+	-covfile ./cov_files/cov_cmd.cf
+	-uvmhome CDNS-1.1d
+ncsim: *E,CNDIR: Could not create/open directory /cov_work.
+Loading snapshot worklib.axi_top:sv .................... Done
+SVSEED set from command line: 78090
+ncsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+ncsim> source /tools/cadence/INCISIVE152/tools/inca/files/ncsimrc
+ncsim> source /tools/cadence/INCISIVE152/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl
+ncsim> run
+----------------------------------------------------------------
+CDNS-UVM-1.1d (15.20-s051)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: uvm_test_top [axi_random_wr_rd_test] Inside Constuctor!
+UVM_INFO @ 0: reporter [RNTST] Running test axi_random_wr_rd_test...
+UVM_INFO @ 0: uvm_test_top.env_inst [ENV_CLASS] Inside constructor!
+UVM_INFO @ 0: uvm_test_top [axi_random_wr_rd_test] Inside Build Phase!
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst [agent_class] Inside constructor!
+ncsim: *W,OBINRGT: (File: ../UVME/env/axi_cov_model.sv, Line : 54): Some of the values in bin range '[8 : $]' of bin 'worklib.test_pkg::axi_cov_model::axi_write_cg.AWSIZE.invalid' are not within the possible values that coverpoint can store. Range will be modified to '[7 : $]'.
+ncsim: *W,OBINRGT: (File: ../UVME/env/axi_cov_model.sv, Line : 156): Some of the values in bin range '[8 : $]' of bin 'worklib.test_pkg::axi_cov_model::axi_read_cg.ARSIZE.invalid' are not within the possible values that coverpoint can store. Range will be modified to '[7 : $]'.
+UVM_INFO @ 0: uvm_test_top.env_inst [ENV_CLASS] Inside Build Phase!
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst.driver_inst [Driver_class] Inside Constructor!
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst.seqr_inst [Sequencer_class] Inside Constructor!
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst [agent_class] Inside Build Phase!
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst.driver_inst [Driver_class] Inside Build Phase!
+UVM_INFO @ 0: uvm_test_top.env_inst.cov_model [COV_MODEL] Build phase executed
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst [agent_class] Inside Connect Phase!
+UVM_INFO @ 0: uvm_test_top.env_inst [ENV_CLASS] Inside connect Phase! All connections established
+UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+--------------------------------------------------------------
+Name                       Type                    Size  Value
+--------------------------------------------------------------
+uvm_test_top               axi_random_wr_rd_test   -     @2784
+  env_inst                 axi_env                 -     @2866
+    agent_inst             axi_agent               -     @2948
+      driver_inst          axi_driver              -     @3070
+        rsp_port           uvm_analysis_port       -     @3170
+        seq_item_port      uvm_seq_item_pull_port  -     @3119
+      mon_inst             axi_monitor             -     @3202
+        handshake_port     uvm_analysis_port       -     @3350
+        rd_analysis_port   uvm_analysis_port       -     @3301
+        wr_analysis_port   uvm_analysis_port       -     @3252
+      seqr_inst            axi_seqr                -     @3330
+        rsp_export         uvm_analysis_export     -     @3438
+        seq_item_export    uvm_seq_item_pull_imp   -     @3986
+        arbitration_queue  array                   0     -    
+        lock_queue         array                   0     -    
+        num_last_reqs      integral                32    'd1  
+        num_last_rsps      integral                32    'd1  
+    cov_model              axi_cov_model           -     @2980
+      analysis_imp         uvm_analysis_imp        -     @3031
+    sb                     axi_scoreboard          -     @2914
+      rd_analysis_port     uvm_analysis_port       -     @4238
+      rd_export            uvm_analysis_imp_rd     -     @4140
+      wr_analysis_port     uvm_analysis_port       -     @4189
+      wr_export            uvm_analysis_imp_wr     -     @4091
+--------------------------------------------------------------
+
+UVM_INFO @ 0: uvm_test_top [uvm_test_top] it test random_wr_rd first line
+UVM_INFO @ 0: uvm_test_top [axi_random_wr_rd_test] inside the random_wr_rd test
+UVM_INFO @ 0: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [axi_random_wr_rd_seq] Random_wr_rd_seq: inside body
+UVM_INFO @ 5: uvm_test_top [axi_random_wr_rd_test] random_wr_rd scenario 14 is competed
+UVM_INFO @ 5: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [axi_random_wr_rd_seq] Random_wr_rd_seq: inside body
+UVM_INFO @ 15: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0xx, AWSIZE=0xx
+UVM_INFO @ 15: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0xx	 AWID=0xx	 AWLEN=x	 AWSIZE=x	 AWBURST=x
+
+UVM_INFO @ 15: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{}	 WSTRB=0xx	 WLAST=x
+
+UVM_INFO @ 15: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 25: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 25: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 25: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 55: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0xf, AWSIZE=0x2
+ncsim: *E,EILLVS: (File: ../UVME/env/axi_cov_model.sv, Line: 29):(Time: 55 NS + 1) Sampled value (15) for coverpoint (worklib.test_pkg::axi_cov_model::axi_write_cg@3063_2.AWID) is an illegal value.
+UVM_INFO @ 55: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x8c35d1e9	 AWID=0xf	 AWLEN=0	 AWSIZE=2	 AWBURST=0
+
+UVM_INFO @ 55: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h61f854b5}	 WSTRB=0xf	 WLAST=0
+
+UVM_INFO @ 55: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 65: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 65: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 65: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 75: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] Running scenario = 15
+UVM_INFO @ 75: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] Randomized AWADDR = 0x'{'h8c35d1e9, 'h0, 'h0, 'h0}
+UVM_INFO @ 75: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [i] i value = 0
+UVM_INFO @ 75: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] AWADDR = 0x8c35d1e9
+UVM_INFO @ 95: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 95: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 95: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 95: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 105: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 105: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 105: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 135: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0xf, AWSIZE=0x2
+UVM_INFO @ 135: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0xef5d8718	 AWID=0x1	 AWLEN=0	 AWSIZE=2	 AWBURST=0
+
+UVM_INFO @ 135: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h7cd9ea4c}	 WSTRB=0xf	 WLAST=0
+
+UVM_INFO @ 135: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x1	 BRESP=0x0
+
+UVM_INFO @ 145: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 145: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 145: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 145: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] Running scenario = 15
+UVM_INFO @ 145: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] Randomized AWADDR = 0x'{'h8c35d1e9, 'hef5d8718, 'h0, 'h0}
+UVM_INFO @ 145: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [i] i value = 1
+UVM_INFO @ 145: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] rand_wr_addr[0] = 0x8c35d1e9
+UVM_INFO @ 145: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] AWADDR = 0xef5d8718
+UVM_INFO @ 175: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0xf, AWSIZE=0x0
+UVM_INFO @ 175: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 175: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'hf9035099}	 WSTRB=0xf	 WLAST=0
+
+UVM_INFO @ 175: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 185: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 185: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 185: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 215: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0xf, AWSIZE=0x0
+UVM_INFO @ 215: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 215: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'hf9035099}	 WSTRB=0xf	 WLAST=1
+
+UVM_INFO @ 215: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0xb	 BRESP=0x0
+
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] Running scenario = 15
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] Randomized AWADDR = 0x'{'h8c35d1e9, 'hef5d8718, 'h7e96e222, 'h0}
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [i] i value = 2
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] rand_wr_addr[0] = 0x8c35d1e9
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] rand_wr_addr[1] = 0xef5d8718
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [SEQ] AWADDR = 0x7e96e222
+UVM_INFO @ 215: uvm_test_top [axi_random_wr_rd_test] random_wr_rd scenario 15 is competed
+UVM_INFO @ 215: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [axi_random_wr_rd_seq] Random_wr_rd_seq: inside body
+UVM_INFO @ 225: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 225: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 225: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 255: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 255: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 255: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 255: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 265: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x2
+ncsim: *E,EILLVS: (File: ../UVME/env/axi_cov_model.sv, Line: 131):(Time: 265 NS + 1) Sampled value (15) for coverpoint (worklib.test_pkg::axi_cov_model::axi_read_cg@3062_40.ARID) is an illegal value.
+UVM_INFO @ 265: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x8c35d1e9	 ARID=0xf	 ARLEN=0	 ARSIZE=2	 ARBURST=0
+
+UVM_INFO @ 265: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x61f854b5	 RRESP=0x0	 RLAST=0x1
+
+UVM_INFO @ 265: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [i] i value = 0
+UVM_INFO @ 295: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 295: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 295: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 295: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 305: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x2
+UVM_INFO @ 305: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0xef5d8718	 ARID=0x1	 ARLEN=0	 ARSIZE=2	 ARBURST=0
+
+UVM_INFO @ 305: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 315: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [i] i value = 1
+UVM_INFO @ 335: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 335: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 335: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 335: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 345: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x2
+ncsim: *E,EILLVS: (File: ../UVME/env/axi_cov_model.sv, Line: 131):(Time: 345 NS + 1) Sampled value (11) for coverpoint (worklib.test_pkg::axi_cov_model::axi_read_cg@3062_40.ARID) is an illegal value.
+UVM_INFO @ 345: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x7e96e222	 ARID=0xb	 ARLEN=0	 ARSIZE=2	 ARBURST=0
+
+UVM_INFO @ 345: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 365: uvm_test_top.env_inst.agent_inst.seqr_inst@@random_wr_rd_seq_inst [i] i value = 2
+UVM_INFO @ 365: uvm_test_top [axi_random_wr_rd_test] random_wr_rd scenario 16 is competed
+UVM_INFO @ 375: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 375: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 375: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 375: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 385: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 385: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 385: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 415: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 415: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 415: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 415: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 425: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 425: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 425: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 455: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 455: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 455: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 455: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 465: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 465: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 465: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 495: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 495: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 495: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 495: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 505: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 505: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 505: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 535: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 535: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 535: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 535: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 545: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 545: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 545: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 575: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 575: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 575: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 575: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 585: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 585: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 585: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 615: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 615: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 615: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 615: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 625: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 625: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 625: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 655: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 655: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 655: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 655: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 665: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 665: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 665: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 695: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 695: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 695: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 695: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 705: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 705: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 705: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 735: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 735: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 735: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 735: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 745: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 745: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 745: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 775: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 775: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 775: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 775: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 785: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 785: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 785: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 815: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 815: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 815: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 815: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 825: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 825: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 825: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 855: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 855: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 855: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 855: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 865: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 865: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 865: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 895: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 895: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 895: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 895: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 905: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 905: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 905: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 935: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 935: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 935: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 935: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 945: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 945: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 945: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 975: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 975: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 975: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 975: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 985: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 985: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 985: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1015: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1015: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1015: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1015: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1025: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1025: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1025: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1055: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1055: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1055: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1055: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1065: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1065: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1065: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1095: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1095: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1095: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1095: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1105: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1105: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1105: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1135: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1135: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1135: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1135: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1145: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1145: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1145: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1175: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1175: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1175: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1175: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1185: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1185: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1185: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1215: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1215: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1215: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1215: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1225: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1225: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1225: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1255: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1255: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1255: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1255: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1265: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1265: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1265: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1295: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1295: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1295: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1295: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1305: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1305: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1305: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1335: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling write coverage for transaction: WSTRB=0x0, AWSIZE=0x0
+UVM_INFO @ 1335: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Address: AWADDR=0x0	 AWID=0x0	 AWLEN=0	 AWSIZE=0	 AWBURST=0
+
+UVM_INFO @ 1335: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Data:	 WDATA=0x'{'h0}	 WSTRB=0x0	 WLAST=0
+
+UVM_INFO @ 1335: uvm_test_top.env_inst.sb [SCOREBOARD] 
+WRITE Response:	 BID=0x0	 BRESP=0x0
+
+UVM_INFO @ 1345: uvm_test_top.env_inst.cov_model [COV_MODEL] Sampling read coverage for transaction: ARSIZE=0x0
+UVM_INFO @ 1345: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Address: ARADDR=0x0	 ARID=0x0	 ARLEN=0	 ARSIZE=0	 ARBURST=0
+
+UVM_INFO @ 1345: uvm_test_top.env_inst.sb [SCOREBOARD] 
+READ Data: RDATA=0x0	 RRESP=0x0	 RLAST=0x0
+
+UVM_INFO @ 1365: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] Checking 34 write transactions
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] WRITE address handshake PENDING: AWVALID=1 AWREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] WRITE address handshake PASSED: AWVALID=1 AWREADY=1
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] B channel handshake PASSED: BVALID=1 BREADY=1
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] W channel handshake PASSED: WVALID=1 WREADY=1
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] B channel handshake PASSED: BVALID=1 BREADY=1
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] Checking 34 read transactions
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] READ address handshake PASSED: ARVALID=1 ARREADY=1
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] READ data handshake PASSED: RVALID=1 RREADY=1
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] READ address handshake PENDING: ARVALID=1 ARREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [HANDSHAKE_CHECK] Completed handshakes: 6, Pending handshakes: 2
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Address phase handshake INCOMPLETE: AWVALID=1 AWREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Data phase handshake INCOMPLETE: WVALID=0 WREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Data beat count MATCHES: 1 beats
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] WLAST not asserted on final data beat
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Address phase handshake COMPLETE
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Data phase handshake INCOMPLETE: WVALID=0 WREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Data beat count MATCHES: 1 beats
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] WLAST not asserted on final data beat
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Write response handshake COMPLETE
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [WRITE] Write response (BRESP) indicates OKAY
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] Address phase handshake COMPLETE
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] Data phase handshake COMPLETE
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] RLAST asserted correctly
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] Read response (RRESP) indicates OKAY
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] Address phase handshake INCOMPLETE: ARVALID=1 ARREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] Data phase handshake INCOMPLETE: RVALID=0 RREADY=0
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [READ] RLAST not asserted on read beat
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] 
+MISSING DATA:	 WDATA.size=0	 RDATA.size=1
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] ADDR/ID MISMATCH: WR_ADDR=0x8c35d1e9	 RD_ADDR=0x0	 WR_ID=0xf	 RD_ID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] ADDR/ID MISMATCH: WR_ADDR=0xef5d8718	 RD_ADDR=0x0	 WR_ID=0x1	 RD_ID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] 
+DATA MISMATCH:	 Index=0	 WDATA=0xf9035099	 RDATA=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] 
+DATA MISMATCH:	 Index=0	 WDATA=0xf9035099	 RDATA=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] PASS: BID=0xb, BRESP=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] ADDR/ID MISMATCH: WR_ADDR=0x0	 RD_ADDR=0x8c35d1e9	 WR_ID=0x0	 RD_ID=0xf
+
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] ADDR/ID MISMATCH: WR_ADDR=0x0	 RD_ADDR=0xef5d8718	 WR_ID=0x0	 RD_ID=0x1
+
+UVM_ERROR @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] ADDR/ID MISMATCH: WR_ADDR=0x0	 RD_ADDR=0x7e96e222	 WR_ID=0x0	 RD_ID=0xb
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWADDR=0x0	 ARADDR=0x0	 AWID=0x0	 ARID=0x0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - AW/AR_CHANNEL] 
+PASS: AWLEN=0	 ARLEN=0	 AWSIZE=0	 ARSIZE=0	 AWBURST=0	 ARBURST=0
+
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - W/R_CHANNEL] WRITE/READ DATA MATCH: PASS
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - B_CHANNEL] Note: BVALID or BREADY not asserted during response, skipping check
+UVM_INFO @ 1365: uvm_test_top.env_inst.sb [CHECKER - R_CHANNEL] Note: RVALID, RREADY, or RLAST not asserted, skipping check
+
+--- UVM Report catcher Summary ---
+
+
+Number of demoted UVM_FATAL reports  :    0
+Number of demoted UVM_ERROR reports  :    0
+Number of demoted UVM_WARNING reports:    0
+Number of caught UVM_FATAL reports   :    0
+Number of caught UVM_ERROR reports   :    0
+Number of caught UVM_WARNING reports :    0
+
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :  449
+UVM_WARNING :    0
+UVM_ERROR :    8
+UVM_FATAL :    0
+** Report counts by id
+[CHECKER - AW/AR_CHANNEL]    63
+[CHECKER - B_CHANNEL]    29
+[CHECKER - R_CHANNEL]    29
+[CHECKER - W/R_CHANNEL]    29
+[COV_MODEL]    69
+[Driver_class]     2
+[ENV_CLASS]     3
+[HANDSHAKE_CHECK]    11
+[READ]     7
+[RNTST]     1
+[SCOREBOARD]   170
+[SEQ]    12
+[Sequencer_class]     1
+[TEST_DONE]     1
+[UVMTOP]     1
+[WRITE]    10
+[agent_class]     3
+[axi_random_wr_rd_seq]     3
+[axi_random_wr_rd_test]     6
+[i]     6
+[uvm_test_top]     1
+Simulation complete via $finish(1) at time 1365 NS + 45
+/tools/cadence/INCISIVE152/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_root.svh:457     $finish;
+ncsim> exit
+ncsim: *W,CGDEFN: Default name "uvm_pkg.uvm_test_top.env_inst.cov_model.axi_write_cg" will be generated for covergroup instance "worklib.test_pkg::axi_cov_model::axi_write_cg@3063_2" as the name of the covergroup instance is not specified explicitly: ../UVME/env/axi_cov_model.sv, 10.
+ncsim: *W,CGDEFN: Default name "uvm_pkg.uvm_test_top.env_inst.cov_model.axi_read_cg" will be generated for covergroup instance "worklib.test_pkg::axi_cov_model::axi_read_cg@3062_40" as the name of the covergroup instance is not specified explicitly: ../UVME/env/axi_cov_model.sv, 116.
+
+coverage setup:
+  workdir  :  ./cov_work
+  dutinst  :  axi_top.dut(axi4_slave_top)
+  scope    :  scope
+  testname :  test_sv78090
+
+coverage files:
+  model(design data) :  ./cov_work/scope/icc_39330fa3_1e5c7f59.ucm (reused)
+  data               :  ./cov_work/scope/test_sv78090/icc_39330fa3_1e5c7f59.ucd
+TOOL:	irun(64)	15.20-s051: Exiting on Mar 01, 2019 at 19:57:29 IST  (total: 00:00:01)

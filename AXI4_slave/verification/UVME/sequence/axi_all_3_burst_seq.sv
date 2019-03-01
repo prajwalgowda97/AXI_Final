@@ -1,0 +1,421 @@
+class axi_all_3_burst_seq extends uvm_sequence#(axi_seq_item);
+
+  //factory registration
+  `uvm_object_utils(axi_all_3_burst_seq)
+
+    //creating sequence item handle
+    axi_seq_item seq_item_inst;
+    int scenario;
+    int i = 0;
+
+    // Variable to store randomized write address
+    bit [31:0] rand_wr_addr[$]; 
+    bit [3: 0] rand_wr_id[$];
+    bit [2:0] wr_size[$];
+    bit [1:0] wr_burst[$];
+    bit [7:0] wr_len[$];
+
+  //constructor
+  function new(string name="axi_all_3_burst_seq");
+   super.new(name);
+  endfunction
+  
+  //Build phase
+  function build_phase(uvm_phase phase);
+  seq_item_inst = axi_seq_item::type_id::create("seq_item_inst");
+  endfunction
+
+
+  //task body
+  task body();
+
+  //reset scenario
+        `uvm_info (get_type_name(),"all_3_burst_seq: inside body", UVM_LOW);
+      
+       if (scenario == 26)
+        begin
+          `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b0;
+            seq_item_inst.AWADDR    == 32'h00000000;
+            seq_item_inst.AWVALID   == 1'b0;
+            seq_item_inst.WVALID    == 1'b0;
+            seq_item_inst.WDATA[0]  == 32'h00000000;
+            seq_item_inst.BREADY    == 1'b0;
+            seq_item_inst.AWID      == 0;
+            seq_item_inst.AWSIZE    == 0;
+            seq_item_inst.ARID      == 0;
+            seq_item_inst.ARSIZE    == 0;
+            seq_item_inst.AWLEN     == 0;
+            seq_item_inst.AWBURST   == 0;
+            seq_item_inst.WSTRB     == 0;
+            seq_item_inst.WLAST     == 0;
+            seq_item_inst.ARVALID   == 0;
+            seq_item_inst.ARADDR    == 0;
+            seq_item_inst.ARLEN     == 0;
+            seq_item_inst.ARBURST   == 0;
+            seq_item_inst.RREADY    == 0;   });                     
+            end
+
+if (scenario == 27) 
+        begin
+        for (int i = 0; i < 100; i++) 
+          begin  
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b1;
+            seq_item_inst.AWVALID   == 1'b0;
+            seq_item_inst.WVALID    == 1'b0;
+            seq_item_inst.BREADY    == 1'b0;
+            seq_item_inst.AWADDR inside {[32'h0000_0000 : 32'hFFFF_FFFF]}; 
+            seq_item_inst.WDATA[0]  inside {[32'h0000_0000 : 32'hFFFF_FFFF]};
+            seq_item_inst.AWID   inside {[4'h0 : 4'h3]};
+            seq_item_inst.AWLEN     == 8'h00;
+            seq_item_inst.AWSIZE inside {[3'h0 : 3'h7]}; //   == 3'b010;
+            seq_item_inst.AWBURST   == 2'b00;
+            seq_item_inst.WSTRB  inside {[4'h4 : 4'h7]}; //   == 4'b1111;
+            seq_item_inst.WLAST     == 1'b0;
+            
+            seq_item_inst.ARVALID   == 0;
+            seq_item_inst.RREADY    == 0;
+            seq_item_inst.ARID      == 0;
+            seq_item_inst.ARADDR    == 0;
+            seq_item_inst.ARSIZE    == 0;
+            seq_item_inst.ARBURST   == 0;
+            seq_item_inst.ARLEN     == 0; });
+            
+            `uvm_info("SEQ", $sformatf("Running scenario = %0d", scenario), UVM_MEDIUM)    
+            
+            // Store the randomized AWADDR value into the class variable
+            rand_wr_addr[i] = seq_item_inst.AWADDR;
+            rand_wr_id[i]   = seq_item_inst.AWID;
+            wr_size[i]      = seq_item_inst.AWSIZE;
+            wr_burst [i]    = seq_item_inst.AWBURST;
+            wr_len [i]      = seq_item_inst.AWLEN;
+
+            `uvm_info("SEQ", $sformatf("Randomized AWADDR = 0x%0p", rand_wr_addr), UVM_MEDIUM)
+             `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+
+            for (int j = 0; j < i; j++) begin
+            `uvm_info("SEQ", $sformatf("rand_wr_addr[%0d] = 0x%0h", j, rand_wr_addr[j]), UVM_MEDIUM)
+            end
+
+            // for (int j = 0; j < i; j++) 
+            begin
+            `uvm_info("SEQ", $sformatf("AWADDR = 0x%0h", seq_item_inst.AWADDR), UVM_MEDIUM)
+            end
+
+            end
+            end
+
+        if (scenario == 28) 
+        begin
+        for (int i = 0; i < 100; i++) 
+         begin
+
+                int temp_arid    = rand_wr_id[i];
+                int temp_araddr  = rand_wr_addr[i];
+                int temp_arsize  = wr_size[i];
+                int temp_arburst = wr_burst[i];
+                int temp_arlen   = wr_len[i];
+
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b0;
+            seq_item_inst.ARVALID   == 1'b0;
+            seq_item_inst.RREADY    == 1'b0;
+            seq_item_inst.ARID     == temp_arid;    
+            seq_item_inst.ARADDR   == temp_araddr; 
+            seq_item_inst.ARSIZE   == temp_arsize;
+            seq_item_inst.ARBURST  == temp_arburst;
+            seq_item_inst.ARLEN    == temp_arlen; 
+            
+            seq_item_inst.AWVALID   == 0;
+            seq_item_inst.WVALID    == 0;
+            seq_item_inst.BREADY    == 0;
+            seq_item_inst.AWADDR    == 0;
+            seq_item_inst.WDATA[0]  == 0;
+            seq_item_inst.AWID      == 0;
+            seq_item_inst.AWLEN     == 0;
+            seq_item_inst.AWSIZE    == 0;
+            seq_item_inst.AWBURST   == 0;
+            seq_item_inst.WSTRB     == 0;
+            seq_item_inst.WLAST     == 0; }); 
+
+                
+            `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+            end
+            end
+                    
+  if (scenario == 29) 
+        begin
+        for (int i = 0; i < 100; i++) 
+          begin  
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b1;
+            seq_item_inst.AWVALID   == 1'b0;
+            seq_item_inst.WVALID    == 1'b0;
+            seq_item_inst.BREADY    == 1'b0;
+            seq_item_inst.AWADDR inside {[32'h0000_0000 : 32'hFFFF_FFFF]}; 
+            seq_item_inst.WDATA[0]  inside {[32'h0000_0000 : 32'hFFFF_FFFF]};
+            seq_item_inst.AWID   inside {[4'h4 : 4'h7]};
+            seq_item_inst.AWLEN     == 8'h00;
+            seq_item_inst.AWSIZE inside {[3'h0 : 3'h7]}; //    == 3'b010;
+            seq_item_inst.AWBURST   == 2'b01;
+            seq_item_inst.WSTRB   inside {[4'h4 : 4'h7]}; //  == 4'b1111;
+            seq_item_inst.WLAST     == 1'b0; 
+            
+            seq_item_inst.ARVALID   == 0;
+            seq_item_inst.RREADY    == 0;
+            seq_item_inst.ARID      == 0;
+            seq_item_inst.ARADDR    == 0;
+            seq_item_inst.ARSIZE    == 0;
+            seq_item_inst.ARBURST   == 0;
+            seq_item_inst.ARLEN     == 0; });
+            
+            `uvm_info("SEQ", $sformatf("Running scenario = %0d", scenario), UVM_MEDIUM)    
+            
+            // Store the randomized AWADDR value into the class variable
+            rand_wr_addr[i] = seq_item_inst.AWADDR;
+            rand_wr_id[i]   = seq_item_inst.AWID;
+            wr_size[i]      = seq_item_inst.AWSIZE;
+            wr_burst [i]    = seq_item_inst.AWBURST;
+            wr_len [i]      = seq_item_inst.AWLEN;
+
+            `uvm_info("SEQ", $sformatf("Randomized AWADDR = 0x%0p", rand_wr_addr), UVM_MEDIUM)
+             `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+
+            for (int j = 0; j < i; j++) begin
+            `uvm_info("SEQ", $sformatf("rand_wr_addr[%0d] = 0x%0h", j, rand_wr_addr[j]), UVM_MEDIUM)
+            end
+
+            // for (int j = 0; j < i; j++) 
+            begin
+            `uvm_info("SEQ", $sformatf("AWADDR = 0x%0h", seq_item_inst.AWADDR), UVM_MEDIUM)
+            end
+
+            end
+            end
+
+        if (scenario == 30) 
+        begin
+        for (int i = 0; i < 100; i++) 
+         begin
+
+                int temp_arid    = rand_wr_id[i];
+                int temp_araddr  = rand_wr_addr[i];
+                int temp_arsize  = wr_size[i];
+                int temp_arburst = wr_burst[i];
+                int temp_arlen   = wr_len[i];
+
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b0;
+            seq_item_inst.ARVALID   == 1'b0;
+            seq_item_inst.RREADY    == 1'b0;
+            seq_item_inst.ARID     == temp_arid;    
+            seq_item_inst.ARADDR   == temp_araddr; 
+            seq_item_inst.ARSIZE   == temp_arsize;
+            seq_item_inst.ARBURST  == temp_arburst;
+            seq_item_inst.ARLEN    == temp_arlen; 
+            
+            seq_item_inst.AWVALID   == 0;
+            seq_item_inst.WVALID    == 0;
+            seq_item_inst.BREADY    == 0;
+            seq_item_inst.AWADDR    == 0;
+            seq_item_inst.WDATA[0]  == 0;
+            seq_item_inst.AWID      == 0;
+            seq_item_inst.AWLEN     == 0;
+            seq_item_inst.AWSIZE    == 0;
+            seq_item_inst.AWBURST   == 0;
+            seq_item_inst.WSTRB     == 0;
+            seq_item_inst.WLAST     == 0; }); 
+
+                
+            `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+            end
+            end
+
+    if (scenario == 31) 
+        begin
+        for (int i = 0; i < 100; i++) 
+          begin  
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b1;
+            seq_item_inst.AWVALID   == 1'b0;
+            seq_item_inst.WVALID    == 1'b0;
+            seq_item_inst.BREADY    == 1'b0;
+            seq_item_inst.AWADDR inside {[32'h0000_0000 : 32'hFFFF_FFFF]}; 
+            seq_item_inst.WDATA[0]  inside {[32'h0000_0000 : 32'hFFFF_FFFF]};
+            seq_item_inst.AWID   inside {[4'h8 : 4'hB]};
+            seq_item_inst.AWLEN     == 8'h04;
+            seq_item_inst.AWSIZE inside {[3'h0 : 3'h7]}; //   == 3'b010;
+            seq_item_inst.AWBURST   == 2'b10;
+            seq_item_inst.WSTRB   inside {[4'h8 : 4'hB]}; //  == 4'b1111;
+            seq_item_inst.WLAST     == 1'b0; 
+            
+            seq_item_inst.ARVALID   == 0;
+            seq_item_inst.RREADY    == 0;
+            seq_item_inst.ARID      == 0;
+            seq_item_inst.ARADDR    == 0;
+            seq_item_inst.ARSIZE    == 0;
+            seq_item_inst.ARBURST   == 0;
+            seq_item_inst.ARLEN     == 0; });
+            
+            `uvm_info("SEQ", $sformatf("Running scenario = %0d", scenario), UVM_MEDIUM)    
+            
+            // Store the randomized AWADDR value into the class variable
+            rand_wr_addr[i] = seq_item_inst.AWADDR;
+            rand_wr_id[i]   = seq_item_inst.AWID;
+            wr_size[i]      = seq_item_inst.AWSIZE;
+            wr_burst [i]    = seq_item_inst.AWBURST;
+            wr_len [i]      = seq_item_inst.AWLEN;
+
+            `uvm_info("SEQ", $sformatf("Randomized AWADDR = 0x%0p", rand_wr_addr), UVM_MEDIUM)
+             `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+
+            for (int j = 0; j < i; j++) begin
+            `uvm_info("SEQ", $sformatf("rand_wr_addr[%0d] = 0x%0h", j, rand_wr_addr[j]), UVM_MEDIUM)
+            end
+
+            // for (int j = 0; j < i; j++) 
+            begin
+            `uvm_info("SEQ", $sformatf("AWADDR = 0x%0h", seq_item_inst.AWADDR), UVM_MEDIUM)
+            end
+
+            end
+            end
+
+        if (scenario == 32) 
+        begin
+        for (int i = 0; i < 100; i++) 
+         begin
+
+                int temp_arid    = rand_wr_id[i];
+                int temp_araddr  = rand_wr_addr[i];
+                int temp_arsize  = wr_size[i];
+                int temp_arburst = wr_burst[i];
+                int temp_arlen   = wr_len[i];
+
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b0;
+            seq_item_inst.ARVALID   == 1'b0;
+            seq_item_inst.RREADY    == 1'b0;
+            seq_item_inst.ARID     == temp_arid;    
+            seq_item_inst.ARADDR   == temp_araddr; 
+            seq_item_inst.ARSIZE   == temp_arsize;
+            seq_item_inst.ARBURST  == temp_arburst;
+            seq_item_inst.ARLEN    == temp_arlen; 
+            
+            seq_item_inst.AWVALID   == 0;
+            seq_item_inst.WVALID    == 0;
+            seq_item_inst.BREADY    == 0;
+            seq_item_inst.AWADDR    == 0;
+            seq_item_inst.WDATA[0]  == 0;
+            seq_item_inst.AWID      == 0;
+            seq_item_inst.AWLEN     == 0;
+            seq_item_inst.AWSIZE    == 0;
+            seq_item_inst.AWBURST   == 0;
+            seq_item_inst.WSTRB     == 0;
+            seq_item_inst.WLAST     == 0; }); 
+
+                
+            `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+            end
+            end
+ if (scenario == 33) 
+        begin
+        for (int i = 0; i < 100; i++) 
+          begin  
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b1;
+            seq_item_inst.AWVALID   == 1'b0;
+            seq_item_inst.WVALID    == 1'b0;
+            seq_item_inst.BREADY    == 1'b0;
+            seq_item_inst.AWADDR inside {[32'h0000_0000 : 32'hFFFF_FFFF]}; 
+            seq_item_inst.WDATA[0]  inside {[32'h0000_0000 : 32'hFFFF_FFFF]};
+            seq_item_inst.AWID   inside {[4'hC : 4'hF]};
+            seq_item_inst.AWLEN     == 8'h00;
+            seq_item_inst.AWSIZE  inside {[3'h0 : 3'h7]}; //  == 3'b010;
+            seq_item_inst.AWBURST   == 2'b11;
+            seq_item_inst.WSTRB   inside {[4'h8 : 4'hB]}; //  == 4'b1111;
+            seq_item_inst.WLAST     == 1'b0; 
+            
+            seq_item_inst.ARVALID   == 0;
+            seq_item_inst.RREADY    == 0;
+            seq_item_inst.ARID      == 0;
+            seq_item_inst.ARADDR    == 0;
+            seq_item_inst.ARSIZE    == 0;
+            seq_item_inst.ARBURST   == 0;
+            seq_item_inst.ARLEN     == 0; });
+            
+            `uvm_info("SEQ", $sformatf("Running scenario = %0d", scenario), UVM_MEDIUM)    
+            
+            // Store the randomized AWADDR value into the class variable
+            rand_wr_addr[i] = seq_item_inst.AWADDR;
+            rand_wr_id[i]   = seq_item_inst.AWID;
+            wr_size[i]      = seq_item_inst.AWSIZE;
+            wr_burst [i]    = seq_item_inst.AWBURST;
+            wr_len [i]      = seq_item_inst.AWLEN;
+
+            `uvm_info("SEQ", $sformatf("Randomized AWADDR = 0x%0p", rand_wr_addr), UVM_MEDIUM)
+             `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+
+            for (int j = 0; j < i; j++) begin
+            `uvm_info("SEQ", $sformatf("rand_wr_addr[%0d] = 0x%0h", j, rand_wr_addr[j]), UVM_MEDIUM)
+            end
+
+            // for (int j = 0; j < i; j++) 
+            begin
+            `uvm_info("SEQ", $sformatf("AWADDR = 0x%0h", seq_item_inst.AWADDR), UVM_MEDIUM)
+            end
+
+            end
+            end
+
+        if (scenario == 34) 
+        begin
+        for (int i = 0; i < 100; i++) 
+         begin
+
+                int temp_arid    = rand_wr_id[i];
+                int temp_araddr  = rand_wr_addr[i];
+                int temp_arsize  = wr_size[i];
+                int temp_arburst = wr_burst[i];
+                int temp_arlen   = wr_len[i];
+
+            `uvm_do_with(seq_item_inst,{
+            seq_item_inst.RST       == 1'b1;
+            seq_item_inst.wr_rd     == 1'b0;
+            seq_item_inst.ARVALID   == 1'b0;
+            seq_item_inst.RREADY    == 1'b0;
+            seq_item_inst.ARID     == temp_arid;    
+            seq_item_inst.ARADDR   == temp_araddr; 
+            seq_item_inst.ARSIZE   == temp_arsize;
+            seq_item_inst.ARBURST  == temp_arburst;
+            seq_item_inst.ARLEN    == temp_arlen; 
+            
+            seq_item_inst.AWVALID   == 0;
+            seq_item_inst.WVALID    == 0;
+            seq_item_inst.BREADY    == 0;
+            seq_item_inst.AWADDR    == 0;
+            seq_item_inst.WDATA[0]  == 0;
+            seq_item_inst.AWID      == 0;
+            seq_item_inst.AWLEN     == 0;
+            seq_item_inst.AWSIZE    == 0;
+            seq_item_inst.AWBURST   == 0;
+            seq_item_inst.WSTRB     == 0;
+            seq_item_inst.WLAST     == 0; }); 
+
+                
+            `uvm_info("i", $sformatf("i value = %0d", i), UVM_MEDIUM) 
+            end
+            end
+                                   
+  endtask
+endclass 
+
+

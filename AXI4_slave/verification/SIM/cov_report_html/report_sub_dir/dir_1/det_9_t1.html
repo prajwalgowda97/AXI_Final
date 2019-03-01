@@ -1,0 +1,342 @@
+<HTML>
+<HEAD>
+<link type="text/css" rel="stylesheet" href="../../imc.css"></link>
+<script type="text/javascript" src="../../sortable.js"></script>
+<TITLE>IMC Report: ./cov_report_html</TITLE></HEAD>
+<BODY>
+<A NAME="_topcov"></A>
+<P class="summary_title">Coverage   Summary Report, Instance-Based</P>
+
+<P class="fs"><A STYLE="float: left" class="namet" HREF="../../index.html">Top Level Summary</A><A STYLE="float: right" class="namet" HREF="../../legend.html">Legend and Help</A></P>
+<BR>
+<TABLE class="detail_header"><TR class="detail"><TD>
+
+<B>Instance name: </B><A HREF="../dir_1/summ_4_t1.html" class="namet">axi4_slave_top</A>.read_data<BR>
+
+<B>Type name: </B>axi4_slave_read_data<BR>
+
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR>
+
+</TD></TR></TABLE>
+
+<BR>
+<P class="subtitle">Coverage Summary Report, Instance-Based</P>
+<TABLE class="sortable sml summary_table" id="totalTable">
+
+
+<TR><TH class="wht">Overall</TH>
+<TH class="wht">Overall Covered</TH>
+<TH class="wht">Block</TH>
+<TH class="wht">Expression</TH>
+<TH class="wht">Toggle</TH>
+<TH class="wht">FSM&nbsp;State</TH>
+<TH class="wht">FSM&nbsp;Transition</TH>
+<TH class="wht">Assertion</TH>
+<TH class="wht">CoverGroup</TH>
+<TH class="wht">CoverGroup Covered</TH>
+<TH class="wht">name</TH>
+
+</TR>
+
+<TR><TD class="range75to79"><A HREF="">78.62%</A></TD>
+<TD class="range85to89"><A HREF="">85.64%&nbsp;(340/397)</A></TD>
+<TD class="range75to79"><A HREF="#_Blockcov">77.50%&nbsp;(31/40)</A></TD>
+<TD class="range60to64"><A HREF="#_Expressioncov">61.90%&nbsp;(39/63)</A></TD>
+<TD class="range90to94"><A HREF="#_Togglecov">92.31%&nbsp;(264/286)</A></TD>
+<TD class="range100"><A HREF="#_Fsmcov">100.00%&nbsp;(3/3)</A></TD>
+<TD class="range60to64"><A HREF="#_Fsmcov">60.00%&nbsp;(3/5)</A></TD>
+<TD class="rangenone">n/a</TD>
+<TD class="rangenone">n/a</TD>
+<TD class="rangenone">n/a</TD>
+<TD class="namecell">read_data</TD>
+
+</TR>
+
+
+</TABLE>
+<BR><BR><A NAME="_Blockcov"></A>
+<P class="detail_title">     Uncovered Block Detail Report, Instance Based</P>
+<P class="fs"><A STYLE="float: right" class="namet" HREF="#_topcov">To Top</A></P><BR>
+
+<TABLE class="detail_header"><TR class="detail"><TD>
+<B>Instance name: </B>axi4_slave_top.read_data<BR>
+<B>Type name: </B>axi4_slave_read_data<BR>
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR><B>Number of uncovered blocks: </B>9 of 40<BR>
+<B>Number of unreachable blocks: </B>0<BR>
+
+
+</TD></TR></TABLE>
+
+<PRE class="detail_report_text">
+Count  Block Line  Kind                 Origin Source Code                    
+------------------------------------------------------------------------------
+0      13    110   false part of        106    end else begin                 
+0      19    136   a case item of       135    2'b00: begin // FIXED burst    
+0      22    143   true part of         143    if (current_addr == upper_wrap_limit) begin 
+0      32    185   a case item of       184    2'b00: begin // FIXED burst    
+0      33    188   a case item of       184    2'b01: begin // INCR burst     
+0      34    191   a case item of       184    2'b10: begin // WRAP burst     
+0      35    192   true part of         192    if (current_addr == upper_wrap_limit) begin 
+0      36    194   false part of        192    end else begin                 
+0      39    210   false part of        179    end else begin                 
+
+</PRE>
+<A NAME="_Expressioncov"></A>
+<P class="detail_title">     Uncovered Expression Detail Report, Instance Based</P>
+<P class="fs"><A STYLE="float: right" class="namet" HREF="#_topcov">To Top</A></P><BR>
+
+<TABLE class="detail_header"><TR class="detail"><TD>
+<B>Instance name: </B>axi4_slave_top.read_data<BR>
+<B>Type name: </B>axi4_slave_read_data<BR>
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR><B>Number of uncovered expressions: </B>24 of 63<BR>
+<B>Number of unreachable expressions: </B>0<BR>
+
+
+</TD></TR></TABLE>
+
+<PRE class="detail_report_text">
+index  | grade         | line   | expression                                         
+-------------------------------------------------------------------------------------
+3.1    | 66.67% (2/3)  | 64     | (state == R_IDLE) ? 1'b0 : mem_rd_data             
+8.1    | 50.00% (1/2)  | 106    | burst_len_bytes &gt; 0                             
+9.1    | 66.67% (2/3)  | 128    | rready && rvalid                                   
+11.1   | 50.00% (1/2)  | 143    | current_addr == upper_wrap_limit                   
+12.1   | 25.00% (2/8)  | 156    | (active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes)) 
+12.3   | 50.00% (1/2)  | 157    | (current_addr == upper_wrap_limit)                 
+13.1   | 33.33% (1/3)  | 168    | (! rready) && rvalid                               
+14.1   | 50.00% (1/2)  | 179    | beat_count &lt; active_arlen                       
+15.1   | 0.00% (0/2)   | 192    | current_addr == upper_wrap_limit                   
+16.1   | 25.00% (2/8)  | 205    | (active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes)) 
+16.2   | 50.00% (1/2)  | 206    | (active_arburst == 2'b10)                          
+16.3   | 50.00% (1/2)  | 206    | (current_addr == upper_wrap_limit)                 
+
+<B>index: </B><B>3.1</B><B> grade: </B><B>66.67% (2/3)</B><B> line: </B><B>64</B><B> source: </B><B>assign rdata = (state == R_IDLE) ? '0 : mem_rd_data;</B>
+
+(state == R_IDLE) ? 1'b0 : mem_rd_data<BR>
+<B><</B>-------<B>1</B>-------<B>></B>          <B><</B>----<B>3</B>----<B>></B>
+
+index     | hit   | rval | &lt;1&gt; &lt;3&gt; 
+-----------------------------------
+3.1.2     | 0     | 0    | -   0   
+
+<B>index: </B><B>8.1</B><B> grade: </B><B>50.00% (1/2)</B><B> line: </B><B>106</B><B> source: </B><B>if (burst_len_bytes > 0) begin</B>
+
+burst_len_bytes > 0<BR>
+<B><</B>------<B>1</B>------<B>></B>   <B><2></B>
+
+index     | hit   | &lt;1&gt; &lt;2&gt; 
+-------------------------------- '>'
+8.1.2     | 0     | lhs &lt;= rhs 
+
+<B>index: </B><B>9.1</B><B> grade: </B><B>66.67% (2/3)</B><B> line: </B><B>128</B><B> source: </B><B>if (rready && rvalid) begin</B>
+
+rready && rvalid<BR>
+<B><</B>-<B>1</B>--<B>></B>    <B><</B>-<B>2</B>--<B>></B>
+
+index     | hit   | &lt;1&gt; &lt;2&gt; 
+---------------------------- '&&'
+9.1.2     | 0     | -   0   
+
+<B>index: </B><B>11.1</B><B> grade: </B><B>50.00% (1/2)</B><B> line: </B><B>143</B><B> source: </B><B>if (current_addr == upper_wrap_limit) begin</B>
+
+current_addr == upper_wrap_limit<BR>
+<B><</B>----<B>1</B>-----<B>></B>    <B><</B>------<B>2</B>-------<B>></B>
+
+index     | hit   | &lt;1&gt; &lt;2&gt; 
+-------------------------------- '=='
+11.1.1    | 0     | lhs == rhs  
+
+<B>index: </B><B>12.1</B><B> grade: </B><B>25.00% (2/8)</B><B> line: </B><B>156</B><B> source: </B><B>mem_addr <= (active_arburst == 2'b00) ? current_addr :</B>
+
+(active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes))<BR>
+ <B><</B>-----<B>1</B>------<B>></B>             <B><</B>----<B>3</B>-----<B>></B>     <B><</B>-----------<B>4</B>-----------<B>></B>    <B><</B>---------------<B>5</B>----------------<B>></B>    <B><</B>-----<B>6</B>-----<B>></B>   <B><</B>----------------<B>7</B>-----------------<B>></B>
+
+index     | hit   | rval | &lt;1&gt; &lt;3&gt; &lt;4&gt; &lt;5&gt; &lt;6&gt; &lt;7&gt; 
+---------------------------------------------------
+12.1.1    | 0     | 1    | 1   -   1   1   1   -   
+12.1.4    | 0     | 1    | 0   1   -   -   -   -   
+12.1.5    | 0     | 0    | 1   -   1   1   0   -   
+12.1.6    | 0     | 0    | 1   -   -   0   -   0   
+12.1.7    | 0     | 0    | 1   -   0   -   -   0   
+12.1.8    | 0     | 0    | 0   0   -   -   -   -   
+
+<B>index: </B><B>12.3</B><B> grade: </B><B>50.00% (1/2)</B><B> line: </B><B>157</B><B> source: </B><B>((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?</B>
+
+(current_addr == upper_wrap_limit)<BR>
+ <B><</B>----<B>10</B>----<B>></B>    <B><</B>------<B>11</B>------<B>></B>
+
+index     | hit   | &lt;10&gt; &lt;11&gt; 
+-------------------------------- '=='
+12.3.1    | 0     | lhs == rhs  
+
+<B>index: </B><B>13.1</B><B> grade: </B><B>33.33% (1/3)</B><B> line: </B><B>168</B><B> source: </B><B>end else if (!rready && rvalid) begin</B>
+
+(! rready) && rvalid<BR>
+   <B><</B>-<B>1</B>--<B>></B>     <B><</B>-<B>2</B>--<B>></B>
+
+index     | hit   | rval | &lt;1&gt; &lt;2&gt; 
+-----------------------------------
+13.1.2    | 0     | 0    | -   0   
+13.1.3    | 0     | 0    | 1   -   
+
+<B>index: </B><B>14.1</B><B> grade: </B><B>50.00% (1/2)</B><B> line: </B><B>179</B><B> source: </B><B>if (beat_count < active_arlen) begin</B>
+
+beat_count < active_arlen<BR>
+<B><</B>---<B>1</B>----<B>></B>   <B><</B>----<B>2</B>-----<B>></B>
+
+index     | hit   | &lt;1&gt; &lt;2&gt; 
+-------------------------------- '<'
+14.1.2    | 0     | lhs &gt;= rhs 
+
+<B>index: </B><B>15.1</B><B> grade: </B><B>0.00% (0/2)</B><B> line: </B><B>192</B><B> source: </B><B>if (current_addr == upper_wrap_limit) begin</B>
+
+current_addr == upper_wrap_limit<BR>
+<B><</B>----<B>1</B>-----<B>></B>    <B><</B>------<B>2</B>-------<B>></B>
+
+index     | hit   | &lt;1&gt; &lt;2&gt; 
+-------------------------------- '=='
+15.1.1    | 0     | lhs == rhs  
+15.1.2    | 0     | lhs != rhs  
+
+<B>index: </B><B>16.1</B><B> grade: </B><B>25.00% (2/8)</B><B> line: </B><B>205</B><B> source: </B><B>mem_addr <= (active_arburst == 2'b00) ? current_addr :</B>
+
+(active_arburst == 2'b00) ? current_addr : (((active_arburst == 2'b10) && (current_addr == upper_wrap_limit)) ? wrap_boundary : (current_addr + transfer_size_bytes))<BR>
+ <B><</B>-----<B>1</B>------<B>></B>             <B><</B>----<B>3</B>-----<B>></B>     <B><</B>-----------<B>4</B>-----------<B>></B>    <B><</B>---------------<B>5</B>----------------<B>></B>    <B><</B>-----<B>6</B>-----<B>></B>   <B><</B>----------------<B>7</B>-----------------<B>></B>
+
+index     | hit   | rval | &lt;1&gt; &lt;3&gt; &lt;4&gt; &lt;5&gt; &lt;6&gt; &lt;7&gt; 
+---------------------------------------------------
+16.1.1    | 0     | 1    | 1   -   1   1   1   -   
+16.1.4    | 0     | 1    | 0   1   -   -   -   -   
+16.1.5    | 0     | 0    | 1   -   1   1   0   -   
+16.1.6    | 0     | 0    | 1   -   -   0   -   0   
+16.1.7    | 0     | 0    | 1   -   0   -   -   0   
+16.1.8    | 0     | 0    | 0   0   -   -   -   -   
+
+<B>index: </B><B>16.2</B><B> grade: </B><B>50.00% (1/2)</B><B> line: </B><B>206</B><B> source: </B><B>((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?</B>
+
+(active_arburst == 2'b10)<BR>
+ <B><</B>-----<B>8</B>------<B>></B>    <B><</B>-<B>9</B>-<B>></B>
+
+index     | hit   | &lt;8&gt; &lt;9&gt; 
+-------------------------------- '=='
+16.2.1    | 0     | lhs == rhs  
+
+<B>index: </B><B>16.3</B><B> grade: </B><B>50.00% (1/2)</B><B> line: </B><B>206</B><B> source: </B><B>((active_arburst == 2'b10 && current_addr == upper_wrap_limit) ?</B>
+
+(current_addr == upper_wrap_limit)<BR>
+ <B><</B>----<B>10</B>----<B>></B>    <B><</B>------<B>11</B>------<B>></B>
+
+index     | hit   | &lt;10&gt; &lt;11&gt; 
+-------------------------------- '=='
+16.3.1    | 0     | lhs == rhs  
+
+
+</PRE>
+<A NAME="_Togglecov"></A>
+<P class="detail_title">     Uncovered Toggle Detail Report, Instance Based</P>
+<P class="fs"><A STYLE="float: right" class="namet" HREF="#_topcov">To Top</A></P><BR>
+
+<TABLE class="detail_header"><TR class="detail"><TD>
+<B>Instance name: </B>axi4_slave_top.read_data<BR>
+<B>Type name: </B>axi4_slave_read_data<BR>
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR><B>Number of uncovered signal bits: </B>22 of 286<BR>
+<B>Number of unreachable signal bits: </B>0<BR>
+<B>Number of signal bits partially toggled(rise): </B>0 of 286<BR>
+<B>Number of signal bits partially toggled(fall): </B>0 of 286<BR>
+
+
+</TD></TR></TABLE>
+
+<PRE class="detail_report_text">
+Hit(Full)  Hit(Rise)  Hit(Fall)  Signal                    
+-----------------------------------------------------------
+0          0          0          latched_arlen[7]          
+0          0          0          latched_arlen[5]          
+0          0          0          rresp[1]                  
+0          0          0          rresp[0]                  
+0          0          0          beat_count[7]             
+0          0          0          active_arlen[7]           
+0          0          0          active_arlen[5]           
+0          0          0          active_rresp[1]           
+0          0          0          active_rresp[0]           
+0          0          0          wrap_boundary[23]         
+0          0          0          wrap_boundary[22]         
+0          0          0          wrap_boundary[9]          
+0          0          0          wrap_boundary[6]          
+0          0          0          wrap_boundary[3]          
+0          0          0          wrap_boundary[2]          
+0          0          0          wrap_boundary[1]          
+0          0          0          wrap_boundary[0]          
+0          0          0          upper_wrap_limit[23]      
+0          0          0          upper_wrap_limit[22]      
+0          0          0          upper_wrap_limit[9]       
+0          0          0          upper_wrap_limit[1]       
+0          0          0          upper_wrap_limit[0]       
+
+</PRE>
+<A NAME="_Fsmcov"></A>
+<P class="detail_title">     Uncovered Fsm Detail Report, Instance Based</P>
+<P class="fs"><A STYLE="float: right" class="namet" HREF="#_topcov">To Top</A></P><BR>
+
+<TABLE class="detail_header"><TR class="detail"><TD>
+<B>Instance name: </B>axi4_slave_top.read_data<BR>
+<B>Type name: </B>axi4_slave_read_data<BR>
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR>
+
+</TD></TR></TABLE>
+
+<PRE class="detail_report_text">
+<B>File name: </B>/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv<BR>
+<B>State register: </B>state<BR>
+<B>Number of uncovered states: </B>0 of 3<BR>
+<B>Number of uncovered transitions: </B>2 of 5<BR>
+
+Transition Coverage:<BR>
+====================
+P-State              N-State              Visits 
+-------------------------------------------------
+R_ACTIVE             R_IDLE               0      
+R_PAUSE              R_IDLE               0      
+
+
+</PRE>
+<A NAME="_Assertioncov"></A>
+<P class="detail_title">     Uncovered Assertion Detail Report, Instance Based</P>
+<P class="fs"><A STYLE="float: right" class="namet" HREF="#_topcov">To Top</A></P><BR>
+
+<TABLE class="detail_header"><TR class="detail"><TD>
+<B>Instance name: </B>axi4_slave_top.read_data<BR>
+<B>Type name: </B>axi4_slave_read_data<BR>
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR><B>Number of uncovered assertions: </B>0 of 0<BR>
+
+
+</TD></TR></TABLE>
+
+<PRE class="detail_report_text">
+Finished Failed Assertion                      Line  Source Code                    
+------------------------------------------------------------------------------------
+
+0 items found
+
+</PRE>
+<A NAME="_CoverGroupcov"></A>
+<P class="detail_title">     Covered+Uncovered+Excluded+UNR CoverGroup Detail Report, Instance Based</P>
+<P class="fs"><A STYLE="float: right" class="namet" HREF="#_topcov">To Top</A></P><BR>
+
+<TABLE class="detail_header"><TR class="detail"><TD>
+<B>Instance name: </B>axi4_slave_top.read_data<BR>
+<B>Type name: </B>axi4_slave_read_data<BR>
+<B>File name: </B><A HREF="/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv" TARGET="_blank">/home/vv2trainee39/Desktop/Prajwal/AXI4_slave/axi_top_rtl/AXI4_SLAVE_WITH_TOP/5.AXI4_Slave_Read_Data.sv</A><BR><B>Number of covered cover bins: </B>0 of 0<BR>
+<B>Number of uncovered cover bins: </B>0 of 0<BR>
+<B>Number of excluded cover bins: </B>0<BR>
+
+
+</TD></TR></TABLE>
+
+</TD></TR></TABLE>
+
+<PRE class="detail_report_text">
+
+0 items found
+
+</PRE>
