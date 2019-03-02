@@ -1108,321 +1108,276 @@ endclass */
 class axi_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(axi_scoreboard)
   
-  // Analysis FIFOs for write and read transactions
-  uvm_tlm_analysis_fifo #(axi_seq_item) wr_fifo;
-  uvm_tlm_analysis_fifo #(axi_seq_item) rd_fifo;
-  uvm_tlm_analysis_fifo #(axi_seq_item) handshake_fifo;
+  // TLM ports for receiving transactions from monitor
+  // First, define the implementation classes for the analysis imports
+  `uvm_analysis_imp_decl(_wr)
+  `uvm_analysis_imp_decl(_rd)
   
-  // Memory model to store write transactions and compare with read transactions
-  protected bit [31:0] mem [int unsigned];
+  // Then declare the actual ports
+  uvm_analysis_imp_wr #(axi_seq_item, axi_scoreboard) wr_export;
+  uvm_analysis_imp_rd #(axi_seq_item, axi_scoreboard) rd_export;
+
+  // Reference memory model for AXI4 slave
+  bit [31:0] ref_mem[bit [31:0]];
   
-  // Counters for transaction statistics
-  int write_transactions;
-  int read_transactions;
-  int write_errors;
-  int read_errors;
-  int protocol_errors;
+  // Counters for statistics
+  int num_writes_checked;
+  int num_reads_checked;
+  int num_mismatches;
   
-  // Transaction queues for checking outstanding transactions
-  axi_seq_item write_queue[$];
-  axi_seq_item read_queue[$];
+  // Queue for tracking outstanding read transactions
+  axi_seq_item outstanding_reads[$];
   
   // Constructor
   function new(string name = "axi_scoreboard", uvm_component parent);
     super.new(name, parent);
-    write_transactions = 0;
-    read_transactions = 0;
-    write_errors = 0;
-    read_errors = 0;
-    protocol_errors = 0;
+    wr_export = new("wr_export", this);
+    rd_export = new("rd_export", this);
+    num_writes_checked = 0;
+    num_reads_checked = 0;
+    num_mismatches = 0;
   endfunction
   
-  // Build phase - create analysis FIFOs
+  // Build phase
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    wr_fifo = new("wr_fifo", this);
-    rd_fifo = new("rd_fifo", this);
-    handshake_fifo = new("handshake_fifo", this);
+    `uvm_info("SCOREBOARD", "Build phase", UVM_HIGH)
   endfunction
   
-  // Run phase - main scoreboard functionality
-  task run_phase(uvm_phase phase);
-    axi_seq_item wr_item, rd_item, hs_item;
+  // Write transaction analysis implementation
+  function void write_wr(axi_seq_item item);
+    bit [31:0] addr;
     
-    fork
-      // Process write transactions
-      forever begin
-        wr_fifo.get(wr_item);
-        process_write_transaction(wr_item);
-      end
-      
-      // Process read transactions
-      forever begin
-        rd_fifo.get(rd_item);
-        process_read_transaction(rd_item);
-      end
-      
-      // Process handshake signals for protocol checking
-      forever begin
-        handshake_fifo.get(hs_item);
-        check_handshake_protocol(hs_item);
-      end
-    join
-  endtask
-  
-  // Process write transactions
-  task process_write_transaction(axi_seq_item item);
-    bit [31:0] address;
-    bit [31:0] masked_data;
-    int burst_len;
-    
-    // Verify this is a write transaction
-    if (!item.wr_rd) begin
-      `uvm_error("AXI_SCOREBOARD", "Expected write transaction but received read transaction")
+    if (item.RST === 1'b0) begin
+      `uvm_info("SCOREBOARD", "Reset detected, clearing reference model", UVM_MEDIUM)
+      ref_mem.delete();
       return;
     end
     
-    // Basic write transaction validation
-    if (!check_write_transaction(item)) begin
-      write_errors++;
-      return;
-    end
-    
-    // Calculate effective addresses based on burst type
-    address = item.AWADDR;
-    burst_len = item.AWLEN + 1;
-    
-    // Store data in memory model with byte enables (WSTRB)
-    for (int i = 0; i < item.WDATA.size(); i++) begin
-      // Apply WSTRB (byte enables)
-      if (!mem.exists(address)) mem[address] = 0;
+    // Process write transaction
+    if (item.AWVALID && item.AWREADY) begin
+      addr = item.AWADDR;
       
-      masked_data = apply_write_strobe(mem[address], item.WDATA[i], item.WSTRB);
-      mem[address] = masked_data;
+      `uvm_info("SCOREBOARD", $sformatf("Processing write: AWID=0x%0h, AWADDR=0x%0h, AWLEN=0x%0h, AWSIZE=0x%0h, AWBURST=0x%0h, AWVALID=0x%0h, AWREADY=0x%0h", 
+                item.AWID, item.AWADDR, item.AWLEN, item.AWSIZE, item.AWBURST, item.AWVALID, item.AWREADY), UVM_MEDIUM)
       
-      // Calculate next address based on burst type
-      address = get_next_address(address, item.AWSIZE, item.AWBURST, i, burst_len);
-    end
-    
-    write_queue.push_back(item);
-    write_transactions++;
-    `uvm_info("AXI_SCOREBOARD", $sformatf("Write Transaction #%0d: Addr=0x%0h, ID=%0d, Len=%0d", 
-              write_transactions, item.AWADDR, item.AWID, item.AWLEN), UVM_MEDIUM)
-  endtask
-  
-  // Process read transactions
-  task process_read_transaction(axi_seq_item item);
-    bit [31:0] address;
-    bit [31:0] expected_data;
-    int burst_len;
-    
-    // Verify this is a read transaction
-    if (item.wr_rd) begin
-      `uvm_error("AXI_SCOREBOARD", "Expected read transaction but received write transaction")
-      return;
-    end
-    
-    // Basic read transaction validation
-    if (!check_read_transaction(item)) begin
-      read_errors++;
-      return;
-    end
-    
-    // Calculate effective addresses based on burst type
-    address = item.ARADDR;
-    burst_len = item.ARLEN + 1;
-
-    // Compare read data with expected data from memory model
-    for (int i = 0; i <= item.ARLEN; i++) begin
-      // Check if the address exists in memory model
-      if (!mem.exists(address)) begin
-        `uvm_warning("AXI_SCOREBOARD", $sformatf("Read from uninitialized address 0x%0h", address))
-        expected_data = 0;
-      end else begin
-        expected_data = mem[address];
+      // Check write response
+      if (item.BVALID && item.BREADY) begin
+        // Check if response is OK
+        check_write_response(item);
       end
       
-      // Compare data
-      if (item.RDATA !== expected_data) begin
-        `uvm_error("AXI_SCOREBOARD", $sformatf("Read data mismatch at address 0x%0h: Expected=0x%0h, Actual=0x%0h",
-                  address, expected_data, item.RDATA))
-        read_errors++;
-      end
-      
-      // Calculate next address based on burst type
-      address = get_next_address(address, item.ARSIZE, item.ARBURST, i, burst_len);
-    end
-    
-    read_queue.push_back(item);
-    read_transactions++;
-    `uvm_info("AXI_SCOREBOARD", $sformatf("Read Transaction #%0d: Addr=0x%0h, ID=%0d, Len=%0d", 
-              read_transactions, item.ARADDR, item.ARID, item.ARLEN), UVM_MEDIUM)
-  endtask
-  
-  // Check handshake protocol rules
-  task check_handshake_protocol(axi_seq_item item);
-    if (item.handshake) begin
-      if (item.wr_rd) begin
-        // Write address handshake check
-        if (item.AWVALID && item.AWREADY) begin
-          `uvm_info("AXI_PROTOCOL", $sformatf("Valid AW handshake: AWADDR=0x%0h, AWID=%0d", 
-                    item.AWADDR, item.AWID), UVM_HIGH)
-        end else if (item.AWVALID && !item.AWREADY) begin
-          `uvm_info("AXI_PROTOCOL", "AWVALID asserted but waiting for AWREADY", UVM_HIGH)
-        end
-      end else begin
-        // Read address handshake check
-        if (item.ARVALID && item.ARREADY) begin
-          `uvm_info("AXI_PROTOCOL", $sformatf("Valid AR handshake: ARADDR=0x%0h, ARID=%0d", 
-                    item.ARADDR, item.ARID), UVM_HIGH)
-        end else if (item.ARVALID && !item.ARREADY) begin
-          `uvm_info("AXI_PROTOCOL", "ARVALID asserted but waiting for ARREADY", UVM_HIGH)
-        end
-      end
-    end
-  endtask
-  
-  // Apply write strobe (byte enable) to data
-  function bit [31:0] apply_write_strobe(bit [31:0] old_data, bit [31:0] new_data, bit [3:0] strb);
-    bit [31:0] result = old_data;
-    
-    // Apply byte enables (each bit in WSTRB corresponds to a byte)
-    for (int i = 0; i < 4; i++) begin
-      if (strb[i]) begin
-        result[8*i +: 8] = new_data[8*i +: 8];
-      end
-    end
-    
-    return result;
-  endfunction
-  
-  // Calculate next address based on burst type
-  function bit [31:0] get_next_address(bit [31:0] addr, bit [2:0] size, bit [1:0] burst_type, int beat, int burst_len);
-    bit [31:0] next_addr = addr;
-    int bytes_per_transfer = (1 << size);
-    
-    case (burst_type)
-      // FIXED burst: address doesn't change
-      2'b00: begin
-        next_addr = addr;
-      end
-      
-      // INCR burst: address increments by transfer size
-      2'b01: begin
-        next_addr = addr + bytes_per_transfer;
-      end
-      
-      // WRAP burst: address wraps at boundary
-      2'b10: begin
-        int wrap_boundary = 2 * burst_len * bytes_per_transfer;
-        bit [31:0] wrap_mask = ~(wrap_boundary - 1);
-        bit [31:0] next_incr_addr = addr + bytes_per_transfer;
+      // Update reference model with write data
+      for (int i = 0; i < item.WDATA.size(); i++) begin
+        // Calculate address based on burst type
+        bit [31:0] current_addr;
+        current_addr = calculate_addr(addr, i, item.AWSIZE, item.AWBURST, item.AWLEN);
         
-        // If next address crosses wrap boundary, wrap around
-        if ((next_incr_addr & wrap_mask) != (addr & wrap_mask)) begin
-          next_addr = (addr & wrap_mask) | ((next_incr_addr) & ~wrap_mask);
-        end else begin
-          next_addr = next_incr_addr;
-        end
+        // Apply write strobes
+        update_memory_with_wstrb(current_addr, item.WDATA[i], item.WSTRB);
+        
+        `uvm_info("SCOREBOARD_REF", $sformatf("Updated ref_mem[0x%0h] = 0x%0h", 
+                  current_addr, ref_mem[current_addr]), UVM_HIGH)
       end
       
-      // Reserved burst type
+      num_writes_checked++;
+    end
+  endfunction
+  
+  // Read transaction analysis implementation
+  function void write_rd(axi_seq_item item);
+    bit [31:0] addr;
+    bit [31:0] expected_data;
+    bit mismatch;
+    
+    mismatch = 0;
+    
+    if (item.ARVALID && item.ARREADY) begin
+      addr = item.ARADDR;
+      
+      `uvm_info("SCOREBOARD", $sformatf("Processing read: ARID=0x%0h, ARADDR=0x%0h, ARLEN=0x%0h, ARSIZE=0x%0h, ARBURST=0x%0h, ARVALID=0x%0h, ARREADY=0x%0h", 
+                item.ARID, item.ARADDR, item.ARLEN, item.ARSIZE, item.ARBURST, item.ARVALID, item.ARREADY), UVM_MEDIUM)
+      
+      // Check if read address exists in reference model
+      if (item.RVALID && item.RREADY) begin
+        // For each data beat in the burst
+        for (int i = 0; i <= item.ARLEN; i++) begin
+          // Calculate address based on burst type
+          bit [31:0] current_addr;
+          current_addr = calculate_addr(addr, i, item.ARSIZE, item.ARBURST, item.ARLEN);
+          
+          // Get expected data from reference model
+          if (ref_mem.exists(current_addr)) begin
+            expected_data = ref_mem[current_addr];
+          end else begin
+            // Memory location not written yet, expected data is undefined (using default 0)
+            expected_data = 0;
+            `uvm_info("SCOREBOARD", $sformatf("Reading from uninitialized address 0x%0h", current_addr), UVM_MEDIUM)
+          end
+          
+          // Compare expected vs actual data
+          if (item.RDATA !== expected_data) begin
+            `uvm_error("SCOREBOARD", $sformatf("Read data mismatch at addr=0x%0h: Expected=0x%0h, Got=0x%0h", 
+                      current_addr, expected_data, item.RDATA))
+            mismatch = 1;
+            num_mismatches++;
+          end else begin
+            `uvm_info("SCOREBOARD", $sformatf("Read data match at addr=0x%0h: Data=0x%0h", 
+                     current_addr, item.RDATA), UVM_HIGH)
+          end
+        end
+        
+        // Check response code
+        check_read_response(item, mismatch);
+      end
+      
+      num_reads_checked++;
+    end
+  endfunction
+  
+  // Helper: Calculate address based on burst type
+  function bit [31:0] calculate_addr(bit [31:0] base_addr, int beat_num, bit [2:0] size, bit [1:0] burst_type, bit [7:0] len);
+    bit [31:0] addr;
+    int bytes_per_transfer;
+    bit [31:0] addr_mask;
+    bit [31:0] aligned_addr;
+    
+    addr = base_addr;
+    bytes_per_transfer = (1 << size);
+    
+    // Aligned address mask
+    addr_mask = ~((1 << (bytes_per_transfer)) - 1);
+    aligned_addr = base_addr & addr_mask;
+    
+    // Address calculation based on burst type
+    case (burst_type)
+      2'b00: begin // FIXED burst
+        // Address doesn't change for fixed bursts
+        return base_addr;
+      end
+      
+      2'b01: begin // INCR burst
+        // Increment address by bytes_per_transfer for each beat
+        return base_addr + (beat_num * bytes_per_transfer);
+      end
+      
+      2'b10: begin // WRAP burst
+        int wrap_boundary;
+        bit [31:0] wrap_mask;
+        bit [31:0] wrap_addr;
+        
+        // Calculate wrap boundary
+        wrap_boundary = (len + 1) * bytes_per_transfer;
+        wrap_mask = ~(wrap_boundary - 1);
+        wrap_addr = base_addr & wrap_mask;
+        
+        // Calculate address within wrap boundary
+        return wrap_addr | ((base_addr + (beat_num * bytes_per_transfer)) & ~wrap_mask);
+      end
+      
       default: begin
-        `uvm_error("AXI_SCOREBOARD", $sformatf("Invalid burst type: %0d", burst_type))
-        next_addr = addr;
+        `uvm_error("SCOREBOARD", $sformatf("Unsupported burst type: %0d", burst_type))
+        return base_addr;
       end
     endcase
-    
-    return next_addr;
   endfunction
   
-  // Check write transaction validity
-  function bit check_write_transaction(axi_seq_item item);
-    bit is_valid = 1;
+  // Helper: Update memory with write strobes
+  function void update_memory_with_wstrb(bit [31:0] addr, bit [31:0] data, bit [3:0] wstrb);
+    bit [31:0] current_value;
     
-    // Check AWVALID and AWREADY handshake
-    if (!item.AWVALID) begin
-      `uvm_error("AXI_PROTOCOL", "Write transaction received but AWVALID not asserted")
-      is_valid = 0;
+    // Get current value or default to 0 if not initialized
+    if (ref_mem.exists(addr)) begin
+      current_value = ref_mem[addr];
+    end else begin
+      current_value = 0;
     end
     
-    // Check WLAST is asserted on the last data beat
-    if (!item.WLAST) begin
-      `uvm_error("AXI_PROTOCOL", "WLAST not asserted on the last data beat")
-      is_valid = 0;
-    end
-    
-    // Validate AWSIZE against AXI4 spec (0-7 are valid, but practical limit is often 0-3)
-    if (item.AWSIZE > 3'b111) begin
-      `uvm_error("AXI_PROTOCOL", $sformatf("Invalid AWSIZE value: %0d", item.AWSIZE))
-      is_valid = 0;
-    end
-    
-    // Validate AWBURST against AXI4 spec (0, 1, 2 are valid)
-    if (item.AWBURST > 2'b10) begin
-      `uvm_error("AXI_PROTOCOL", $sformatf("Invalid AWBURST value: %0d", item.AWBURST))
-      is_valid = 0;
-    end
-    
-    // Check data array size matches burst length
-    if (item.WDATA.size() != (item.AWLEN + 1)) begin
-      `uvm_error("AXI_PROTOCOL", $sformatf("WDATA size (%0d) doesn't match AWLEN+1 (%0d)", 
-                item.WDATA.size(), item.AWLEN + 1))
-      is_valid = 0;
-    end
-    
-    return is_valid;
-  endfunction
-  
-  // Check read transaction validity
-  function bit check_read_transaction(axi_seq_item item);
-    bit is_valid = 1;
-    
-    // Check ARVALID and ARREADY handshake
-    if (!item.ARVALID) begin
-      `uvm_error("AXI_PROTOCOL", "Read transaction received but ARVALID not asserted")
-      is_valid = 0;
-    end
-    
-    // Validate ARSIZE against AXI4 spec
-    if (item.ARSIZE > 3'b111) begin
-      `uvm_error("AXI_PROTOCOL", $sformatf("Invalid ARSIZE value: %0d", item.ARSIZE))
-      is_valid = 0;
-    end
-    
-    // Validate ARBURST against AXI4 spec
-    if (item.ARBURST > 2'b10) begin
-      `uvm_error("AXI_PROTOCOL", $sformatf("Invalid ARBURST value: %0d", item.ARBURST))
-      is_valid = 0;
-    end
-    
-    return is_valid;
-  endfunction
-  
-  // Check for ID ordering rule violations
-  function void check_id_ordering();
-    // Check for read responses with same ID coming out of order
-    for (int i = 0; i < read_queue.size(); i++) begin
-      for (int j = i + 1; j < read_queue.size(); j++) begin
-        if (read_queue[i].ARID == read_queue[j].ARID) begin
-          // Check that responses with the same ID are ordered correctly
-          if (read_queue[i].RID != read_queue[j].RID) begin
-            `uvm_error("AXI_PROTOCOL", $sformatf("Read responses with ID=%0d out of order", read_queue[i].ARID))
-            protocol_errors++;
-          end
-        end
+    // Apply write strobes (byte enables)
+    for (int i = 0; i < 4; i++) begin
+      if (wstrb[i]) begin
+        // Only update bytes where write strobe is active
+        current_value[i*8 +: 8] = data[i*8 +: 8];
       end
     end
     
-    // Similar check for write responses
-    for (int i = 0; i < write_queue.size(); i++) begin
-      for (int j = i + 1; j < write_queue.size(); j++) begin
-        if (write_queue[i].AWID == write_queue[j].AWID) begin
-          if (write_queue[i].BID != write_queue[j].BID) begin
-            `uvm_error("AXI_PROTOCOL", $sformatf("Write responses with ID=%0d out of order", write_queue[i].AWID))
-            protocol_errors++;
-          end
+    // Update reference memory model
+    ref_mem[addr] = current_value;
+  endfunction
+  
+  // Check write response
+  function void check_write_response(axi_seq_item item);
+    case (item.BRESP)
+      2'b00: begin // OKAY
+        `uvm_info("SCOREBOARD", $sformatf("Write response OKAY for BID=%0h, AWID=%0h, BVALID=%0b, BREADY=%0b", item.BID, item.AWID, item.BVALID, item.BREADY), UVM_HIGH)
+      end
+      
+      2'b01: begin // EXOKAY
+        `uvm_info("SCOREBOARD", $sformatf("Write response EXOKAY for BID=%0h, AWID=%0h, BVALID=%0b, BREADY=%0b", item.BID, item.AWID, item.BVALID, item.BREADY), UVM_HIGH)
+      end
+      
+      2'b10: begin // SLVERR
+        `uvm_warning("SCOREBOARD", $sformatf("Slave error (SLVERR) for write BID=%0h", item.BID))
+      end
+      
+      2'b11: begin // DECERR
+        `uvm_warning("SCOREBOARD", $sformatf("Decode error (DECERR) for write BID=%0h", item.BID))
+      end
+    endcase
+  endfunction
+  
+  // Check read response
+  function void check_read_response(axi_seq_item item, bit had_data_mismatch);
+    case (item.RRESP)
+      2'b00: begin // OKAY
+        if (had_data_mismatch) begin
+          `uvm_error("SCOREBOARD", $sformatf("Read data mismatch but response was OKAY for ARID=%0h", item.ARID))
+        end else begin
+          `uvm_info("SCOREBOARD", $sformatf("Read response OKAY for ARID=%0h", item.ARID), UVM_HIGH)
         end
+      end
+      
+      2'b01: begin // EXOKAY
+        `uvm_info("SCOREBOARD", $sformatf("Read response EXOKAY for ARID=%0h", item.ARID), UVM_HIGH)
+      end
+      
+      2'b10: begin // SLVERR
+        `uvm_warning("SCOREBOARD", $sformatf("Slave error (SLVERR) for read ID=%0h", item.ARID))
+      end
+      
+      2'b11: begin // DECERR
+        `uvm_warning("SCOREBOARD", $sformatf("Decode error (DECERR) for read ARID=%0h", item.ARID))
+      end
+    endcase
+  endfunction
+  
+  // Check handshake protocol rules
+  function void check_handshake_rules(axi_seq_item item);
+    // Rule: Once VALID is asserted, it must remain asserted until READY is asserted
+    if (item.wr_rd) begin // Write transaction
+      // Check address channel handshake
+      if (item.AWVALID && !item.AWREADY) begin
+        // For future cycles, AWVALID must stay high until AWREADY is asserted
+      end
+      
+      // Check data channel handshake
+      if (item.WVALID && !item.WREADY) begin
+        // For future cycles, WVALID must stay high until WREADY is asserted
+      end
+      
+      // Check response channel handshake
+      if (item.BVALID && !item.BREADY) begin
+        // For future cycles, BVALID must stay high until BREADY is asserted
+      end
+    end else begin // Read transaction
+      // Check address channel handshake
+      if (item.ARVALID && !item.ARREADY) begin
+        // For future cycles, ARVALID must stay high until ARREADY is asserted
+      end
+      
+      // Check data channel handshake
+      if (item.RVALID && !item.RREADY) begin
+        // For future cycles, RVALID must stay high until RREADY is asserted
       end
     end
   endfunction
@@ -1431,206 +1386,16 @@ class axi_scoreboard extends uvm_scoreboard;
   function void report_phase(uvm_phase phase);
     super.report_phase(phase);
     
-    // Perform final checks
-    check_id_ordering();
+    `uvm_info("SCOREBOARD_REPORT", $sformatf("AXI Scoreboard Statistics:"), UVM_LOW)
+    `uvm_info("SCOREBOARD_REPORT", $sformatf("  Total write transactions checked: %0d", num_writes_checked), UVM_LOW)
+    `uvm_info("SCOREBOARD_REPORT", $sformatf("  Total read transactions checked: %0d", num_reads_checked), UVM_LOW)
+    `uvm_info("SCOREBOARD_REPORT", $sformatf("  Total mismatches found: %0d", num_mismatches), UVM_LOW)
     
-    // Report statistics
-    `uvm_info("AXI_SCOREBOARD", 
-              $sformatf("\n=== AXI Scoreboard Statistics ===\n" +
-                       "  Write Transactions: %0d\n" +
-                       "  Read Transactions: %0d\n" +
-                       "  Write Errors: %0d\n" +
-                       "  Read Errors: %0d\n" +
-                       "  Protocol Errors: %0d\n",
-                       write_transactions, read_transactions, 
-                       write_errors, read_errors, protocol_errors), UVM_LOW)
-                       
-    // Final status
-    if (write_errors == 0 && read_errors == 0 && protocol_errors == 0) begin
-      `uvm_info("AXI_SCOREBOARD", "TEST PASSED: No errors detected", UVM_LOW)
+    if (num_mismatches == 0) begin
+      `uvm_info("SCOREBOARD_REPORT", "TEST PASSED: No mismatches found!", UVM_LOW)
     end else begin
-      `uvm_error("AXI_SCOREBOARD", "TEST FAILED: Errors detected")
-    end
-  endfunction
-
-endclass
-
-// Additional AXI4 Protocol Checker class for comprehensive protocol checks
-class axi4_protocol_checker extends uvm_subscriber #(axi_seq_item);
-  `uvm_component_utils(axi4_protocol_checker)
-  
-  // Transaction tracking for protocol rules
-  protected bit [7:0] outstanding_writes[bit [3:0]]; // Track outstanding writes by ID
-  protected bit [7:0] outstanding_reads[bit [3:0]];  // Track outstanding reads by ID
-  
-  // Protocol violation counters
-  int handshake_violations;
-  int exclusivity_violations;
-  int order_violations;
-  int burst_violations;
-  
-  // Last seen sequence numbers for IDs
-  protected int write_seq[bit [3:0]];
-  protected int read_seq[bit [3:0]];
-  
-  // Constructor
-  function new(string name = "axi4_protocol_checker", uvm_component parent);
-    super.new(name, parent);
-    handshake_violations = 0;
-    exclusivity_violations = 0;
-    order_violations = 0;
-    burst_violations = 0;
-  endfunction
-  
-  // Implement analysis_port write method to receive transactions
-  function void write(axi_seq_item t);
-    if (t.handshake) begin
-      check_handshake_protocol(t);
-    end else if (t.wr_rd) begin
-      check_write_protocol(t);
-    end else begin
-      check_read_protocol(t);
+      `uvm_error("SCOREBOARD_REPORT", $sformatf("TEST FAILED: %0d mismatches found!", num_mismatches))
     end
   endfunction
   
-  // Check handshake protocol rules
-  function void check_handshake_protocol(axi_seq_item t);
-    // Rules for valid-ready handshakes
-    if (t.wr_rd) begin
-      // Write address channel checks
-      if (t.AWVALID) begin
-        if (!t.AWREADY) begin
-          // Valid without ready is fine, waiting for handshake
-        end else begin
-          // Valid handshake, increment outstanding writes
-          if (!outstanding_writes.exists(t.AWID)) outstanding_writes[t.AWID] = 0;
-          outstanding_writes[t.AWID]++;
-        end
-      end else if (t.AWREADY) begin
-        // Ready without valid is allowed in AXI4
-      end
-    end else begin
-      // Read address channel checks
-      if (t.ARVALID) begin
-        if (!t.ARREADY) begin
-          // Valid without ready is fine, waiting for handshake
-        end else begin
-          // Valid handshake, increment outstanding reads
-          if (!outstanding_reads.exists(t.ARID)) outstanding_reads[t.ARID] = 0;
-          outstanding_reads[t.ARID]++;
-        end
-      end else if (t.ARREADY) begin
-        // Ready without valid is allowed in AXI4
-      end
-    end
-  endfunction
-  
-  // Check write protocol
-  function void check_write_protocol(axi_seq_item t);
-    // Check for write response (B channel)
-    if (t.BVALID && t.BREADY) begin
-      // Verify we have outstanding write for this ID
-      if (!outstanding_writes.exists(t.BID) || outstanding_writes[t.BID] == 0) begin
-        `uvm_error("AXI_PROTOCOL", $sformatf("Write response received for ID=%0d but no outstanding write", t.BID))
-        exclusivity_violations++;
-      end else begin
-        // Decrement outstanding writes
-        outstanding_writes[t.BID]--;
-      end
-      
-      // Check write response ordering (AXI4 allows out-of-order responses between IDs, but not within an ID)
-      if (!write_seq.exists(t.BID)) write_seq[t.BID] = 0;
-      write_seq[t.BID]++;
-    end
-    
-    // Check WLAST on the last beat of a burst
-    if (t.WVALID && t.WREADY) begin
-      if (t.WLAST && t.WDATA.size() != (t.AWLEN + 1)) begin
-        `uvm_error("AXI_PROTOCOL", "WLAST asserted but not on the expected last beat of burst")
-        burst_violations++;
-      end
-    end
-    
-    // Check write burst addressing rules
-    if (t.AWBURST == 2'b10) begin // WRAP burst
-      if (t.AWLEN != 1 && t.AWLEN != 3 && t.AWLEN != 7 && t.AWLEN != 15) begin
-        `uvm_error("AXI_PROTOCOL", $sformatf("WRAP burst with invalid length: %0d", t.AWLEN))
-        burst_violations++;
-      end
-      
-      // Address alignment check for wrap bursts
-      if ((t.AWADDR & ((t.AWLEN * (1 << t.AWSIZE)) - 1)) != 0) begin
-        `uvm_error("AXI_PROTOCOL", "WRAP burst with misaligned address")
-        burst_violations++;
-      end
-    end
-  endfunction
-  
-  // Check read protocol
-  function void check_read_protocol(axi_seq_item t);
-    // Check for read data (R channel)
-    if (t.RVALID && t.RREADY) begin
-      // Check we have outstanding read for this ID
-      if (!outstanding_reads.exists(t.RID) || outstanding_reads[t.RID] == 0) begin
-        `uvm_error("AXI_PROTOCOL", $sformatf("Read data received for ID=%0d but no outstanding read", t.RID))
-        exclusivity_violations++;
-      end
-      
-      // Check for RLAST
-      if (t.RLAST) begin
-        // Decrement outstanding reads
-        if (outstanding_reads.exists(t.RID)) begin
-          outstanding_reads[t.RID]--;
-        end
-      end
-      
-      // Check read response ordering
-      if (!read_seq.exists(t.RID)) read_seq[t.RID] = 0;
-      read_seq[t.RID]++;
-    end
-    
-    // Check read burst addressing rules
-    if (t.ARBURST == 2'b10) begin // WRAP burst
-      if (t.ARLEN != 1 && t.ARLEN != 3 && t.ARLEN != 7 && t.ARLEN != 15) begin
-        `uvm_error("AXI_PROTOCOL", $sformatf("WRAP burst with invalid length: %0d", t.ARLEN))
-        burst_violations++;
-      end
-      
-      // Address alignment check for wrap bursts
-      if ((t.ARADDR & ((t.ARLEN * (1 << t.ARSIZE)) - 1)) != 0) begin
-        `uvm_error("AXI_PROTOCOL", "WRAP burst with misaligned address")
-        burst_violations++;
-      end
-    end
-  endfunction
-  
-  // Report phase - print final statistics
-  function void report_phase(uvm_phase phase);
-    super.report_phase(phase);
-    
-    // Check for outstanding transactions at end of test
-    foreach (outstanding_writes[id]) begin
-      if (outstanding_writes[id] > 0) begin
-        `uvm_warning("AXI_PROTOCOL", $sformatf("Test ended with %0d outstanding write(s) for ID=%0d", 
-                    outstanding_writes[id], id))
-      end
-    end
-    
-    foreach (outstanding_reads[id]) begin
-      if (outstanding_reads[id] > 0) begin
-        `uvm_warning("AXI_PROTOCOL", $sformatf("Test ended with %0d outstanding read(s) for ID=%0d", 
-                    outstanding_reads[id], id))
-      end
-    end
-    
-    // Report statistics
-    `uvm_info("AXI_PROTOCOL_CHECKER", 
-              $sformatf("\n=== AXI4 Protocol Violations ===\n" +
-                       "  Handshake Violations: %0d\n" +
-                       "  Exclusivity Violations: %0d\n" +
-                       "  Order Violations: %0d\n" +
-                       "  Burst Violations: %0d\n",
-                       handshake_violations, exclusivity_violations, 
-                       order_violations, burst_violations), UVM_LOW)
-  endfunction
 endclass
