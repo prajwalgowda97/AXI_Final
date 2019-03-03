@@ -41,14 +41,15 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
       bins short_burst  = {[1:7]};
     }
     
-  AWSIZE: coverpoint item.AWSIZE {
-    bins awsize_0_1 = {[0:1]};
-    bins awsize_2_3 = {[2:3]};
-    bins awsize_4_7 = {[4:7]};
-  
-  // Optional: Add illegal bins if needed
-  illegal_bins invalid = {[8:$]};
-}   
+    AWSIZE: coverpoint item.AWSIZE {
+      bins awsize_0_1 = {[0:1]};
+      bins awsize_2_3 = {[2:3]};
+      bins awsize_4_7 = {[4:7]};
+    
+      // Optional: Add illegal bins if needed
+      illegal_bins invalid = {[8:$]};
+    }
+    
     AWBURST: coverpoint item.AWBURST {
       bins fixed  = {0};
       bins incr   = {1};
@@ -97,21 +98,58 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
     // B Channel coverage
     BRESP: coverpoint item.BRESP {
       bins okay = {0};
-      //bins exokay = {1};
-      //bins slverr = {2};
-      //bins decerr = {3};
+     // bins exokay = {1};
+     // bins slverr = {2};
+     // bins decerr = {3};
     }
        
+    // Original cross coverage
     ADDR_BURST_CROSS: cross AWBURST, AWADDR {
       // Only sample when interesting
-      ignore_bins not_interesting = binsof(AWBURST.reserved);
+      ignore_bins not_interesting = binsof(AWBURST) intersect {3};
     }
-      
+    
+    // Added cross coverage points as requested
+       
+    // 2. AWADDR × AWLEN × AWSIZE
+    ADDR_LEN_SIZE_CROSS: cross AWADDR, AWLEN, AWSIZE;
+    
+    // 3. AWLEN × AWSIZE × AWBURST
+    BURST_CONFIG_CROSS: cross AWLEN, AWSIZE, AWBURST {
+
+    ignore_bins na_short_burst_awsize_0_1_fixed = binsof(AWLEN.short_burst) && binsof(AWSIZE.awsize_0_1) && binsof(AWBURST.fixed);
+    ignore_bins na_short_burst_awsize_2_3_fixed = binsof(AWLEN.short_burst) && binsof(AWSIZE.awsize_2_3) && binsof(AWBURST.fixed);
+    ignore_bins na_short_burst_awsize_4_7_fixed = binsof(AWLEN.short_burst) && binsof(AWSIZE.awsize_4_7) && binsof(AWBURST.fixed);
+    ignore_bins na_single_beat_awsize_0_1_wrap = binsof(AWLEN.single_beat) && binsof(AWSIZE.awsize_0_1) && binsof(AWBURST.wrap);
+    ignore_bins na_single_beat_awsize_2_3_wrap = binsof(AWLEN.single_beat) && binsof(AWSIZE.awsize_2_3) && binsof(AWBURST.wrap);
+    ignore_bins na_single_beat_awsize_4_7_wrap = binsof(AWLEN.single_beat) && binsof(AWSIZE.awsize_4_7) && binsof(AWBURST.wrap);
+    ignore_bins na_short_burst_awsize_4_7_wrap = binsof(AWLEN.short_burst) && binsof(AWSIZE.awsize_4_7) && binsof(AWBURST.wrap);
+    ignore_bins invalid_burst = binsof(AWBURST) intersect {3};
+    }
+    
+    // 4. AWID × AWLEN
+    ID_LEN_CROSS: cross AWID, AWLEN;
+    
+    // 5. Handshake timing crosses
+    AW_HANDSHAKE_CROSS: cross AWVALID, AWREADY {
+    ignore_bins ignore_deasserted_asserted = binsof(AWVALID.deasserted) && binsof(AWREADY.asserted);
+    }
+   
+    W_HANDSHAKE_CROSS: cross WVALID, WREADY {
+    ignore_bins ignore_deasserted_asserted = binsof(WVALID.asserted) && binsof(WREADY.deasserted);
+    }
+
+    B_HANDSHAKE_CROSS: cross BVALID, BREADY {
+    ignore_bins ignore_deasserted_asserted = binsof(BVALID.deasserted) && binsof(BREADY.asserted);
+    ignore_bins ignore_asserted_deasserted = binsof(BVALID.asserted) && binsof(BREADY.deasserted);
+    }
+        
   endgroup
   
   covergroup axi_read_cg;
     // AR Channel coverage
-     option.per_instance = 1;
+    option.per_instance = 1;
+    
     ARREADY: coverpoint item.ARREADY {
       bins deasserted = {0};
       bins asserted   = {1};
@@ -140,13 +178,13 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
     }
     
     ARSIZE: coverpoint item.ARSIZE {
-  bins arsize_0_1 = {[0:1]};
-  bins arsize_2_3 = {[2:3]};
-  bins arsize_4_7 = {[4:7]};
-  
-  // Optional: Add illegal bins if needed
-  illegal_bins invalid = {[8:$]};
-}
+      bins arsize_0_1 = {[0:1]};
+      bins arsize_2_3 = {[2:3]};
+      bins arsize_4_7 = {[4:7]};
+      
+      // Optional: Add illegal bins if needed
+      illegal_bins invalid = {[8:$]};
+    }
     
     ARBURST: coverpoint item.ARBURST {
       bins fixed  = {0};
@@ -167,9 +205,9 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
     
     RRESP: coverpoint item.RRESP {
       bins okay = {0};
-      //bins exokay = {1};
-      //bins slverr = {2};
-      //bins decerr = {3};
+     // bins exokay = {1};
+     // bins slverr = {2};
+     // bins decerr = {3};
     }
 
     // Using directly the RDATA value
@@ -182,13 +220,67 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
       bins not_asserted = {0};
     }
     
-    
+    // Original cross coverage
     ADDR_BURST_CROSS: cross ARBURST, ARADDR {
       // Only sample when interesting
-      ignore_bins not_interesting = binsof(ARBURST.reserved);
-    }    
+      ignore_bins not_interesting = binsof(ARBURST) intersect {3};
+    }
+      
+    // 2. ARADDR × ARLEN × ARSIZE
+    ADDR_LEN_SIZE_CROSS: cross ARADDR, ARLEN, ARSIZE;
+    
+    // 3. ARLEN × ARSIZE × ARBURST
+    BURST_CONFIG_CROSS: cross ARLEN, ARSIZE, ARBURST {
+    ignore_bins na_short_burst_arsize_0_1_fixed = binsof(ARLEN.short_burst) && binsof(ARSIZE.arsize_0_1) && binsof(ARBURST.fixed);
+    ignore_bins na_short_burst_arsize_2_3_fixed = binsof(ARLEN.short_burst) && binsof(ARSIZE.arsize_2_3) && binsof(ARBURST.fixed);
+    ignore_bins na_short_burst_arsize_4_7_fixed = binsof(ARLEN.short_burst) && binsof(ARSIZE.arsize_4_7) && binsof(ARBURST.fixed);
+    ignore_bins na_single_beat_arsize_0_1_wrap = binsof(ARLEN.single_beat) && binsof(ARSIZE.arsize_0_1) && binsof(ARBURST.wrap);
+    ignore_bins na_single_beat_arsize_2_3_wrap = binsof(ARLEN.single_beat) && binsof(ARSIZE.arsize_2_3) && binsof(ARBURST.wrap);
+    ignore_bins na_single_beat_arsize_4_7_wrap = binsof(ARLEN.single_beat) && binsof(ARSIZE.arsize_4_7) && binsof(ARBURST.wrap);
+    ignore_bins invalid_burst = binsof(ARBURST) intersect {3};
+    }
+    
+    // 4. ARID × ARLEN
+    ID_LEN_CROSS: cross ARID, ARLEN;
+    
+    // 5. RRESP × RLAST (response at different points in a burst)
+    RRESP_RLAST_CROSS: cross RRESP, RLAST;
+    
+    // 6. Handshake timing crosses
+    AR_HANDSHAKE_CROSS: cross ARVALID, ARREADY {
+    ignore_bins ignore_deasserted_asserted = binsof(ARVALID.deasserted) && binsof(ARREADY.asserted);
+    }
+
+    R_HANDSHAKE_CROSS: cross RVALID, RREADY{
+    ignore_bins ignore_deasserted_asserted = binsof(RVALID.deasserted) && binsof(RREADY.asserted);
+    ignore_bins ignore_asserted_deasserted = binsof(RVALID.asserted) && binsof(RREADY.deasserted);
+    }
+
   endgroup
   
+  // Additional transaction-level cross-coverage
+  covergroup axi_transaction_cg;
+    option.per_instance = 1;
+    
+    // Transaction type (read vs write)
+    TRANSACTION_TYPE: coverpoint item.wr_rd {
+      bins write = {1};
+      bins read = {0};
+    }
+        
+    // Cross read and write burst types
+    BURST_TYPE: coverpoint item.AWBURST {
+      bins valid_types[] = {[0:2]};
+      ignore_bins reserved = {3};
+    }
+    
+    AR_BURST_TYPE: coverpoint item.ARBURST {
+      bins valid_types[] = {[0:2]};
+      ignore_bins reserved = {3};
+    }
+    
+  endgroup
+
   // Constructor
   function new(string name, uvm_component parent);
     super.new(name, parent);
@@ -196,6 +288,7 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
     // Initialize covergroups
     axi_write_cg = new();
     axi_read_cg = new();
+    axi_transaction_cg = new();
   endfunction
   
   // Build phase
@@ -223,18 +316,27 @@ class axi_cov_model extends uvm_subscriber #(axi_seq_item);
     // Handle RDATA (single value)
     rdata = t.RDATA;
     
+    // Sample transaction-level coverage for all transactions
+    axi_transaction_cg.sample();
+    
     // Sample appropriate coverage group based on transaction type
     if (t.wr_rd == 1'b1) begin
       // This is a write transaction
       `uvm_info("COV_MODEL", $sformatf("Sampling write coverage for transaction: WSTRB=0x%0h, AWSIZE=0x%0h", t.WSTRB, t.AWSIZE), UVM_MEDIUM)
       axi_write_cg.sample();
-      
+        
+        `uvm_info("MONITOR", 
+            $sformatf("\nCOV Write Address signals:\t AWVALID=0x%0b\t AWREADY=0x%0b\n", 
+            item.AWVALID, item.AWREADY), UVM_MEDIUM)
     end
     else begin
       // This is a read transaction
       `uvm_info("COV_MODEL", $sformatf("Sampling read coverage for transaction: ARSIZE=0x%0h", t.ARSIZE), UVM_MEDIUM)
       axi_read_cg.sample();
-
+        
+        `uvm_info("MONITOR", 
+            $sformatf("\nCOV Write Address signals:\t ARVALID=0x%0b\t ARREADY=0x%0b\n", 
+            item.ARVALID, item.ARREADY), UVM_MEDIUM)
     end
   endfunction
 
