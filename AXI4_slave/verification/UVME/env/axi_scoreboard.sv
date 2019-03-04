@@ -418,7 +418,7 @@ class axi_scoreboard extends uvm_scoreboard;
   endfunction
 endclass */
 
-/*class axi_reference_model extends uvm_component;
+class axi_reference_model extends uvm_component;
   `uvm_component_utils(axi_reference_model)
   
   // Memory model to store write data
@@ -431,13 +431,13 @@ endclass */
   // Process write transaction
   function void process_write(axi_seq_item tr);
     bit [31:0] addr = tr.AWADDR;
-    int burst_len = tr.AWLEN + 1;  // AWLEN=0 means 1 transfer
+    int burst_len = tr.AWLEN ;  // AWLEN=0 means 1 transfer
     int bytes_per_beat = (1 << tr.AWSIZE);
     
     `uvm_info("REF_MODEL", $sformatf("Processing WRITE: ADDR=0x%0h, LEN=%0d, SIZE=%0d", 
                 addr, burst_len, bytes_per_beat), UVM_MEDIUM)
     
-    for (int i = 0; i < burst_len; i++) begin
+    for (int i = 0; i <= burst_len; i++) begin
       // Simple incremental burst for now (can be enhanced for other burst types)
       bit [31:0] current_addr = addr + (i * bytes_per_beat);
       mem[current_addr] = tr.WDATA[i];
@@ -450,7 +450,7 @@ endclass */
   // Process read transaction and return expected data
   function bit [31:0] process_read(axi_seq_item tr);
     bit [31:0] addr = tr.ARADDR;
-    int burst_len = tr.ARLEN + 1;  // ARLEN=0 means 1 transfer
+    int burst_len = tr.ARLEN ;  // ARLEN=0 means 1 transfer
     int bytes_per_beat = (1 << tr.ARSIZE);
     bit [31:0] expected_data;
     
@@ -876,8 +876,4 @@ class axi_scoreboard extends uvm_scoreboard;
       `uvm_info("SCOREBOARD", $sformatf("MEM[0x%0h] = 0x%0h", addr, ref_model.mem[addr]), UVM_LOW)
     end
   endfunction
-endclass*/
-
-
-
-
+endclass
