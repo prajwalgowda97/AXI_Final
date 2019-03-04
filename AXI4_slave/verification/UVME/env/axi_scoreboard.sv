@@ -985,8 +985,8 @@ endclass
 class axi_scoreboard extends uvm_scoreboard;
     `uvm_component_utils(axi_scoreboard)
 
-    // Transaction struct 
-    typedef struct {
+    // Transaction struct - moved outside of the class to fix scope issues
+    typedef struct packed {
         bit [31:0] addr;
         bit [31:0] data[$];
         bit [3:0]  id;
@@ -1042,6 +1042,8 @@ class axi_scoreboard extends uvm_scoreboard;
     `uvm_analysis_imp_decl(_handshake)
     `uvm_analysis_imp_decl(_wr_ctrl)
     `uvm_analysis_imp_decl(_rd_ctrl)
+    `uvm_analysis_imp_decl(_wr_ref)
+    `uvm_analysis_imp_decl(_rd_ref)
     
     // Analysis exports
     uvm_analysis_imp_wr #(axi_seq_item, axi_scoreboard) wr_export;
@@ -1055,8 +1057,6 @@ class axi_scoreboard extends uvm_scoreboard;
     uvm_tlm_analysis_fifo #(axi_seq_item) read_fifo;
     
     // Analysis exports from reference model
-    uvm_analysis_imp_decl(_wr_ref)
-    uvm_analysis_imp_decl(_rd_ref)
     uvm_analysis_imp_wr_ref #(axi_seq_item, axi_scoreboard) wr_ref_export;
     uvm_analysis_imp_rd_ref #(axi_seq_item, axi_scoreboard) rd_ref_export;
 
@@ -1249,8 +1249,6 @@ class axi_scoreboard extends uvm_scoreboard;
         if (t.RST) begin
             `uvm_info("CTRL_SIGNALS", "Reset detected on write channels", UVM_MEDIUM)
         end
-        
-        // Add additional control signal tracking if needed
     endfunction
 
     // Read control signals handler
@@ -1259,8 +1257,6 @@ class axi_scoreboard extends uvm_scoreboard;
         if (t.RST) begin
             `uvm_info("CTRL_SIGNALS", "Reset detected on read channels", UVM_MEDIUM)
         end
-        
-        // Add additional control signal tracking if needed
     endfunction
     
     // Reference model write response handler
@@ -1424,8 +1420,8 @@ class axi_scoreboard extends uvm_scoreboard;
                 else begin
                     `uvm_info("CHECKER - B_CHANNEL", "Note: BVALID or BREADY not asserted during response, skipping check", UVM_LOW);
                 end 
-         
-                 // ---- R Channel Check ----
+
+                // ---- R Channel Check ----
                 if (rd_trans.rvalid && rd_trans.rready ) begin
                     if (rd_trans.rresp == 2'b00) begin
                         `uvm_info("CHECKER - R_CHANNEL", $sformatf(
