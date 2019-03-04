@@ -281,7 +281,7 @@
 endclass */
 
 
-class axi_scoreboard extends uvm_scoreboard;
+/*class axi_scoreboard extends uvm_scoreboard;
     `uvm_component_utils(axi_scoreboard)
 
     typedef struct {
@@ -829,6 +829,786 @@ class axi_scoreboard extends uvm_scoreboard;
                     `uvm_info("READ", "Read response (RRESP) indicates OKAY", UVM_LOW);
                 end
             end
+        end
+    endfunction
+endclass*/
+
+
+class axi_reference_model extends uvm_component;
+  `uvm_component_utils(axi_reference_model)
+
+  // Memory model for reference checking
+  bit [31:0] mem[bit [31:0]];
+  
+  // Transaction queues
+  uvm_tlm_analysis_fifo #(axi_seq_item) write_fifo;
+  uvm_tlm_analysis_fifo #(axi_seq_item) read_fifo;
+  
+  // Output ports to scoreboard checker
+  uvm_analysis_port #(axi_seq_item) write_ref_port;
+  uvm_analysis_port #(axi_seq_item) read_ref_port;
+  
+  function new(string name = "axi_reference_model", uvm_component parent);
+    super.new(name, parent);
+    write_fifo = new("write_fifo", this);
+    read_fifo = new("read_fifo", this);
+    write_ref_port = new("write_ref_port", this);
+    read_ref_port = new("read_ref_port", this);
+  endfunction
+
+  function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+  endfunction
+  
+  task run_phase(uvm_phase phase);
+    axi_seq_item write_item, read_item;
+    
+    fork
+      // Process write operations
+      forever begin
+        write_fifo.get(write_item);
+        process_write_transaction(write_item);
+      end
+      
+      // Process read operations
+      forever begin
+        read_fifo.get(read_item);
+        process_read_transaction(read_item);
+      end
+    join
+  endtask
+  
+  // Process write transaction and update memory model
+  function void process_write_transaction(axi_seq_item item);
+    bit [31:0] addr = item.AWADDR;
+    bit [7:0] len = item.AWLEN;
+    bit [2:0] size = item.AWSIZE;
+    bit [1:0] burst = item.AWBURST;
+    int data_byte_width = (1 << size);
+    
+    // Check valid handshakes first
+    if (!(item.AWVALID && item.AWREADY)) begin
+      `uvm_info("REF_MODEL", "Write transaction missing valid address handshake", UVM_MEDIUM)
+      return;
+    end
+    
+    if (!(item.WVALID && item.WREADY)) begin
+      `uvm_info("REF_MODEL", "Write transaction missing valid data handshake", UVM_MEDIUM)
+      return;
+    end
+    
+    // Process FIXED, INCR, or WRAP burst types
+    for (int i = 0; i < item.WDATA.size(); i++) begin
+      bit [31:0] cur_addr;
+      
+      // Calculate address based on burst type
+      case (burst)
+        2'b00: cur_addr = addr; // FIXED
+        2'b01: cur_addr = addr + (i * data_byte_width); // INCR
+        2'b10: begin // WRAP
+          int wrap_boundary = (addr / (data_byte_width * (len + 1))) * (data_byte_width * (len + 1));
+          cur_addr = wrap_boundary + ((addr + i * data_byte_width) % (data_byte_width * (len + 1)));
+        end
+        default: cur_addr = addr + (i * data_byte_width); // Default to INCR
+      endcase
+      
+      // Store data in reference memory with write strobes
+      if (i < item.WDATA.size()) begin
+        bit [31:0] data = item.WDATA[i];
+        bit [3:0] strb = item.WSTRB;
+        
+        // Apply write strobes
+        bit [31:0] current_data = mem.exists(cur_addr) ? mem[cur_addr] : '0;
+        bit [31:0] new_data = current_data;
+        
+        for (int b = 0; b < 4; b++) begin
+          if (strb[b]) begin
+            new_data[b*8 +: 8] = data[b*8 +: 8];
+          end
+        end
+        
+        mem[cur_addr] = new_data;
+        
+        `uvm_info("REF_MODEL", $sformatf("Write: Addr=0x%0h, Data=0x%0h, Strobe=0x%0h", 
+                  cur_addr, data, strb), UVM_HIGH)
+      end
+    end
+    
+    // Send completed reference model transaction to scoreboard
+    write_ref_port.write(item);
+  endfunction
+  
+  // Process read transaction against memory model
+  function void process_read_transaction(axi_seq_item item);
+    bit [31:0] addr = item.ARADDR;
+    bit [7:0] len = item.ARLEN;
+    bit [2:0] size = item.ARSIZE;
+    bit [1:0] burst = item.ARBURST;
+    int data_byte_width = (1 << size);
+    axi_seq_item ref_item;
+    
+    // Check valid handshakes first
+    if (!(item.ARVALID && item.ARREADY)) begin
+      `uvm_info("REF_MODEL", "Read transaction missing valid address handshake", UVM_MEDIUM)
+      return;
+    end
+    
+    if (!(item.RVALID && item.RREADY)) begin
+      `uvm_info("REF_MODEL", "Read transaction missing valid data handshake", UVM_MEDIUM)
+      return;
+    end
+    
+    // Create new item for reference data
+    ref_item = axi_seq_item::type_id::create("ref_read_item");
+    ref_item.copy(item); // Copy all fields from original item
+    ref_item.RDATA = 0;  // Clear RDATA to fill with reference data
+    
+    // Read from reference memory model
+    if (mem.exists(addr)) begin
+      ref_item.RDATA = mem[addr];
+      `uvm_info("REF_MODEL", $sformatf("Read: Addr=0x%0h, Data=0x%0h", 
+                addr, ref_item.RDATA), UVM_HIGH)
+    end else begin
+      `uvm_info("REF_MODEL", $sformatf("Read: Addr=0x%0h not found in memory model", 
+                addr), UVM_MEDIUM)
+      ref_item.RDATA = 32'hDEADBEEF; // Placeholder for uninitialized memory
+    end
+    
+    // Set response to OK
+    ref_item.RRESP = 2'b00; // OKAY
+    
+    // Send reference item to scoreboard
+    read_ref_port.write(ref_item);
+  endfunction
+endclass
+
+class axi_scoreboard extends uvm_scoreboard;
+    `uvm_component_utils(axi_scoreboard)
+
+    // Transaction struct 
+    typedef struct {
+        bit [31:0] addr;
+        bit [31:0] data[$];
+        bit [3:0]  id;
+        bit [2:0]  size;
+        bit [1:0]  burst;
+        bit [7:0]  len;
+        // Address channels handshake signals
+        bit        awvalid;
+        bit        awready;
+        bit        arvalid;
+        bit        arready;
+        // Data channels handshake signals
+        bit        wvalid;
+        bit        wready;
+        bit        rvalid;
+        bit        rready;
+        // Response channel handshake signals
+        bit        bvalid;
+        bit        bready;
+        // Control/status signals
+        bit        wlast;
+        bit        rlast;
+        bit [3:0]  wstrb;
+        bit [1:0]  bresp;
+        bit [1:0]  rresp;
+        bit [3:0]  bid;
+        bit [3:0]  rid;
+    } axi_trans_t;
+
+    // Queues for storing transactions
+    axi_trans_t wr_queue[$];
+    axi_trans_t rd_queue[$];
+    int wr_item_count = 0;
+    int rd_item_count = 0;
+    
+    // Handshake statistics
+    int write_handshake_total = 0;
+    int read_handshake_total = 0;
+    int write_handshake_successful = 0;
+    int read_handshake_successful = 0;
+    int write_handshake_pending = 0;
+    int read_handshake_pending = 0;
+    
+    // Event to trigger compare operation
+    event compare_trigger;
+    
+    // Reference model instance
+    axi_reference_model ref_model;
+    
+    // TLM analysis implementation for write and read
+    `uvm_analysis_imp_decl(_wr)
+    `uvm_analysis_imp_decl(_rd)
+    `uvm_analysis_imp_decl(_handshake)
+    `uvm_analysis_imp_decl(_wr_ctrl)
+    `uvm_analysis_imp_decl(_rd_ctrl)
+    
+    // Analysis exports
+    uvm_analysis_imp_wr #(axi_seq_item, axi_scoreboard) wr_export;
+    uvm_analysis_imp_rd #(axi_seq_item, axi_scoreboard) rd_export;
+    uvm_analysis_imp_handshake #(axi_seq_item, axi_scoreboard) handshake_export;
+    uvm_analysis_imp_wr_ctrl #(axi_seq_item, axi_scoreboard) wr_ctrl_export;
+    uvm_analysis_imp_rd_ctrl #(axi_seq_item, axi_scoreboard) rd_ctrl_export;
+    
+    // Connection FIFOs to reference model
+    uvm_tlm_analysis_fifo #(axi_seq_item) write_fifo;
+    uvm_tlm_analysis_fifo #(axi_seq_item) read_fifo;
+    
+    // Analysis exports from reference model
+    uvm_analysis_imp_decl(_wr_ref)
+    uvm_analysis_imp_decl(_rd_ref)
+    uvm_analysis_imp_wr_ref #(axi_seq_item, axi_scoreboard) wr_ref_export;
+    uvm_analysis_imp_rd_ref #(axi_seq_item, axi_scoreboard) rd_ref_export;
+
+    function new(string name = "axi_scoreboard", uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        
+        // Create exports
+        wr_export = new("wr_export", this);
+        rd_export = new("rd_export", this);
+        handshake_export = new("handshake_export", this);
+        wr_ctrl_export = new("wr_ctrl_export", this);
+        rd_ctrl_export = new("rd_ctrl_export", this);
+        wr_ref_export = new("wr_ref_export", this);
+        rd_ref_export = new("rd_ref_export", this);
+        
+        // Create FIFOs
+        write_fifo = new("write_fifo", this);
+        read_fifo = new("read_fifo", this);
+        
+        // Create reference model
+        ref_model = axi_reference_model::type_id::create("ref_model", this);
+    endfunction
+    
+    function void connect_phase(uvm_phase phase);
+        super.connect_phase(phase);
+        
+        // Connect scoreboard to reference model
+        write_fifo.connect(ref_model.write_fifo.analysis_export);
+        read_fifo.connect(ref_model.read_fifo.analysis_export);
+        
+        // Connect reference model back to scoreboard
+        ref_model.write_ref_port.connect(wr_ref_export);
+        ref_model.read_ref_port.connect(rd_ref_export);
+    endfunction
+    
+    // Run phase to periodically compare transactions
+    task run_phase(uvm_phase phase);
+        forever begin
+            @(compare_trigger);
+            compare_wr_rd_transactions();
+        end
+    endtask
+
+    // Write transaction handler
+    function void write_wr(axi_seq_item t);
+        axi_trans_t trans;
+
+        // AW channel signals
+        if(t.AWVALID && t.AWREADY) begin
+            trans.addr    = t.AWADDR;
+            trans.id      = t.AWID;
+            trans.size    = t.AWSIZE;
+            trans.burst   = t.AWBURST;
+            trans.len     = t.AWLEN;
+            trans.awvalid = t.AWVALID;
+            trans.awready = t.AWREADY;
+            
+            `uvm_info("SCOREBOARD", 
+                $sformatf("\nWRITE Address: AWADDR=0x%0h\t AWID=0x%0h\t AWLEN=%0h\t AWSIZE=%0d\t AWBURST=%0d\n", 
+                t.AWADDR, t.AWID, t.AWLEN, t.AWSIZE, t.AWBURST), UVM_MEDIUM)
+        end
+     
+        // W channel signals
+        if(t.WVALID && t.WREADY) begin   
+            trans.wvalid  = t.WVALID;
+            trans.wready  = t.WREADY;
+            trans.wstrb   = t.WSTRB;
+            trans.wlast   = t.WLAST;
+
+            for (int i = 0; i <= t.AWLEN; i++) begin
+                if (i < t.WDATA.size()) begin
+                    trans.data.push_back(t.WDATA[i]);
+                    `uvm_info("SCOREBOARD", 
+                        $sformatf("\nWRITE Data:\t WDATA[%0d]=0x%0h\t WSTRB=0x%0h\t WLAST=%0d\n", 
+                        i, t.WDATA[i], t.WSTRB, t.WLAST), UVM_MEDIUM) 
+                end        
+            end
+        end
+
+        // B channel signals
+        if(t.BVALID && t.BREADY) begin
+            trans.bid     = t.BID;
+            trans.bresp   = t.BRESP;
+            trans.bvalid  = t.BVALID;
+            trans.bready  = t.BREADY;
+                    
+            `uvm_info("SCOREBOARD", 
+                $sformatf("\nWRITE Response:\t BID=0x%0h\t BRESP=0x%0d\n", 
+                t.BID, t.BRESP), UVM_MEDIUM)
+        end        
+        
+        wr_queue.push_back(trans);
+        wr_item_count++;
+        
+        // Forward to reference model
+        write_fifo.write(t);
+        
+        // Trigger comparison after receiving a complete transaction
+        if (t.BVALID && t.BREADY) begin
+            -> compare_trigger;
+        end
+    endfunction
+
+    // Read transaction handler
+    function void write_rd(axi_seq_item t);
+        axi_trans_t trans;
+
+        // AR channel signals
+        if(t.ARVALID && t.ARREADY) begin
+            trans.addr    = t.ARADDR;
+            trans.id      = t.ARID;
+            trans.size    = t.ARSIZE;
+            trans.burst   = t.ARBURST;
+            trans.len     = t.ARLEN;
+            trans.arvalid = t.ARVALID;
+            trans.arready = t.ARREADY;
+            
+            `uvm_info("SCOREBOARD", 
+                $sformatf("\nREAD Address: ARADDR=0x%0h\t ARID=0x%0h\t ARLEN=%0d\t ARSIZE=%0d\t ARBURST=%0d\n", 
+                t.ARADDR, t.ARID, t.ARLEN, t.ARSIZE, t.ARBURST), UVM_MEDIUM)
+        end
+        else begin 
+            `uvm_info("SCOREBOARD", 
+                $sformatf("\nRead address signals not asserting:\t ARVALID=0x%0h\t ARREADY=0x%0d\n", 
+                t.ARVALID, t.ARREADY), UVM_MEDIUM)
+        end
+        
+        // R channel signals
+        if(t.RVALID && t.RREADY) begin
+            trans.rvalid  = t.RVALID;
+            trans.rready  = t.RREADY;
+            trans.rlast   = t.RLAST;
+            trans.rresp   = t.RRESP;
+            trans.rid     = t.RID;
+            
+            trans.data.push_back(t.RDATA);
+
+            `uvm_info("SCOREBOARD", 
+                $sformatf("\nREAD Data: RDATA=0x%0h\t RRESP=0x%0h\t RLAST=0x%0h\n", 
+                t.RDATA, t.RRESP, t.RLAST), UVM_MEDIUM)
+        end
+        
+        rd_queue.push_back(trans);
+        rd_item_count++;
+        
+        // Forward to reference model
+        read_fifo.write(t);
+        
+        // Trigger comparison after receiving a complete transaction
+        if (t.RVALID && t.RREADY && t.RLAST) begin
+            -> compare_trigger;
+        end
+    endfunction
+
+    // Handshake-specific analysis 
+    function void write_handshake(axi_seq_item t);
+        if (t.handshake) begin
+            if (t.wr_rd) begin // Write channel handshake
+                write_handshake_total++;
+                if ((t.AWVALID && t.AWREADY) || (t.WVALID && t.WREADY) || (t.BVALID && t.BREADY)) begin
+                    write_handshake_successful++;
+                    `uvm_info("HANDSHAKE_TRACKER", $sformatf(
+                        "Write handshake detected: %s", 
+                        (t.AWVALID && t.AWREADY) ? "AWVALID-AWREADY" : 
+                        (t.WVALID && t.WREADY) ? "WVALID-WREADY" : "BVALID-BREADY"), UVM_LOW)
+                end else begin
+                    write_handshake_pending++;
+                end
+            end else begin // Read channel handshake
+                read_handshake_total++;
+                if ((t.ARVALID && t.ARREADY) || (t.RVALID && t.RREADY)) begin
+                    read_handshake_successful++;
+                    `uvm_info("HANDSHAKE_TRACKER", $sformatf(
+                        "Read handshake detected: %s", 
+                        (t.ARVALID && t.ARREADY) ? "ARVALID-ARREADY" : "RVALID-RREADY"), UVM_LOW)
+                end else begin
+                    read_handshake_pending++;
+                end
+            end
+        end
+    endfunction
+
+    // Write control signals handler
+    function void write_wr_ctrl(axi_seq_item t);
+        // Track write channel control signals for coverage/checkers
+        if (t.RST) begin
+            `uvm_info("CTRL_SIGNALS", "Reset detected on write channels", UVM_MEDIUM)
+        end
+        
+        // Add additional control signal tracking if needed
+    endfunction
+
+    // Read control signals handler
+    function void write_rd_ctrl(axi_seq_item t);
+        // Track read channel control signals for coverage/checkers
+        if (t.RST) begin
+            `uvm_info("CTRL_SIGNALS", "Reset detected on read channels", UVM_MEDIUM)
+        end
+        
+        // Add additional control signal tracking if needed
+    endfunction
+    
+    // Reference model write response handler
+    function void write_wr_ref(axi_seq_item t);
+        // Store reference model write responses for comparison
+        `uvm_info("REF_MODEL", $sformatf("Received write reference for ADDR=0x%0h", t.AWADDR), UVM_HIGH)
+        // Additional handling could be implemented
+    endfunction
+    
+    // Reference model read response handler
+    function void write_rd_ref(axi_seq_item t);
+        // Store reference model read responses for comparison
+        `uvm_info("REF_MODEL", $sformatf("Received read reference: ADDR=0x%0h DATA=0x%0h", 
+                  t.ARADDR, t.RDATA), UVM_HIGH)
+        
+        // Compare with actual read data if available in rd_queue
+        foreach (rd_queue[i]) begin
+            if (rd_queue[i].addr == t.ARADDR && rd_queue[i].id == t.RID) begin
+                bit data_match = 1;
+                
+                if (rd_queue[i].data.size() > 0) begin
+                    if (rd_queue[i].data[0] !== t.RDATA) begin
+                        data_match = 0;
+                        `uvm_error("REF_MODEL_COMPARE", $sformatf(
+                            "Data mismatch at ADDR=0x%0h: Expected=0x%0h, Actual=0x%0h", 
+                            t.ARADDR, t.RDATA, rd_queue[i].data[0]))
+                    end else begin
+                        `uvm_info("REF_MODEL_COMPARE", $sformatf(
+                            "Data match at ADDR=0x%0h: Value=0x%0h", 
+                            t.ARADDR, t.RDATA), UVM_MEDIUM)
+                    end
+                end
+                
+                break;
+            end
+        end
+    endfunction
+    
+    function void check_phase(uvm_phase phase);
+        super.check_phase(phase);
+        
+        // Check handshake separately
+        check_handshake_phase();
+        
+        // Check individual write and read operations
+        check_write_operation();
+        check_read_operation();
+        
+        // Check write vs read data consistency
+        compare_wr_rd_transactions();
+        
+        // Report statistics
+        report_statistics();
+    endfunction 
+
+    function void compare_wr_rd_transactions();
+        axi_trans_t local_wr_queue[$];
+        axi_trans_t local_rd_queue[$];
+        axi_trans_t wr_trans;
+        axi_trans_t rd_trans;
+        
+        // Copy queues to avoid modifying originals
+        foreach (wr_queue[i]) local_wr_queue.push_back(wr_queue[i]);
+        foreach (rd_queue[i]) local_rd_queue.push_back(rd_queue[i]);
+
+        while (local_wr_queue.size() > 0 && local_rd_queue.size() > 0) begin
+            wr_trans = local_wr_queue.pop_front();
+            rd_trans = local_rd_queue.pop_front();
+            
+            // ---- Address & ID Check ----
+            if(wr_trans.awvalid && wr_trans.awready && rd_trans.arvalid && rd_trans.arready) begin
+                if ((wr_trans.addr == rd_trans.addr) && (wr_trans.id == rd_trans.id)) begin
+                    `uvm_info("CHECKER - AW/AR_CHANNEL", $sformatf(
+                        "\nPASS: AWADDR=0x%0h\t ARADDR=0x%0h\t AWID=0x%0h\t ARID=0x%0h\n", 
+                        wr_trans.addr, rd_trans.addr, wr_trans.id, rd_trans.id), UVM_MEDIUM)
+
+                    // ---- LEN, SIZE, BURST Comparison ----
+                    if ((wr_trans.len == rd_trans.len) &&
+                        (wr_trans.size == rd_trans.size) &&
+                        (wr_trans.burst == rd_trans.burst)) begin
+
+                        `uvm_info("CHECKER - AW/AR_CHANNEL", $sformatf(
+                            "\nPASS: AWLEN=%0d\t ARLEN=%0d\t AWSIZE=%0d\t ARSIZE=%0d\t AWBURST=%0d\t ARBURST=%0d\n", 
+                            wr_trans.len, rd_trans.len, wr_trans.size, rd_trans.size, 
+                            wr_trans.burst, rd_trans.burst), UVM_MEDIUM)
+
+                    end else begin
+                        if (wr_trans.len != rd_trans.len)
+                            `uvm_error("CHECKER - AW/AR_CHANNEL", $sformatf(
+                                "\nLEN MISMATCH: AWLEN=%0d\t ARLEN=%0d\n", wr_trans.len, rd_trans.len))
+                        if (wr_trans.size != rd_trans.size)
+                            `uvm_error("CHECKER - AW/AR_CHANNEL", $sformatf(
+                                "\nSIZE MISMATCH: AWSIZE=%0d\t ARSIZE=%0d\n", wr_trans.size, rd_trans.size))
+                        if (wr_trans.burst != rd_trans.burst)
+                            `uvm_error("CHECKER - AW/AR_CHANNEL", $sformatf(
+                                "\nBURST MISMATCH: AWBURST=%0d\t ARBURST=%0d\n", wr_trans.burst, rd_trans.burst))
+                    end
+
+                    // ---- W vs R Data Check ----
+                    if (rd_trans.data.size() > 0 && wr_trans.data.size() > 0) begin
+                        bit data_match = 1;
+                        
+                        // When RDATA is fixed but we have multiple WDATA beats
+                        if (rd_trans.data.size() == 1 && wr_trans.data.size() > 1) begin
+                            // Compare only the first data beat
+                            if (wr_trans.data[0] !== rd_trans.data[0]) begin
+                                data_match = 0;
+                                `uvm_error("CHECKER - W/R_CHANNEL", $sformatf(
+                                    "\nDATA MISMATCH:\t First beat only: WDATA=0x%0h\t RDATA=0x%0h\n", 
+                                    wr_trans.data[0], rd_trans.data[0]));
+                            end
+                            
+                            // Issue warning about incomplete comparison due to fixed RDATA
+                            `uvm_warning("CHECKER - W/R_CHANNEL", $sformatf(
+                                "Limited comparison: WDATA has %0d beats but RDATA is fixed (only first beat compared)",
+                                wr_trans.data.size()));
+                        end 
+                        else if (wr_trans.data.size() == rd_trans.data.size()) begin
+                            // Equal sizes - do a full comparison
+                            foreach (wr_trans.data[i]) begin
+                                if (wr_trans.data[i] !== rd_trans.data[i]) begin
+                                    data_match = 0;
+                                    `uvm_error("CHECKER - W/R_CHANNEL", $sformatf(
+                                        "\nDATA MISMATCH:\t Index=%0d\t WDATA=0x%0h\t RDATA=0x%0h\n", 
+                                        i, wr_trans.data[i], rd_trans.data[i]));
+                                end
+                            end
+                        end 
+                        else begin
+                            // Size mismatch other than the special case
+                            `uvm_error("CHECKER - W/R_CHANNEL", $sformatf(
+                                "\nW&R DATA SIZE MISMATCH:\t WDATA.size=%0d\t RDATA.size=%0d\n",
+                                wr_trans.data.size(), rd_trans.data.size()));
+                        end
+                        
+                        if (data_match)
+                            `uvm_info("CHECKER - W/R_CHANNEL", "WRITE/READ DATA MATCH: PASS", UVM_MEDIUM);
+                    end 
+                    else begin
+                        `uvm_error("CHECKER - W/R_CHANNEL", $sformatf(
+                            "\nMISSING DATA:\t WDATA.size=%0d\t RDATA.size=%0d\n",
+                            wr_trans.data.size(), rd_trans.data.size()));
+                    end 
+                end else begin
+                    `uvm_warning("CHECKER - AW/AR_CHANNEL", $sformatf(
+                        "\nAddress/ID mismatch: AWADDR=0x%0h ARADDR=0x%0h AWID=0x%0h ARID=0x%0h\n",
+                        wr_trans.addr, rd_trans.addr, wr_trans.id, rd_trans.id))
+                end
+                
+                // ---- B Channel Check ----
+                if (wr_trans.bvalid && wr_trans.bready) begin
+                    if (wr_trans.bresp == 2'b00) begin
+                        `uvm_info("CHECKER - B_CHANNEL", $sformatf(
+                            "PASS: BID=0x%0h, BRESP=0x%0h\n", wr_trans.bid, wr_trans.bresp), UVM_MEDIUM);
+                    end 
+                    else begin
+                        `uvm_error("CHECKER - B_CHANNEL", $sformatf(
+                            "FAIL: BRESP=0x%0h (non-OKAY)\n", wr_trans.bresp));
+                    end
+                end 
+                else begin
+                    `uvm_info("CHECKER - B_CHANNEL", "Note: BVALID or BREADY not asserted during response, skipping check", UVM_LOW);
+                end 
+         
+                 // ---- R Channel Check ----
+                if (rd_trans.rvalid && rd_trans.rready ) begin
+                    if (rd_trans.rresp == 2'b00) begin
+                        `uvm_info("CHECKER - R_CHANNEL", $sformatf(
+                            "PASS: RRESP=0x%0h\t RLAST=0x%0d\n", rd_trans.rresp, rd_trans.rlast), UVM_MEDIUM);
+                    end 
+                    else begin
+                        `uvm_error("CHECKER - R_CHANNEL", $sformatf(
+                            "FAIL: RRESP=0x%0h (non-OKAY)\n", rd_trans.rresp));
+                    end
+                end 
+                else begin
+                    `uvm_info("CHECKER - R_CHANNEL", "Note: RVALID, RREADY skipping check", UVM_LOW);
+                end
+            end 
+        end
+    endfunction
+// Function to check handshake operations
+    function void check_handshake_phase();
+        `uvm_info("SCOREBOARD_HANDSHAKE", $sformatf(
+            "\nHANDSHAKE SUMMARY:\n" 
+            "  Write handshakes - Total: %0d, Successful: %0d, Pending: %0d\n"
+            "  Read handshakes  - Total: %0d, Successful: %0d, Pending: %0d\n",
+            write_handshake_total, write_handshake_successful, write_handshake_pending,
+            read_handshake_total, read_handshake_successful, read_handshake_pending), UVM_LOW)
+        
+        // Check for abnormal conditions
+        if (write_handshake_pending > 0) begin
+            `uvm_warning("SCOREBOARD_HANDSHAKE", $sformatf(
+                "Write handshake pending count (%0d) is non-zero at end of simulation", 
+                write_handshake_pending))
+        end
+        
+        if (read_handshake_pending > 0) begin
+            `uvm_warning("SCOREBOARD_HANDSHAKE", $sformatf(
+                "Read handshake pending count (%0d) is non-zero at end of simulation", 
+                read_handshake_pending))
+        end
+    endfunction
+
+    // Check write operations individually
+    function void check_write_operation();
+        foreach (wr_queue[i]) begin
+            axi_trans_t trans = wr_queue[i];
+            
+            // Check all write handshake signals
+            if (!(trans.awvalid && trans.awready)) begin
+                `uvm_error("WRITE_CHECK", $sformatf(
+                    "Write address handshake incomplete: AWVALID=%0d, AWREADY=%0d", 
+                    trans.awvalid, trans.awready))
+            end
+            
+            if (!(trans.wvalid && trans.wready)) begin
+                `uvm_error("WRITE_CHECK", $sformatf(
+                    "Write data handshake incomplete: WVALID=%0d, WREADY=%0d", 
+                    trans.wvalid, trans.wready))
+            end
+            
+            if (!(trans.bvalid && trans.bready)) begin
+                `uvm_error("WRITE_CHECK", $sformatf(
+                    "Write response handshake incomplete: BVALID=%0d, BREADY=%0d", 
+                    trans.bvalid, trans.bready))
+            end
+            
+            // Check response code
+            if (trans.bresp != 2'b00) begin
+                `uvm_error("WRITE_CHECK", $sformatf(
+                    "Write response error: BRESP=%0d (non-OKAY)", trans.bresp))
+            end
+            
+            // Check write strobe validity
+            if (trans.wstrb == 4'h0) begin
+                `uvm_warning("WRITE_CHECK", "Write with all byte strobes disabled")
+            end
+            
+            // Check that ID matches between address and response
+            if (trans.id != trans.bid) begin
+                `uvm_error("WRITE_CHECK", $sformatf(
+                    "Write ID mismatch: AWID=%0h, BID=%0h", trans.id, trans.bid))
+            end
+            
+            `uvm_info("WRITE_CHECK", $sformatf(
+                "Write transaction %0d checked - ADDR=0x%0h ID=%0h", 
+                i, trans.addr, trans.id), UVM_HIGH)
+        end
+    endfunction
+    
+    // Check read operations individually
+    function void check_read_operation();
+        foreach (rd_queue[i]) begin
+            axi_trans_t trans = rd_queue[i];
+            
+            // Check all read handshake signals
+            if (!(trans.arvalid && trans.arready)) begin
+                `uvm_error("READ_CHECK", $sformatf(
+                    "Read address handshake incomplete: ARVALID=%0d, ARREADY=%0d", 
+                    trans.arvalid, trans.arready))
+            end
+            
+            if (!(trans.rvalid && trans.rready)) begin
+                `uvm_error("READ_CHECK", $sformatf(
+                    "Read data handshake incomplete: RVALID=%0d, RREADY=%0d", 
+                    trans.rvalid, trans.rready))
+            end
+            
+            // Check response code
+            if (trans.rresp != 2'b00) begin
+                `uvm_error("READ_CHECK", $sformatf(
+                    "Read response error: RRESP=%0d (non-OKAY)", trans.rresp))
+            end
+            
+            // Check RLAST signal for burst operations
+            if (trans.len > 0 && !trans.rlast) begin
+                `uvm_error("READ_CHECK", "Read burst missing RLAST signal")
+            end
+            
+            // Check that ID matches between address and data
+            if (trans.id != trans.rid) begin
+                `uvm_error("READ_CHECK", $sformatf(
+                    "Read ID mismatch: ARID=%0h, RID=%0h", trans.id, trans.rid))
+            end
+            
+            `uvm_info("READ_CHECK", $sformatf(
+                "Read transaction %0d checked - ADDR=0x%0h ID=%0h", 
+                i, trans.addr, trans.id), UVM_HIGH)
+        end
+    endfunction
+
+    // Report statistics at the end of test
+    function void report_statistics();
+        `uvm_info("STATISTICS", $sformatf("\n========== AXI SCOREBOARD STATISTICS ==========\n"
+                                         "Write transactions: %0d\n"
+                                         "Read transactions: %0d\n"
+                                         "Handshake Summary:\n"
+                                         "  Write - Total: %0d, Success: %0d, Pending: %0d\n"
+                                         "  Read  - Total: %0d, Success: %0d, Pending: %0d\n"
+                                         "=============================================\n",
+                                         wr_item_count, rd_item_count,
+                                         write_handshake_total, write_handshake_successful, write_handshake_pending,
+                                         read_handshake_total, read_handshake_successful, read_handshake_pending),
+                  UVM_LOW)
+    endfunction
+    
+    // Extract phase - Checks for any unprocessed items left in the scoreboard
+    function void extract_phase(uvm_phase phase);
+        super.extract_phase(phase);
+        
+        if (wr_queue.size() > 0) begin
+            `uvm_warning("EXTRACT", $sformatf("Unprocessed write transactions: %0d", wr_queue.size()))
+        end
+        
+        if (rd_queue.size() > 0) begin
+            `uvm_warning("EXTRACT", $sformatf("Unprocessed read transactions: %0d", rd_queue.size()))
+        end
+    endfunction
+    
+    // Final phase - Final check for DUT behavior verification
+    function void final_phase(uvm_phase phase);
+        super.final_phase(phase);
+        
+        // Check if any expected handshakes didn't occur
+        check_pending_handshakes();
+        
+        // Final statistical analysis
+        `uvm_info("FINAL", $sformatf("\nTest completed with:\n" 
+                                   "  Write transactions: %0d\n" 
+                                   "  Read transactions: %0d\n", 
+                                   wr_item_count, rd_item_count), UVM_LOW)
+                                   
+        if (write_handshake_pending == 0 && read_handshake_pending == 0) begin
+            `uvm_info("FINAL", "All handshakes completed successfully", UVM_LOW)
+        end
+    endfunction
+    
+    // Check any remaining pending handshakes
+    function void check_pending_handshakes();
+        if (write_handshake_pending > 0) begin
+            `uvm_error("PENDING_HANDSHAKES", $sformatf("%0d write handshakes were left pending", 
+                                                      write_handshake_pending))
+        end
+        
+        if (read_handshake_pending > 0) begin
+            `uvm_error("PENDING_HANDSHAKES", $sformatf("%0d read handshakes were left pending", 
+                                                      read_handshake_pending))
         end
     endfunction
 endclass
